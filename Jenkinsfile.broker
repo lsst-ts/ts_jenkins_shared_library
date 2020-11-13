@@ -42,7 +42,7 @@ pipeline {
                 //build wait: false, job: 'ATSpectrograph conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
                 //build wait: false, job: 'CBP conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
                 //build wait: false, job: 'DIMM conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
-                build wait: false, job: 'DSM conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'DSM_conda_package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
                 //build wait: false, job: 'EAS conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
                 //build wait: false, job: 'Electrometer conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
                 //build wait: false, job: 'ESS conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
