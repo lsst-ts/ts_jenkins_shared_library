@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder(
+            logRotator(
+                artifactDaysToKeepStr: '',
+                artifactNumToKeepStr: '',
+                daysToKeepStr: '14',
+                numToKeepStr: '10'
+            ))
+        disableConcurrentBuilds()
+    }
+    parameters {
+        booleanParam defaultValue: params.Bleed ?:false, description: 'Is this a "bleeding edge" build?', name: 'Bleed'
+        booleanParam defaultValue: params.Daily ?:false, description: 'Is this a Daily build?', name: 'Daily'
+        booleanParam defaultValue: params.Release ?:false, description: 'Is this a Release build?', name: 'Release'
+        string defaultValue: params.Branch ?:'develop', description: 'A user defined branch to use for building the CSC Conda jobs.', name: 'Branch', trim: true
+        string defaultValue: '\'\'', description: 'The version of the IDL conda package.', name: 'idl_version', trim: true
+        string defaultValue: '\'\'', description: 'The version of the SalObj conda package.', name: 'salobj_version', trim: true
+    }
+    stages {
+        stage('Define Build Variables') {
+            steps {
+                script {
+                    if (params.Release) {
+                        branch = "master"
+                    } else if (params.Daily) {
+                        branch = "develop"
+                    } else {
+                        branch = params.Branch
+                    }
+                }
+            }
+        }//Define Variables
+        stage('Trigger CSC Conda jobs') {
+            steps {
+                build wait: false, job: 'ATAOS conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'ATDome conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'ATHexapod conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'ATMCS Simulator conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'ATPneumatics Simulator conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'ATSpectrograph conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'CBP conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'DIMM conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'DSM conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'EAS conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'Electrometer conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'ESS conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'External scripts conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'FiberSpectrograph conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'hexrotcomm conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'M2 simulator conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'MTDome conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'MTDomeTrajectory conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'MTEEC conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'MTHexapod conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'MTMount conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'MTRotator conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'Observatory Control conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'salkafka conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'Sim Actuators conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'Standard script conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'TunableLaser conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'Watcher conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'WeatherStation_conda_package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+            }
+        }//Trigger
+    }//stages
+}//pipeline
