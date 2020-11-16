@@ -35,7 +35,7 @@ pipeline {
         stage('Trigger CSC Conda jobs') {
             steps {
                 build wait: false, job: 'ATAOS conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
-                //build wait: false, job: 'ATDome conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
+                build wait: false, job: 'ATDome conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
                 //build wait: false, job: 'ATHexapod conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
                 //build wait: false, job: 'ATMCS Simulator conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
                 //build wait: false, job: 'ATPneumatics Simulator conda package/' + branch, parameters: [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
