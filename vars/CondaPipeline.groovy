@@ -24,6 +24,11 @@ def call(config_repo, name, module_name){
         }
         stages {
             stage("Clone configuration repository") {
+                when {
+                    not {
+                        expression { return ${config_repo}.toBoolean() }
+                    }
+                }
                 steps {
                     sh """
                         echo "The IDL version: ${params.idl_version}"
