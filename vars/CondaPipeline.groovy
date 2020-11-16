@@ -25,9 +25,7 @@ def call(config_repo, name, module_name){
         stages {
             stage("Clone configuration repository") {
                 when {
-                    not {
-                        expression { config_repo }
-                    }
+                    expression { config_repo != '' }
                 }
                 steps {
                     sh """
