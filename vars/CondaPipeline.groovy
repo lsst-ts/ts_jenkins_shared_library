@@ -26,7 +26,7 @@ def call(config_repo, name, module_name){
             stage("Clone configuration repository") {
                 when {
                     not {
-                        expression { return ${config_repo}.toBoolean() }
+                        expression { return config_repo.toBoolean() }
                     }
                 }
                 steps {
