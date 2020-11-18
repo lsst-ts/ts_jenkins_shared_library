@@ -5,7 +5,7 @@ def call(config_repo, name, module_name){
     Csc csc = new Csc()
     arg_str = ""
     clone_str = ""
-    if !(config_repo.isEmpty()) {
+    if (!config_repo.isEmpty()) {
         config_repo.each{ repo->
             arg_str.concat("--env ${repo.toUpperCase()}_DIR=/home/saluser/${repo}")
             clone_str.concat("git clone https://github.com/lsst-ts/${repo}\n")
