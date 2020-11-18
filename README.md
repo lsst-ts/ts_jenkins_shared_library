@@ -13,7 +13,7 @@ An example is below of what a `Jenkinsfile` can look like.
 ```Jenkinsfile
 @Library('SharedLibrary') _
 
-CondaPipeline("ts_config_attcs", "ts-athexapod", "lsst.ts.ATHexapod")
+CondaPipeline(["ts_config_attcs"], "ts-athexapod", "lsst.ts.ATHexapod")
 
 ```
 

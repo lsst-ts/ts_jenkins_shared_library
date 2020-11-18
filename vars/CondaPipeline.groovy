@@ -3,13 +3,21 @@ import org.lsst.ts.jenkins.components.Csc
 def call(config_repo, name, module_name){
     // Create a conda build pipeline
     Csc csc = new Csc()
+    arg_str = ""
+    clone_str = ""
+    if !(config_repo.isEmpty()) {
+        config_repo.each{ repo->
+            arg_str.concat("--env ${repo.toUpperCase()}_DIR=/home/saluser/${repo}")
+            clone_str.concat("git clone https://github.com/lsst-ts/${repo}\n")
+        }
+    }
     pipeline {
         agent {
             docker {
                 image 'ts-dockerhub.lsst.org/conda_package_builder:latest'
                 alwaysPull true
                 label 'CSC_Conda_Node'
-                args "--env ${config_repo.toUpperCase()}_DIR=/home/saluser/${config_repo} --env LSST_DDS_DOMAIN=citest -u root --entrypoint=''"
+                args arg_str.concat("--env LSST_DDS_DOMAIN=citest -u root --entrypoint=''")
                 registryUrl 'https://ts-dockerhub.lsst.org'
                 registryCredentialsId 'nexus3-lsst_jenkins'
             }
@@ -25,14 +33,14 @@ def call(config_repo, name, module_name){
         stages {
             stage("Clone configuration repository") {
                 when {
-                    expression { config_repo != '' }
+                    expression { config_repo != [] }
                 }
                 steps {
                     sh """
                         echo "The IDL version: ${params.idl_version}"
                         echo "The SalObj version: ${params.salobj_version}"
                         cd /home/saluser
-                        git clone https://github.com/lsst-ts/${config_repo}
+                        ${clone_str}
                     """
                 }
             }
