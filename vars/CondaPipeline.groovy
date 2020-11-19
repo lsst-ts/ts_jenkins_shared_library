@@ -7,8 +7,8 @@ def call(config_repo, name, module_name){
     clone_str = ""
     if (!config_repo.isEmpty()) {
         config_repo.each{ repo ->
-            arg_str.concat("--env ${repo.toUpperCase()}_DIR=/home/saluser/${repo}")
-            clone_str.concat("git clone https://github.com/lsst-ts/${repo}\n")
+            arg_str = arg_str.concat("--env ${repo.toUpperCase()}_DIR=/home/saluser/${repo}")
+            clone_str = clone_str.concat("git clone https://github.com/lsst-ts/${repo}\n")
             println(arg_str)
             println(clone_str)
         }
