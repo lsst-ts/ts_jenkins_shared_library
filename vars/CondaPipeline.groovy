@@ -6,7 +6,7 @@ def call(config_repo, name, module_name){
     arg_str = ""
     clone_str = ""
     if (!config_repo.isEmpty()) {
-        config_repo.each{ repo->
+        config_repo.each{ repo ->
             arg_str.concat("--env ${repo.toUpperCase()}_DIR=/home/saluser/${repo}")
             clone_str.concat("git clone https://github.com/lsst-ts/${repo}\n")
             println(arg_str)
@@ -35,7 +35,9 @@ def call(config_repo, name, module_name){
         stages {
             stage("Clone configuration repository") {
                 when {
-                    expression { !config_repo.isEmpty() }
+                    not {
+                        expression { config_repo.isEmpty() }
+                    }
                 }
                 steps {
                     sh """
