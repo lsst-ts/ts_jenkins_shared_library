@@ -9,6 +9,8 @@ def call(config_repo, name, module_name){
         config_repo.each{ repo->
             arg_str.concat("--env ${repo.toUpperCase()}_DIR=/home/saluser/${repo}")
             clone_str.concat("git clone https://github.com/lsst-ts/${repo}\n")
+            println(arg_str)
+            println(clone_str)
         }
     }
     pipeline {
@@ -33,7 +35,7 @@ def call(config_repo, name, module_name){
         stages {
             stage("Clone configuration repository") {
                 when {
-                    expression { config_repo != [] }
+                    expression { !config_repo.isEmpty() }
                 }
                 steps {
                     sh """
