@@ -70,7 +70,7 @@ def call(config_repo, name, module_name){
                 steps {
                     withEnv(["HOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_conda("main")
+                            csc.build_csc_conda("main")
                         }
                     }
                 }
@@ -84,7 +84,7 @@ def call(config_repo, name, module_name){
                 steps {
                     withEnv(["HOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_conda("dev")
+                            csc.build_csc_conda("dev")
                         }
                     }
                 }
