@@ -46,6 +46,8 @@ def call(config_repo){
         }
         parameters {
             string(defaultValue: 'default', description: 'The IDL Version', name: 'idl_version')
+            string(defaultValue: 'default', description: 'The XML Version', name: 'xml_version')
+            string(defaultValue: 'default', description: 'The SAL Version', name: 'sal_version')
             booleanParam(defaultValue: false, description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
             
         }
@@ -57,8 +59,11 @@ def call(config_repo){
                     }
                 }
                 steps {
+                    script{
+                        concatVersion = params.idl_version  + '_' + params.xml_version + '_' + params.sal_version
+                    }
                     sh """
-                        echo "The IDL version: ${params.idl_version}"
+                        echo "The concatenated IDL_XML_SAL version: ${concatVersion}"
                         cd /home/saluser
                         ${clone_str}
                     """
@@ -144,17 +149,20 @@ def call(config_repo){
                     when { expression { return env.buildCSCConda.toBoolean() } }
                     steps {
                         script {
-                            def RESULT = sh (returnStdout: true, script:
+                            def SALOBJVERSION = sh (returnStdout: true, script:
                             """
                             source /home/saluser/miniconda3/bin/activate > /dev/null &&
                             conda install -q -y setuptools_scm > /dev/null &&
                             python -c 'from setuptools_scm import get_version; print(get_version())'
                             """).trim()
+                            
 
-                            echo "Starting the CSC_Conda_broker/develop job; idl_version: ${idl_version}, salobj_version: ${RESULT}"
+                            echo "Starting the CSC_Conda_broker/develop job; idl_version: ${idl_version}, salobj_version: ${SALOBJVERSION}, XML_Version: ${xml_version}, SAL_Version: ${sal_version}"
                             build job: 'CSC_Conda_Broker', parameters: [\
                                 string(name: 'idl_version', value: idl_version ), \
-                                string(name: 'salobj_version', value: RESULT ), \
+                                string(name: 'salobj_version', value: SALOBJVERSION ), \
+                                string(name: 'XML_Version', value: xml_version ), \
+                                string(name: 'SAL_Version', value: sal_version ), \
                                 booleanParam(name: 'Bleed', value: false), \
                                 booleanParam(name: 'Daily', value: true), \
                                 booleanParam(name: 'Release', value: false), \

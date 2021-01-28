@@ -143,7 +143,7 @@ def call(){
                             """).trim()
 
                             idl_version = "${RESULT}"
-                            echo "Starting the SalObj_Conda_package/develop job; sal_version: ${SAL_Version}, xml_version: ${XML_Version}, idl_version: ${idl_version}, develop: ${develop}, buildCSCConda: ${buildCSCConda}"
+                            echo "Starting the SalObj_Conda_package/develop job; sal_version: ${sal_ver}, xml_version: ${XML_Version}, idl_version: ${idl_version}, develop: ${develop}, buildCSCConda: ${buildCSCConda}"
                             build propagate: false, job: 'SalObj_Conda_package/tickets%252FDM-28310', parameters: [
                                 booleanParam(name: 'develop', value: "${develop}" ), 
                                 booleanParam(name: 'buildCSCConda', value: "${buildCSCConda}" ), 
