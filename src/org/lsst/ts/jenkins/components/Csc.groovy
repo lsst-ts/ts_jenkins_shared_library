@@ -35,8 +35,8 @@ def build_csc_conda(label) {
 
 def build_idl_conda(label) {
     sh """
-        echo 'The XML version: ${params.xml_version}'
-        echo 'The SAL version: ${params.sal_version}'
+        echo 'The XML version: ${params.XML_Version}'
+        echo 'The SAL version: ${params.SAL_Version}'
         echo 'The BuildType: ${params.build_type}'
     """
     if ( params.build_type == "Bleed" ) {
@@ -54,7 +54,7 @@ def build_idl_conda(label) {
             // The RPMs can take a few minutes to appear in the repo. This will wait 5 minutes then fail the build if the RPM is not found.
             def r = sh (
                 script: "yum clean all ; " +
-                    " yum list --enablerepo=${rpm_repo} ts_sal_runtime-${params.xml_version}-${params.sal_version}.el7.x86_64 ",
+                    " yum list --enablerepo=${rpm_repo} ts_sal_runtime-${params.XML_Version}-${params.SAL_Version}.el7.x86_64 ",
                 returnStatus: true
             )
             return r == 0
@@ -62,7 +62,7 @@ def build_idl_conda(label) {
     }
     sh """
         # yum clean all ; yum makecache fast; yum update ; 
-        yum install -y --enablerepo=${rpm_repo} ts_sal_runtime-${params.xml_version}-${params.sal_version}.el7.x86_64
+        yum install -y --enablerepo=${rpm_repo} ts_sal_runtime-${params.XML_Version}-${params.SAL_Version}.el7.x86_64
         cd ${HOME}/conda
         source /home/saluser/miniconda3/bin/activate 
         conda config --add channels conda-forge
