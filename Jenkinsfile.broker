@@ -14,7 +14,10 @@ pipeline {
         booleanParam defaultValue: params.Bleed ?:false, description: 'Is this a "bleeding edge" build?', name: 'Bleed'
         booleanParam defaultValue: params.Daily ?:false, description: 'Is this a Daily build?', name: 'Daily'
         booleanParam defaultValue: params.Release ?:false, description: 'Is this a Release build?', name: 'Release'
+        booleanParam defaultValue: false, description: 'Test the broker, only trigger the Test CSC Conda job', name: 'test'
         string defaultValue: params.Branch ?:'develop', description: 'A user defined branch to use for building the CSC Conda jobs.', name: 'Branch', trim: true
+        string defaultValue: '\'\'', description: 'The XML version.', name: 'XML_Version', trim: true
+        string defaultValue: '\'\'', description: 'The SAL version.', name: 'SAL_Version', trim: true
         string defaultValue: '\'\'', description: 'The version of the IDL conda package.', name: 'idl_version', trim: true
         string defaultValue: '\'\'', description: 'The version of the SalObj conda package.', name: 'salobj_version', trim: true
     }
@@ -35,11 +38,20 @@ pipeline {
         stage('Trigger CSC Conda jobs') {
             steps {
                 script {
-                    def jobs = ['ATAOS', 'ATDome', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'CBP', 'DIMM', 'DSM', 
-                        'EAS', 'Electrometer', 'ESS', 'ExternalScripts', 'FiberSpectrograph', 'hexrotcomm', 'M2simulator', 'MTDome', 'MTDomeTrajectory',
-                        'MTEEC', 'MTHexapod', 'MTMount', 'MTRotator', 'ObservatoryControl', 'salkafka', 'SimActuators', 'StandardScripts', 'TunableLaser',
-                        'Watcher', 'WeatherStation']
-                        
+                    def jobs = []
+                    if (params.test) {
+                        sh "echo This is a test"
+                        jobs = ['WeatherStation']
+                    } else {
+                        jobs = ['ATAOS', 'ATDome', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'CBP', 'DIMM', 'DSM', 
+                            'EAS', 'Electrometer', 'ESS', 'ExternalScripts', 'FiberSpectrograph', 'hexrotcomm', 'M2simulator', 'MTDome', 'MTDomeTrajectory',
+                            'MTEEC', 'MTHexapod', 'MTMount', 'MTRotator', 'ObservatoryControl', 'salkafka', 'SimActuators', 'StandardScripts', 'TunableLaser',
+                            'Watcher', 'WeatherStation']
+                    }
+                    
+                    sal_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${SAL_Version} |sed 's/.pre[0-9]*//g'").trim()
+                    idl_version = "${idl_version}_${XML_Version}_${sal_ver}"
+                    salobj_version="${salobj_version}"
                     for (int i = 0; i < jobs.size(); ++i) {
                         echo "Starting the ${jobs[i]} job using the ${branch} branch and idl_version: ${idl_version}, salobj_version: ${salobj_version}"
                         build wait: false, job: "${jobs[i]}" + "_conda_package/" + branch, parameters: 

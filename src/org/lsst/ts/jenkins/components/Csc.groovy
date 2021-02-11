@@ -39,6 +39,7 @@ def build_idl_conda(label) {
         echo 'The SAL version: ${params.SAL_Version}'
         echo 'The BuildType: ${params.build_type}'
     """
+    echo "The TS_SAL_VERSION EnvVar: ${env.TS_SAL_VERSION}"
     if ( params.build_type == "Bleed" ) {
         rpm_repo = "lsst-ts-bleed"
     } else if ( params.build_type == "Daily" ) {
