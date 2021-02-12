@@ -3,6 +3,7 @@ import org.lsst.ts.jenkins.components.Csc
 def call(config_repo, name, module_name){
     // Create a conda build pipeline
     Csc csc = new Csc()
+    emails = csc.email()
     arg_str = ""
     clone_str = ""
     if (!config_repo.isEmpty()) {
@@ -11,6 +12,7 @@ def call(config_repo, name, module_name){
             clone_str = clone_str.concat("git clone https://github.com/lsst-ts/${repo}\n")
             println(arg_str)
             println(clone_str)
+            println(emails[name])
         }
     }
     properties(
@@ -135,16 +137,7 @@ def call(config_repo, name, module_name){
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'chown -R 1003:1003 ${HOME}/'
                 }
-            }
-            regression {
-                emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
-                    recipientProviders: [culprits(), developers()], 
-                    subject: 'Build failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
-            }
-            fixed {
-            emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n', 
-                    recipientProviders: [culprits(), developers()], 
-                    subject: 'Build Fixed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+                step([$class: 'Mailer', recipients: emails[name], notifyEveryUnstableBuild: false, sendToIndividuals: true])
             }
         }
     }
