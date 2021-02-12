@@ -34,7 +34,7 @@ def build_csc_conda(label) {
         conda config --add channels conda-forge
         conda config --add channels lsstts
         source ${OSPL_HOME}/release.com
-        conda build -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, idl_version: ${params.idl_version}}" --prefix-length 100 .
+        conda build -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, idl_version: ${concatVersion}" --prefix-length 100 .
     """
 }
 
