@@ -44,9 +44,9 @@ pipeline {
                         jobs = ['WeatherStation']
                     } else {
                         jobs = ['ATAOS', 'ATDome', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'CBP', 'DIMM', 'DSM', 
-                            'EAS', 'Electrometer', 'ESS', 'ExternalScripts', 'FiberSpectrograph', 'hexrotcomm', 'M2simulator', 'MTDome', 'MTDomeTrajectory',
-                            'MTEEC', 'MTHexapod', 'MTMount', 'MTRotator', 'ObservatoryControl', 'salkafka', 'SimActuators', 'StandardScripts', 'TunableLaser',
-                            'Watcher', 'WeatherStation']
+                            'EAS', 'Electrometer', 'ESS', 'ExternalScripts', 'FiberSpectrograph', 'GenericCamera', 'hexrotcomm', 'M2simulator', 
+                            'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'MTRotator', 'ObservatoryControl', 'salkafka', 
+                            'SimActuators', 'StandardScripts', 'TunableLaser', 'Watcher', 'WeatherStation']
                     }
                     
                     sal_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${SAL_Version} |sed 's/.pre[0-9]*//g'").trim()
