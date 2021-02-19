@@ -58,6 +58,8 @@ def call(config_repo, name, module_name){
                 }
                 steps {
                     sh """
+                        yum clean expire-cache
+                        yum check-update || true
                         echo "The IDL version: ${params.idl_version}"
                         echo "The SalObj version: ${params.salobj_version}"
                         cd /home/saluser
