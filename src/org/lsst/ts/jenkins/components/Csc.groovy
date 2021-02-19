@@ -78,7 +78,7 @@ def build_idl_conda(label) {
     """
 }
 
-def build_salobj_conda(label) {
+def build_salobj_conda(label, concatVersion) {
     sh """
         cd ${HOME}/conda
         source /home/saluser/miniconda3/bin/activate
