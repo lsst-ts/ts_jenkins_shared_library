@@ -76,7 +76,7 @@ def call(config_repo){
                 steps {
                     withEnv(["HOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_salobj_conda("main")
+                            csc.build_salobj_conda("main", "${concatVersion}")
                         }
                     }
                 }
@@ -90,7 +90,7 @@ def call(config_repo){
                 steps {
                     withEnv(["HOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_salobj_conda("dev")
+                            csc.build_salobj_conda("dev", "${concatVersion}")
                         }
                     }
                 }
