@@ -92,9 +92,14 @@ def build_salobj_conda(label, concatVersion) {
 def upload_conda(name, label) {
     // Upload the conda package
     // Takes the name of the package and a label
+    if(name.contains("ts-salobj")) {
+        arch = "noarch"
+    } else {
+        arch = "linux-64"
+    }
     sh """
         source /home/saluser/miniconda3/bin/activate
-        anaconda upload -u lsstts --label ${label} --force /home/saluser/miniconda3/conda-bld/linux-64/${name}*.tar.bz2
+        anaconda upload -u lsstts --label ${label} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.tar.bz2
     """
 }
 
