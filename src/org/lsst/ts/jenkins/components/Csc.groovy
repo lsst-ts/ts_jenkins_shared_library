@@ -59,8 +59,7 @@ def build_idl_conda(label) {
         waitUntil(initialRecurrencePeriod: 15000, quiet: true) {
             // The RPMs can take a few minutes to appear in the repo. This will wait 5 minutes then fail the build if the RPM is not found.
             def r = sh (
-                script: "yum clean all ; " +
-                    " yum list --enablerepo=${rpm_repo} ts_sal_runtime-${params.XML_Version}-${params.SAL_Version}.el7.x86_64 ",
+                script: "yum clean all ; yum list --enablerepo=${rpm_repo} ts_sal_runtime-${params.XML_Version}-${params.SAL_Version}.el7.x86_64 ",
                 returnStatus: true
             )
             return r == 0
@@ -92,14 +91,14 @@ def build_salobj_conda(label, concatVersion) {
 def upload_conda(name, label) {
     // Upload the conda package
     // Takes the name of the package and a label
-    if(name.contains("ts-salobj")) {
+    if((name.contains("ts-salobj")) || (name.contains("ts-idl"))) {
         arch = "noarch"
     } else {
         arch = "linux-64"
     }
     sh """
         source /home/saluser/miniconda3/bin/activate
-        anaconda upload -u lsstts --label ${label} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.tar.bz2
+        anaconda upload -u lsstts --label ${label} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.tar.bz2    
     """
 }
 
