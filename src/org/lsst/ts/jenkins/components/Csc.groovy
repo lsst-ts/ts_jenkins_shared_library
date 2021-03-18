@@ -5,6 +5,11 @@ def email() {
     return emails
 }
 
+def slack_id() {
+    slack_ids = ["ts-ataos":"U72CH91L2", "ts-atdome":"U2JPAP0F6", "ts-athexapod": "UAS4QHFSB", "ts-atmcs": "U2JPAP0F6", "ts-atpneumatics": "U2JPAP0F6", "ts-atspectrograph": "U2JPAP0F6", "ts-cbp": "UAS4QHFSB", "ts-dimm": "URY8ACN4S", "ts-dsm": "U2JPDUE86", "ts-eas": "URY8ACN4S", "ts-electrometer": "UAS4QHFSB", "ts-ess": "URY8ACN4S", "ts-externalscripts": "U72CH91L2", "ts-fiberspectrograph": "U2JPAP0F6", "ts-genericcamera": "URY8ACN4S", "ts-hexrotcomm": "U2JPAP0F6", "ts-m2": "U72CH91L2", "ts-mtdome": "U2JPAP0F6", "ts-mtdometrajectory":"U2JPAP0F6", "ts-mteec": "URY8ACN4S", "ts-mthexapod": "U2JPAP0F6", "ts-mtmount": "U2JPAP0F6", "ts-mtrotator": "U2JPAP0F6", "ts-observatory-control": "U72CH91L2", "ts-salkafka": "U72CH91L2", "ts-simacutuators": "U2JPAP0F6", "ts-standardscripts": "U72CH91L2", "ts-tunablelaser": "UAS4QHFSB", "ts-watcher": "U2JPAP0F6", "ts-weatherstation": "URY8ACN4S"]
+    return slack_ids
+}
+
 def build_docs() {
     // Build the documentation
     sh "package-docs build"

@@ -4,6 +4,7 @@ def call(config_repo, name, module_name){
     // Create a conda build pipeline
     Csc csc = new Csc()
     emails = csc.email()
+    slack_ids = csc.slack_id()
     arg_str = ""
     clone_str = ""
     if (!config_repo.isEmpty()) {
@@ -140,6 +141,19 @@ def call(config_repo, name, module_name){
                     sh 'chown -R 1003:1003 ${HOME}/'
                 }
                 step([$class: 'Mailer', recipients: emails[name], notifyEveryUnstableBuild: false, sendToIndividuals: true])
+            }
+            regression {
+                script {
+                    def userId = slack_ids[name]
+                    slackSend(color: "danger", message: "<@$userId> ${JOB_NAME} has suffered a regression ${BUILD_URL}")
+                }
+                
+            }
+            fixed {
+                script {
+                    def userId = slack_ids[name]
+                    slackSend(color: "good", message: "<@$userId> ${JOB_NAME} has been fixed ${BUILD_URL}")
+                }
             }
         }
     }
