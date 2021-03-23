@@ -1,6 +1,6 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(config_repo){
+def call(config_repo, noarch=true){
     Csc csc = new Csc()
     arg_str = ""
     clone_str = ""

@@ -93,18 +93,19 @@ def build_salobj_conda(label, concatVersion) {
     """
 }
 
-def upload_conda(name, label) {
+def upload_conda(name, label, arch) {
     // Upload the conda package
     // Takes the name of the package and a label
-    if((name.contains("ts-salobj")) || (name.contains("ts-idl"))) {
-        arch = "noarch"
-    } else {
-        arch = "linux-64"
+    if ((arch=="linux-aarch64") || (arch=="noarch") || (arch=="linux-64")) {
+        sh """
+            source /home/saluser/miniconda3/bin/activate
+            anaconda upload -u lsstts --label ${label} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.tar.bz2    
+        """
     }
-    sh """
-        source /home/saluser/miniconda3/bin/activate
-        anaconda upload -u lsstts --label ${label} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.tar.bz2    
-    """
+    else {
+        currentBuild.result = 'ABORTED'
+        error('Please properly define the arch parameter.')
+    }
 }
 
 def upload_pypi() {

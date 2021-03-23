@@ -1,6 +1,6 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(){
+def call(noarch=true){
     Csc csc = new Csc()
     properties(
         [
