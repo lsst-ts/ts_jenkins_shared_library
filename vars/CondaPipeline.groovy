@@ -145,14 +145,14 @@ def call(config_repo, name, module_name){
             regression {
                 script {
                     def userId = slack_ids[name]
-                    slackSend(color: "danger", message: "<@$userId> ${JOB_NAME} has suffered a regression ${BUILD_URL}")
+                    slackSend(color: "danger", message: "<@$userId> ${JOB_NAME} has suffered a regression ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
                 }
                 
             }
             fixed {
                 script {
                     def userId = slack_ids[name]
-                    slackSend(color: "good", message: "<@$userId> ${JOB_NAME} has been fixed ${BUILD_URL}")
+                    slackSend(color: "good", message: "<@$userId> ${JOB_NAME} has been fixed ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
                 }
             }
         }
