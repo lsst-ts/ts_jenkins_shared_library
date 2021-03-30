@@ -1,12 +1,18 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(config_repo, name, module_name){
+def call(config_repo, name, module_name,arch="linux-64"){
     // Create a conda build pipeline
     Csc csc = new Csc()
     emails = csc.email()
     slack_ids = csc.slack_id()
     arg_str = ""
     clone_str = ""
+    if (arch!="linux-aarch64") {
+        ospl_home = "/opt/OpenSpliceDDS/V6.10.4/HDE/x86_64.linux"
+    }
+    else {
+        ospl_home = "/opt/OpenSpliceDDS/V6.9.0/HDE/aarch64.linux"
+    }
     if (!config_repo.isEmpty()) {
         config_repo.each{ repo ->
             arg_str = arg_str.concat("--env ${repo.toUpperCase()}_DIR=/home/saluser/${repo} ")
@@ -15,6 +21,18 @@ def call(config_repo, name, module_name){
             println(clone_str)
             println(emails[name])
         }
+    }
+    if (arch=="linux-aarch64") {
+        label_value = "Arm64_2CPU"
+        image_value = "lsstts/conda_package_builder_aarch64:latest"
+        registry_url = ""
+        registry_credentials_id = ""
+    }
+    else {
+        label_value = "CSC_Conda_Node"
+        image_value = "ts-dockerhub.lsst.org/conda_package_builder:latest"
+        registry_url = "https://ts-dockerhub.lsst.org"
+        registry_credentials_id = "nexus3-lsst_jenkins"
     }
     properties(
         [
@@ -31,12 +49,12 @@ def call(config_repo, name, module_name){
     pipeline {
         agent {
             docker {
-                image 'ts-dockerhub.lsst.org/conda_package_builder:latest'
+                image image_value
                 alwaysPull true
-                label 'CSC_Conda_Node'
+                label label_value
                 args arg_str.concat("--env LSST_DDS_DOMAIN=citest -u root --entrypoint=''")
-                registryUrl 'https://ts-dockerhub.lsst.org'
-                registryCredentialsId 'nexus3-lsst_jenkins'
+                registryUrl registry_url
+                registryCredentialsId registry_credentials_id
             }
         }
         parameters {
@@ -45,7 +63,7 @@ def call(config_repo, name, module_name){
         }
         environment {
             package_name = "${name}"
-            OSPL_HOME="/opt/OpenSpliceDDS/V6.10.4/HDE/x86_64.linux"
+            OSPL_HOME="${ospl_home}"
         }
         options {
             disableConcurrentBuilds()
@@ -107,7 +125,7 @@ def call(config_repo, name, module_name){
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda(package_name,"rc")
+                                csc.upload_conda(package_name,"rc", arch)
                             }
                         }
                     }
@@ -128,7 +146,7 @@ def call(config_repo, name, module_name){
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda(package_name,"main")
+                                csc.upload_conda(package_name,"main",arch)
                             }
                         }
                     }
