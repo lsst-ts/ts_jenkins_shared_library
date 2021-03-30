@@ -1,6 +1,6 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(config_repo, noarch=true){
+def call(config_repo){
     Csc csc = new Csc()
     arg_str = ""
     clone_str = ""
@@ -110,7 +110,7 @@ def call(config_repo, noarch=true){
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda("ts-salobj","main")
+                                csc.upload_conda("ts-salobj","main","noarch")
                             }
                         }
                     }
@@ -130,7 +130,7 @@ def call(config_repo, noarch=true){
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda("ts-salobj","dev")
+                                csc.upload_conda("ts-salobj","dev","noarch")
                             }
                         }
                     }

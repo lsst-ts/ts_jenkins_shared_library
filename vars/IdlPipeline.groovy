@@ -1,6 +1,6 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(noarch=true){
+def call(){
     Csc csc = new Csc()
     properties(
         [
@@ -96,7 +96,7 @@ def call(noarch=true){
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda("ts-idl","main")
+                                csc.upload_conda("ts-idl","main","noarch")
                             }
                         }
                     }
@@ -116,7 +116,7 @@ def call(noarch=true){
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda("ts-idl","dev")
+                                csc.upload_conda("ts-idl","dev","noarch")
                             }
                         }
                     }
