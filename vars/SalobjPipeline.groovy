@@ -45,9 +45,9 @@ def call(config_repo){
             OSPL_HOME="/opt/OpenSpliceDDS/V6.10.4/HDE/x86_64.linux"
         }
         parameters {
-            string(defaultValue: 'default', description: 'The IDL Version', name: 'idl_version')
-            string(defaultValue: 'default', description: 'The XML Version', name: 'xml_version')
-            string(defaultValue: 'default', description: 'The SAL Version', name: 'sal_version')
+            string(defaultValue: '\'\'', description: 'The IDL Version', name: 'idl_version')
+            string(defaultValue: '\'\'', description: 'The XML Version', name: 'xml_version')
+            string(defaultValue: '\'\'', description: 'The SAL Version', name: 'sal_version')
             booleanParam(defaultValue: false, description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
             
         }
@@ -60,7 +60,12 @@ def call(config_repo){
                 }
                 steps {
                     script{
-                        concatVersion = params.idl_version  + '_' + params.xml_version + '_' + params.sal_version
+                        if ((params.idl_version == '\'\'') && (params.xml_version == '\'\'') && (params.sal_version == '\'\'')) {
+                            concatVersion = ''
+                        }
+                        else {
+                            concatVersion = params.idl_version  + '_' + params.xml_version + '_' + params.sal_version
+                        }
                     }
                     sh """
                         echo "The concatenated IDL_XML_SAL version: ${concatVersion}"
