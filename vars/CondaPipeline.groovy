@@ -7,12 +7,6 @@ def call(config_repo, name, module_name,arch="linux-64"){
     slack_ids = csc.slack_id()
     arg_str = ""
     clone_str = ""
-    if (arch!="linux-aarch64") {
-        ospl_home = "/opt/OpenSpliceDDS/V6.10.4/HDE/x86_64.linux"
-    }
-    else {
-        ospl_home = "/opt/OpenSpliceDDS/V6.9.0/HDE/aarch64.linux"
-    }
     if (!config_repo.isEmpty()) {
         config_repo.each{ repo ->
             arg_str = arg_str.concat("--env ${repo.toUpperCase()}_DIR=/home/saluser/${repo} ")
@@ -63,11 +57,10 @@ def call(config_repo, name, module_name,arch="linux-64"){
         }
         environment {
             package_name = "${name}"
-            OSPL_HOME="${ospl_home}"
         }
         options {
             disableConcurrentBuilds()
-        }    
+        }
         stages {
             stage("Clone configuration repository") {
                 when {
@@ -91,7 +84,7 @@ def call(config_repo, name, module_name,arch="linux-64"){
                     buildingTag()
                 }
                 steps {
-                    withEnv(["HOME=${env.WORKSPACE}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             csc.build_csc_conda("main")
                         }
@@ -105,7 +98,7 @@ def call(config_repo, name, module_name,arch="linux-64"){
                     }
                 }
                 steps {
-                    withEnv(["HOME=${env.WORKSPACE}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             csc.build_csc_conda("dev")
                         }
@@ -119,7 +112,7 @@ def call(config_repo, name, module_name,arch="linux-64"){
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
-                        withEnv(["HOME=${env.WORKSPACE}"]) {
+                        withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
@@ -140,7 +133,7 @@ def call(config_repo, name, module_name,arch="linux-64"){
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
-                        withEnv(["HOME=${env.WORKSPACE}"]) {
+                        withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
@@ -165,7 +158,7 @@ def call(config_repo, name, module_name,arch="linux-64"){
                     def userId = slack_ids[name]
                     slackSend(color: "danger", message: "<@$userId> ${JOB_NAME} has suffered a regression ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
                 }
-                
+
             }
             fixed {
                 script {

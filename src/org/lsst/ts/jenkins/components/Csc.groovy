@@ -34,11 +34,10 @@ def test() {
 def build_csc_conda(label) {
     // Build the conda package
     sh """
-        cd ${HOME}/conda
-        source /home/saluser/miniconda3/bin/activate
+        cd ${WHOME}/conda
+        source /home/saluser/.setup.sh
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        source ${OSPL_HOME}/release.com
         conda build -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, idl_version: ${params.idl_version}}" --prefix-length 100 .
     """
 }
@@ -71,24 +70,22 @@ def build_idl_conda(label) {
         }
     }
     sh """
-        # yum clean all ; yum makecache fast; yum update ; 
+        # yum clean all ; yum makecache fast; yum update ;
         yum install -y --enablerepo=${rpm_repo} ts_sal_runtime-${params.XML_Version}-${params.SAL_Version}.el7.x86_64
-        cd ${HOME}/conda
-        source /home/saluser/miniconda3/bin/activate 
+        cd ${WHOME}/conda
+        source /home/saluser/.setup.sh
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        source ${OSPL_HOME}/release.com
         conda build -c lsstts/label/${label} --prefix-length 100 .
     """
 }
 
 def build_salobj_conda(label, concatVersion) {
     sh """
-        cd ${HOME}/conda
-        source /home/saluser/miniconda3/bin/activate
+        cd ${WHOME}/conda
+        source /home/saluser/.setup.sh
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        source ${OSPL_HOME}/release.com
         conda build -c lsstts/label/${label} --variants "{idl_version: ${concatVersion}}" --prefix-length 100 .
     """
 }
@@ -98,8 +95,8 @@ def upload_conda(name, label, arch) {
     // Takes the name of the package and a label
     if ((arch=="linux-aarch64") || (arch=="noarch") || (arch=="linux-64")) {
         sh """
-            source /home/saluser/miniconda3/bin/activate
-            anaconda upload -u lsstts --label ${label} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.tar.bz2    
+            source /home/saluser/.setup.sh
+            anaconda upload -u lsstts --label ${label} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.tar.bz2
         """
     }
     else {
@@ -110,12 +107,11 @@ def upload_conda(name, label, arch) {
 
 def upload_pypi() {
     sh """
-        source /home/saluser/miniconda3/bin/activate
-        source ${OSPL_HOME}/release.com
+        source /home/saluser/.setup.sh
         pip install --upgrade twine
         python setup.py sdist bdist_wheel
         python -m twine upload -u ${env.PYPI_CREDS_USR} -p ${env.PYPI_CREDS_PSW} dist/*
-    """ 
+    """
 }
 
 return this

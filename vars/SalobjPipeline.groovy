@@ -37,19 +37,16 @@ def call(config_repo){
         }
         options {
             disableConcurrentBuilds()
-        }    
+        }
         environment {
-            dockerImageName = "lsstts/conda_package_builder:latest"
-            container_name = "salobj_${BUILD_ID}_${JENKINS_NODE_COOKIE}"
             PYPI_CREDS = credentials("pypi")
-            OSPL_HOME="/opt/OpenSpliceDDS/V6.10.4/HDE/x86_64.linux"
         }
         parameters {
             string(defaultValue: '\'\'', description: 'The IDL Version', name: 'idl_version')
             string(defaultValue: '\'\'', description: 'The XML Version', name: 'xml_version')
             string(defaultValue: '\'\'', description: 'The SAL Version', name: 'sal_version')
             booleanParam(defaultValue: false, description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
-            
+
         }
         stages {
             stage("Clone configuration repository") {
@@ -79,7 +76,7 @@ def call(config_repo){
                     buildingTag()
                 }
                 steps {
-                    withEnv(["HOME=${env.WORKSPACE}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             csc.build_salobj_conda("main", "${concatVersion}")
                         }
@@ -93,7 +90,7 @@ def call(config_repo){
                     }
                 }
                 steps {
-                    withEnv(["HOME=${env.WORKSPACE}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             csc.build_salobj_conda("dev", "${concatVersion}")
                         }
@@ -109,7 +106,7 @@ def call(config_repo){
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
-                        withEnv(["HOME=${env.WORKSPACE}"]) {
+                        withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
@@ -129,7 +126,7 @@ def call(config_repo){
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
-                        withEnv(["HOME=${env.WORKSPACE}"]) {
+                        withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
@@ -160,7 +157,7 @@ def call(config_repo){
                             conda install -q -y setuptools_scm > /dev/null &&
                             python -c 'from setuptools_scm import get_version; print(get_version())'
                             """).trim()
-                            
+
 
                             echo "Starting the CSC_Conda_broker/develop job; idl_version: ${idl_version}, salobj_version: ${SALOBJVERSION}, XML_Version: ${xml_version}, SAL_Version: ${sal_version}"
                             build job: 'CSC_Conda_Broker', parameters: [\
@@ -178,7 +175,7 @@ def call(config_repo){
         }//stages
         post {
             cleanup {
-                withEnv(["HOME=${env.WORKSPACE}"]) {
+                withEnv(["WHOME=${env.WORKSPACE}"]) {
                     sh 'chown -R 1003:1003 ${HOME}/'
                 }
             }
@@ -193,7 +190,7 @@ def call(config_repo){
                     def userId = "U6BCN6H43"
                     slackSend(color: "danger", message: "<@$userId> ${JOB_NAME} has suffered a regression ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
                 }
-                
+
             }
             fixed {
                 script {
