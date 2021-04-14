@@ -27,12 +27,9 @@ def call(){
         }
         options {
             disableConcurrentBuilds()
-        }    
+        }
         environment {
-            dockerImageName = "lsstts/conda_package_builder:latest"
-            container_name = "idl_${BUILD_ID}_${JENKINS_NODE_COOKIE}"
             PYPI_CREDS = credentials("pypi")
-            OSPL_HOME="/opt/OpenSpliceDDS/V6.10.4/HDE/x86_64.linux"
         }
         parameters {
             string(defaultValue: '7.1.0', description: 'The XML Version, exclude any preceeding "v" characters: X.Y.Z', name: 'XML_Version')
@@ -60,7 +57,7 @@ def call(){
                     buildingTag()
                 }
                 steps {
-                    withEnv(["HOME=${env.WORKSPACE}", "TS_SAL_VERSION=${env.TS_SAL_VERSION}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}", "TS_SAL_VERSION=${env.TS_SAL_VERSION}"]) {
                         script {
                             csc.build_idl_conda("main")
                         }
@@ -74,7 +71,7 @@ def call(){
                     }
                 }
                 steps {
-                    withEnv(["HOME=${env.WORKSPACE}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             csc.build_idl_conda("dev")
                         }
@@ -90,7 +87,7 @@ def call(){
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
-                        withEnv(["HOME=${env.WORKSPACE}"]) {
+                        withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
@@ -110,7 +107,7 @@ def call(){
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
-                        withEnv(["HOME=${env.WORKSPACE}"]) {
+                        withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
@@ -145,10 +142,10 @@ def call(){
                             idl_version = "${RESULT}"
                             echo "Starting the SalObj_Conda_package/develop job; sal_version: ${sal_ver}, xml_version: ${XML_Version}, idl_version: ${idl_version}, develop: ${develop}, buildCSCConda: ${buildCSCConda}"
                             build propagate: false, job: 'SalObj_Conda_package/develop', parameters: [
-                                booleanParam(name: 'develop', value: "${develop}" ), 
-                                booleanParam(name: 'buildCSCConda', value: "${buildCSCConda}" ), 
-                                string(name: 'idl_version',value: "${idl_version}" ), 
-                                string(name: 'xml_version',value: "${XML_Version}" ), 
+                                booleanParam(name: 'develop', value: "${develop}" ),
+                                booleanParam(name: 'buildCSCConda', value: "${buildCSCConda}" ),
+                                string(name: 'idl_version',value: "${idl_version}" ),
+                                string(name: 'xml_version',value: "${XML_Version}" ),
                                 string(name: 'sal_version',value: "${sal_ver}" )
                             ], wait: false
                     }
@@ -173,7 +170,7 @@ def call(){
                     def userId = "U6BCN6H43"
                     slackSend(color: "danger", message: "<@$userId> ${JOB_NAME} has suffered a regression ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
                 }
-                
+
             }
             fixed {
                 script {
