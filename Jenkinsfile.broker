@@ -44,7 +44,7 @@ pipeline {
                         sh "echo This is a test"
                         jobs = ['WeatherStation']
                     } else {
-                        jobs = ['ATAOS', 'ATDome', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'CBP', 'DIMM', 'DSM', 
+                        jobs = ['adamSensors', 'ATAOS', 'ATDome', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'CBP', 'DIMM', 'DSM', 
                             'EAS', 'Electrometer', 'ESS', 'ExternalScripts', 'FiberSpectrograph', 'GenericCamera', 'hexrotcomm', 'M2simulator', 
                             'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'salkafka', 'SimActuators', 'StandardScripts',  
                             'TunableLaser', 'Watcher', 'WeatherStation', 'ObservatoryControl', 'MTRotator']
