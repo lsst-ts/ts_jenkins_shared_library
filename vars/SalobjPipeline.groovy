@@ -176,7 +176,7 @@ def call(config_repo){
         post {
             cleanup {
                 withEnv(["WHOME=${env.WORKSPACE}"]) {
-                    sh 'chown -R 1003:1003 ${HOME}/'
+                    sh 'chown -R 1003:1003 ${WHOME}/'
                 }
             }
             always {
