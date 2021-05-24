@@ -1,12 +1,95 @@
 package org.lsst.ts.jenkins.components
 
 def email() {
-    emails = ["ts-ataos":"tribeiro@lsst.org", "ts-atdome":"rowen@uw.edu", "ts-athexapod":"ecoughlin@lsst.org", "ts-atmcs-simulator": "rowen@uw.edu", "ts-atpneumaticssimulator": "rowen@uw.edu", "ts-atspec": "rowen@uw.edu", "ts-atwhitelightsource": "cwinslow@lsst.org", "ts-cbp": "ecoughlin@lsst.org", "ts-ddsconfig": "tribeiro@lsst.org", "ts-dimm": "wvreeven@lsst.org", "ts-dsm": "mreuter@lsst.org", "ts-eas": "wvreeven@lsst.org", "ts-electrometer": "ecoughlin@lsst.org", "ts-ess": "wvreeven@lsst.org", "ts-externalscripts": "tribeiro@lsst.org", "ts-fiberspectrograph": "rowen@uw.edu", "ts-genericcamera": "wvreeven@lsst.org", "ts-hexrotcomm": "rowen@uw.edu","ts-hvac": "wvreeven@lsst.org","ts-idl": "cwinslow@lsst.org", "ts-integrationtests": "rbovill@lsst.org", "ts-m2": "tribeiro@lsst.org", "ts-mtdome": "rowen@uw.edu", "ts-mtdometrajectory": "rowen@uw.edu", "ts-mteec": "wvreeven@lsst.org", "ts-mthexapod": "rowen@uw.edu", "ts-mtmount": "rowen@uw.edu", "ts-mtrotator": "rowen@uw.edu", "ts-observatory-control":"tribeiro@lsst.org", "ts-salkafka": "tribeiro@lsst.org","ts-salobj": "cwinslow@lsst.org","ts-scriptqueue": "tribeiro@lsst.org", "ts-simactuators": "rowen@uw.edu", "ts-standardscripts": "tribeiro@lsst.org", "ts-dds": "tribeiro@lsst.org", "ts-tunablelaser": "ecoughlin@lsst.org", "ts-watcher": "rowen@uw.edu", "ts-weatherstation": "wvreeven@lsst.org"]
+    emails = [  "ts-ataos":"tribeiro@lsst.org", 
+                "ts-atdome":"rowen@uw.edu", 
+                "ts-atdometrajectory":"rowen@uw.edu", 
+                "ts-athexapod":"ecoughlin@lsst.org", 
+                "ts-atmcs-simulator": "rowen@uw.edu", 
+                "ts-atpneumaticssimulator": "rowen@uw.edu", 
+                "ts-atspec": "tribeiro@uw.edu", 
+                "ts-atwhitelightsource": "cwinslow@lsst.org", 
+                "ts-cbp": "ecoughlin@lsst.org", 
+                "ts-ddsconfig": "tribeiro@lsst.org", 
+                "ts-dimm": "wvreeven@lsst.org", 
+                "ts-dsm": "mreuter@lsst.org", 
+                "ts-eas": "wvreeven@lsst.org", 
+                "ts-electrometer": "ecoughlin@lsst.org", 
+                "ts-ess": "wvreeven@lsst.org", 
+                "ts-externalscripts": "tribeiro@lsst.org", 
+                "ts-fiberspectrograph": "rowen@uw.edu", 
+                "ts-genericcamera": "wvreeven@lsst.org", 
+                "ts-hexrotcomm": "rowen@uw.edu", 
+                "ts-hvac": "wvreeven@lsst.org", 
+                "ts-idl": "cwinslow@lsst.org", 
+                "ts-integrationtests": "rbovill@lsst.org", 
+                "ts-m2": "tribeiro@lsst.org", 
+                "ts-mtdome": "wvreeven@lsst.org", 
+                "ts-mtdometrajectory": "rowen@uw.edu", 
+                "ts-mteec": "wvreeven@lsst.org", 
+                "ts-mthexapod": "rowen@uw.edu", 
+                "ts-mtmount": "rowen@uw.edu", 
+                "ts-mtrotator": "rowen@uw.edu", 
+                "ts-observatory-control": "tribeiro@lsst.org", 
+                "ts-salkafka": "tribeiro@lsst.org", 
+                "ts-salobj": "cwinslow@lsst.org", 
+                "ts-scriptqueue": "tribeiro@lsst.org", 
+                "ts-simactuators": "rowen@uw.edu", 
+                "ts-standardscripts": "tribeiro@lsst.org", 
+                "ts-dds": "tribeiro@lsst.org", 
+                "ts-tunablelaser": "ecoughlin@lsst.org", 
+                "ts-watcher": "rowen@uw.edu", 
+                "ts-weatherstation": "wvreeven@lsst.org" ]
     return emails
 }
 
 def slack_id() {
-    slack_ids = ["ts-ataos":"U72CH91L2", "ts-atdome":"U2JPAP0F6", "ts-athexapod": "UAS4QHFSB", "ts-atmcs-simulator": "U2JPAP0F6", "ts-atpneumaticssimulator": "U2JPAP0F6", "ts-atspec": "U2JPAP0F6", "ts-atwhitelightsource": "cwinslow@lsst.org", "ts-cbp": "UAS4QHFSB","ts-ddsconfig": "U72CH91L2", "ts-dimm": "URY8ACN4S", "ts-dsm": "U2JPDUE86", "ts-eas": "URY8ACN4S", "ts-electrometer": "UAS4QHFSB", "ts-ess": "URY8ACN4S", "ts-externalscripts": "U72CH91L2", "ts-fiberspectrograph": "U2JPAP0F6", "ts-genericcamera": "URY8ACN4S", "ts-hexrotcomm": "U2JPAP0F6","ts-hvac": "URY8ACN4S","ts-idl": "U6BCN6H43", "ts-integrationtests": "U2NF4GWV8", "ts-m2": "U72CH91L2", "ts-mtdome": "U2JPAP0F6", "ts-mtdometrajectory":"U2JPAP0F6", "ts-mteec": "URY8ACN4S", "ts-mthexapod": "U2JPAP0F6", "ts-mtmount": "U2JPAP0F6", "ts-mtrotator": "U2JPAP0F6", "ts-observatory-control": "U72CH91L2", "ts-salkafka": "U72CH91L2","ts-salobj": "U6BCN6H43", "ts-scriptqueue": "U72CH91L2", "ts-simacutuators": "U2JPAP0F6", "ts-standardscripts": "U72CH91L2","ts-dds": "U72CH91L2", "ts-tunablelaser": "UAS4QHFSB", "ts-watcher": "U2JPAP0F6", "ts-weatherstation": "URY8ACN4S"]
+    String colin = "U6BCN6H43"
+    String eric = "UAS4QHFSB"
+    String michael = "U2JPDUE86"
+    String rob = "U2NF4GWV8"
+    String russell = "U2JPAP0F6"
+    String tiago = "U72CH91L2"
+    String wouter = "URY8ACN4S"
+    slack_ids = ["ts-ataos": tiago, 
+                "ts-atdome": russell, 
+                "ts-atdometrajectory": russell, 
+                "ts-athexapod": eric, 
+                "ts-atmcs-simulator": russell, 
+                "ts-atpneumaticssimulator": russell, 
+                "ts-atspec": russell, 
+                "ts-atwhitelightsource": colin, 
+                "ts-cbp": eric, 
+                "ts-ddsconfig": tiago, 
+                "ts-dimm": wouter, 
+                "ts-dsm": michael, 
+                "ts-eas": wouter, 
+                "ts-electrometer": eric, 
+                "ts-ess": wouter, 
+                "ts-externalscripts": tiago, 
+                "ts-fiberspectrograph": russell, 
+                "ts-genericcamera": wouter, 
+                "ts-hexrotcomm": russell, 
+                "ts-hvac": wouter, 
+                "ts-idl": colin, 
+                "ts-integrationtests": rob, 
+                "ts-m2": tiago, 
+                "ts-mtdome": wouter, 
+                "ts-mtdometrajectory": russell, 
+                "ts-mteec": wouter, 
+                "ts-mthexapod": russell, 
+                "ts-mtmount": russell, 
+                "ts-mtrotator": russell, 
+                "ts-observatory-control": tiago, 
+                "ts-salkafka": tiago, 
+                "ts-salobj": colin, 
+                "ts-scriptqueue": tiago, 
+                "ts-simacutuators": russell, 
+                "ts-standardscripts": tiago, 
+                "ts-dds": tiago, 
+                "ts-tunablelaser": eric, 
+                "ts-watcher": russell, 
+                "ts-weatherstation": wouter ]
     return slack_ids
 }
 
