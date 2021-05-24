@@ -42,9 +42,9 @@ pipeline {
                     def wait = 0
                     if (params.test) {
                         sh "echo This is a test"
-                        jobs = ['WeatherStation']
+                        jobs = ['IntegrationTests']
                     } else {
-                        jobs = ['adamSensors', 'ATAOS', 'ATDome', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'ATWhiteLightSource', 
+                        jobs = ['adamSensors', 'ATAOS', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'ATWhiteLightSource', 
                             'CBP', 'DIMM', 'DSM', 'EAS', 'Electrometer', 'ESS', 'ExternalScripts', 'FiberSpectrograph', 'GenericCamera', 'hexrotcomm', 
                             'M2simulator', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'salkafka', 'SimActuators', 'StandardScripts',  
                             'TunableLaser', 'Watcher', 'WeatherStation', 'ObservatoryControl', 'MTRotator']
