@@ -39,7 +39,8 @@ def email() {
                 "ts-dds": "tribeiro@lsst.org", 
                 "ts-tunablelaser": "ecoughlin@lsst.org", 
                 "ts-watcher": "rowen@uw.edu", 
-                "ts-weatherstation": "wvreeven@lsst.org" ]
+                "ts-weatherstation": "wvreeven@lsst.org",
+                "ts-pmd": "ecoughlin@lsst.org" ]
     return emails
 }
 
@@ -89,7 +90,8 @@ def slack_id() {
                 "ts-dds": tiago, 
                 "ts-tunablelaser": eric, 
                 "ts-watcher": russell, 
-                "ts-weatherstation": wouter ]
+                "ts-weatherstation": wouter,
+                "ts-pmd": eric]
     return slack_ids
 }
 
