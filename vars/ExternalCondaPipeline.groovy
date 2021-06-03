@@ -69,7 +69,7 @@ def call(name, arch="linux-64"){
                     buildingTag()
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}/ts_recipes/${package_name}", "CONDA_BUILD_TAG=${tag}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}/ts_recipes/${package_name}", "CONDA_BUILD_TAG=${TAG_NAME}"]) {
                         script {
                             csc.build_csc_conda("main")
                         }
