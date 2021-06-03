@@ -46,7 +46,7 @@ pipeline {
                     } else {
                         jobs = ['adamSensors', 'ATAOS', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'ATWhiteLightSource', 
                             'CBP', 'DIMM', 'DSM', 'EAS', 'Electrometer', 'ESS', 'ExternalScripts', 'FiberSpectrograph', 'GenericCamera', 'hexrotcomm', 
-                            'M2simulator', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'salkafka', 'SimActuators', 'StandardScripts',  
+                            'M2simulator', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'PMD', 'salkafka', 'SimActuators', 'StandardScripts',  
                             'TunableLaser', 'Watcher', 'WeatherStation', 'ObservatoryControl', 'MTRotator']
                     }
                     sal_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${SAL_Version} |sed 's/.pre[0-9]*//g'").trim()
