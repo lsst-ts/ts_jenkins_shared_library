@@ -44,10 +44,11 @@ pipeline {
                         sh "echo This is a test"
                         jobs = ['IntegrationTests']
                     } else {
-                        jobs = ['EssCommon', 'adamSensors', 'ATAOS', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'ATWhiteLightSource', 
-                            'CBP', 'DIMM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 'FiberSpectrograph', 'GenericCamera', 'hexrotcomm', 
-                            'M2simulator', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'PMD', 'salkafka', 'SimActuators', 'StandardScripts',  
-                            'TunableLaser', 'Watcher', 'WeatherStation', 'EssController', 'EssCsc', 'ObservatoryControl', 'MTRotator']
+                        jobs = ['EssCommon', 'adamSensors', 'ATAOS', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 
+                            'ATPneumaticssimulator', 'ATSpectrograph', 'ATWhiteLightSource', 'CBP', 'DIMM', 'DSM', 'EAS', 
+                            'Electrometer', 'ExternalScripts', 'FiberSpectrograph', 'GenericCamera', 'hexrotcomm', 'M2simulator', 
+                            'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'PMD', 'salkafka', 'SimActuators', 
+                            'StandardScripts', 'TunableLaser', 'Watcher', 'WeatherStation', 'ObservatoryControl', 'MTRotator']
                     }
                     sal_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${SAL_Version} |sed 's/.pre[0-9]*//g'").trim()
                     idl_version = "${idl_version}_${XML_Version}_${sal_ver}"
