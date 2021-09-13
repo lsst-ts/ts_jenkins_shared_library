@@ -1,6 +1,6 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(name, arch="linux-64"){
+def call(name, arch="noarch"){
     // Create a conda build pipeline
     Csc csc = new Csc()
     emails = csc.email()
