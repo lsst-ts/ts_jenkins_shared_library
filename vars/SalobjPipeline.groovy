@@ -182,14 +182,14 @@ def call(config_repo){
             always {
                 step([$class: 'Mailer',
                     notifyEveryUnstableBuild: false,
-                    recipients: "cwinslow@lsst.org", "tribeiro@lsst.org"
+                    recipients: "cwinslow@lsst.org tribeiro@lsst.org",
                     sendToIndividuals: true])
             }
             regression {
                 script {
                     def userId = "U6BCN6H43" //Colin
                     slackSend(color: "danger", message: "<@$userId> ${JOB_NAME} has suffered a regression ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
-                    def userId = "U72CH91L2" //Tiago
+                    userId = "U72CH91L2" //Tiago
                     slackSend(color: "danger", message: "<@$userId> ${JOB_NAME} has suffered a regression ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
                 }
 
@@ -198,7 +198,7 @@ def call(config_repo){
                 script {
                     def userId = "U6BCN6H43" //Colin
                     slackSend(color: "good", message: "<@$userId> ${JOB_NAME} has been fixed ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
-                    def userId = "U72CH91L2" //Tiago
+                    userId = "U72CH91L2" //Tiago
                     slackSend(color: "good", message: "<@$userId> ${JOB_NAME} has been fixed ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
                 }
             }
