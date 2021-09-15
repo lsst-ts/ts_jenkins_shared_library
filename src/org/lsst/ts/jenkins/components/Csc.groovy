@@ -7,7 +7,7 @@ def email() {
                 "ts-athexapod":"ecoughlin@lsst.org",
                 "ts-atmcs-simulator": "rowen@uw.edu",
                 "ts-atpneumaticssimulator": "rowen@uw.edu",
-                "ts-atspec": "tribeiro@uw.edu",
+                "ts-atspec": "tribeiro@lsst.org",
                 "ts-atwhitelightsource": "cwinslow@lsst.org rowen@uw.edu",
                 "ts-cbp": "ecoughlin@lsst.org",
                 "ts-ddsconfig": "tribeiro@lsst.org",
