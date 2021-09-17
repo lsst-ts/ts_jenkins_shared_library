@@ -62,7 +62,7 @@ def slack_id() {
                 "ts-athexapod": eric,
                 "ts-atmcs-simulator": russell,
                 "ts-atpneumaticssimulator": russell,
-                "ts-atspec": russell,
+                "ts-atspec": tiago,
                 "ts-atwhitelightsource": colin,
                 "ts-cbp": eric,
                 "ts-criopy": tiago,
