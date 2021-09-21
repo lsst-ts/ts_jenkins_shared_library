@@ -194,6 +194,15 @@ def build_salobj_conda(label, concatVersion) {
     """
 }
 
+def download_git_lfs_files(){
+    sh """
+        cd ${WHOME}/
+        git lfs install
+        git lfs fetch --all
+        git lfs checkout
+    """
+}
+
 def upload_conda(name, label, arch) {
     // Upload the conda package
     // Takes the name of the package and a label
