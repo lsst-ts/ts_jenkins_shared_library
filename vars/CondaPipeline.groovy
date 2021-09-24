@@ -79,6 +79,15 @@ def call(config_repo, name, module_name,arch="linux-64"){
                     """
                 }
             }
+            stage("Download git-lfs files"){
+                steps {
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
+                        script {
+                            csc.download_git_lfs_files()
+                        }
+                    }
+                }                
+            }
             stage("Create Conda Package") {
                 when {
                     buildingTag()
