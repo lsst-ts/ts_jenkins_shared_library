@@ -8,7 +8,7 @@ def email() {
                 "ts-atmcs-simulator": "rowen@uw.edu",
                 "ts-atpneumaticssimulator": "rowen@uw.edu",
                 "ts-atspec": "tribeiro@lsst.org",
-                "ts-atwhitelightsource": "cwinslow@lsst.org rowen@uw.edu",
+                "ts-atwhitelightsource": "rowen@uw.edu",
                 "ts-cbp": "ecoughlin@lsst.org",
                 "ts-criopy": "tribeiro@lsst.org",
                 "ts-ddsconfig": "tribeiro@lsst.org",
@@ -24,7 +24,7 @@ def email() {
                 "ts-genericcamera": "wvreeven@lsst.org",
                 "ts-hexrotcomm": "rowen@uw.edu",
                 "ts-hvac": "wvreeven@lsst.org",
-                "ts-idl": "cwinslow@lsst.org tribeiro@lsst.org",
+                "ts-idl": "tribeiro@lsst.org",
                 "ts-integrationtests": "rbovill@lsst.org",
                 "ts-m2": "tribeiro@lsst.org",
                 "ts-mtdome": "wvreeven@lsst.org",
@@ -35,7 +35,7 @@ def email() {
                 "ts-mtrotator": "rowen@uw.edu",
                 "ts-observatory-control": "tribeiro@lsst.org",
                 "ts-salkafka": "tribeiro@lsst.org",
-                "ts-salobj": "cwinslow@lsst.org tribeiro@lsst.org",
+                "ts-salobj": "tribeiro@lsst.org",
                 "ts-scriptqueue": "tribeiro@lsst.org",
                 "ts-simactuators": "rowen@uw.edu",
                 "ts-standardscripts": "tribeiro@lsst.org",
@@ -49,7 +49,6 @@ def email() {
 }
 
 def slack_id() {
-    String colin = "U6BCN6H43"
     String eric = "UAS4QHFSB"
     String michael = "U2JPDUE86"
     String rob = "U2NF4GWV8"
@@ -63,7 +62,7 @@ def slack_id() {
                 "ts-atmcs-simulator": russell,
                 "ts-atpneumaticssimulator": russell,
                 "ts-atspec": tiago,
-                "ts-atwhitelightsource": colin,
+                "ts-atwhitelightsource": russell,
                 "ts-cbp": eric,
                 "ts-criopy": tiago,
                 "ts-ddsconfig": tiago,
@@ -79,7 +78,7 @@ def slack_id() {
                 "ts-genericcamera": wouter,
                 "ts-hexrotcomm": russell,
                 "ts-hvac": wouter,
-                "ts-idl": colin,
+                "ts-idl": tiago,
                 "ts-integrationtests": rob,
                 "ts-m2": tiago,
                 "ts-mtdome": wouter,
@@ -90,7 +89,7 @@ def slack_id() {
                 "ts-mtrotator": russell,
                 "ts-observatory-control": tiago,
                 "ts-salkafka": tiago,
-                "ts-salobj": colin,
+                "ts-salobj": tiago,
                 "ts-scriptqueue": tiago,
                 "ts-simacutuators": russell,
                 "ts-standardscripts": tiago,
