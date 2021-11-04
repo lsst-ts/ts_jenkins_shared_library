@@ -162,7 +162,7 @@ def call(){
             always {
                 step([$class: 'Mailer',
                     notifyEveryUnstableBuild: false,
-                    recipients: "cwinslow@lsst.org tribeiro@lsst.org",
+                    recipients: "tribeiro@lsst.org",
                     sendToIndividuals: true])
             }
             regression {
