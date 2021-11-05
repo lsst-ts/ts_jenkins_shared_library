@@ -167,18 +167,14 @@ def call(){
             }
             regression {
                 script {
-                    def userId = "U6BCN6H43" //Colin
-                    slackSend(color: "danger", message: "<@$userId> ${JOB_NAME} has suffered a regression ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
-                    userId = "U72CH91L2" //Tiago
+                    def userId = "U72CH91L2" //Tiago
                     slackSend(color: "danger", message: "<@$userId> ${JOB_NAME} has suffered a regression ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
                 }
 
             }
             fixed {
                 script {
-                    def userId = "U6BCN6H43" //Colin
-                    slackSend(color: "good", message: "<@$userId> ${JOB_NAME} has been fixed ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
-                    userId = "U72CH91L2" //Tiago
+                    def userId = "U72CH91L2" //Tiago
                     slackSend(color: "good", message: "<@$userId> ${JOB_NAME} has been fixed ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
                 }
             }
