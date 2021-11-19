@@ -228,7 +228,7 @@ def upload_pypi() {
 
 // Return branch name. If changeTarget isn't defined, use branchName.
 def getBranchName(changeTarget, branchName) {
-    def branch = (changeTarget != null) ? changeTarget : branchName
+    def branch = (changeTarget != "null") ? changeTarget : branchName
     print("!!! Returning " + branch + " !!!\n")
     return branch
 }

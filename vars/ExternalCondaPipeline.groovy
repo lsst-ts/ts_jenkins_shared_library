@@ -46,7 +46,7 @@ def call(name, arch="noarch"){
 
         environment {
             package_name = "${name}"
-            branch = csc.getBranchName(env.GIT_BRANCH, env.CHANGE_BRANCH)
+            branch = csc.getBranchName("${env.GIT_BRANCH}", "${env.BRANCH_NAME}")
         }
 
         options {
