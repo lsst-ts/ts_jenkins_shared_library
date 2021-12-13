@@ -46,7 +46,7 @@ def call(name, arch="noarch"){
 
         environment {
             package_name = "${name}"
-            branch = csc.getBranchName("${env.GIT_BRANCH}", "${env.BRANCH_NAME}")
+            branch = csc.getBranchName("${env.CHANGE_BRANCH}", "${env.BRANCH_NAME}")
         }
 
         options {
@@ -60,6 +60,9 @@ def call(name, arch="noarch"){
                 steps {
                     dir(env.WORKSPACE + '/ts_recipes') {
                         git branch: 'master', url: 'https://github.com/lsst-ts/ts_recipes'
+                    }
+                    script{
+                        sh "printenv"
                     }
                 }
             }
