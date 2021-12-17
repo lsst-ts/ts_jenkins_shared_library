@@ -59,7 +59,7 @@ def call(name, arch="noarch"){
             stage ('Cloning Recipe Repos') {
                 steps {
                     dir(env.WORKSPACE + '/ts_recipes') {
-                        git branch: 'master', url: 'https://github.com/lsst-ts/ts_recipes'
+                        git branch: 'main', url: 'https://github.com/lsst-ts/ts_recipes'
                     }
                     script{
                         sh "printenv"
