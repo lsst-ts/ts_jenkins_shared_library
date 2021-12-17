@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     if (params.Release) {
-                        branch = "master"
+                        branch = "main"
                     } else if (params.Daily) {
                         branch = "develop"
                     } else {
