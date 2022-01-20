@@ -17,13 +17,11 @@ def call(config_repo, name, module_name,arch="linux-64"){
         }
     }
     if (arch=="linux-aarch64") {
-        label_value = "Arm64_2CPU"
         image_value = "lsstts/conda_package_builder_aarch64:latest"
         registry_url = ""
         registry_credentials_id = ""
     }
     else {
-        label_value = "CSC_Conda_Node"
         image_value = "ts-dockerhub.lsst.org/conda_package_builder:latest"
         registry_url = "https://ts-dockerhub.lsst.org"
         registry_credentials_id = "nexus3-lsst_jenkins"
@@ -45,7 +43,7 @@ def call(config_repo, name, module_name,arch="linux-64"){
             docker {
                 image image_value
                 alwaysPull true
-                label label_value
+                label "${params.build_agent}"
                 args arg_str.concat("--env LSST_DDS_DOMAIN=citest -u root --entrypoint=''")
                 registryUrl registry_url
                 registryCredentialsId registry_credentials_id
@@ -54,6 +52,7 @@ def call(config_repo, name, module_name,arch="linux-64"){
         parameters {
             string(name: 'idl_version', defaultValue: '\'\'', description: 'The version of the IDL Conda package.')
             string(name: 'salobj_version', defaultValue: '\'\'', description: 'The version of the salobj Conda package.')
+            choice choices: ['CSC_Conda_Node', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
         }
         environment {
             package_name = "${name}"
