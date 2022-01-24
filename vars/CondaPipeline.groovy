@@ -1,8 +1,11 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(config_repo, name, module_name,arch="linux-64"){
+def call(config_repo, name, module_name, arch="linux-64"){
     // Create a conda build pipeline
     Csc csc = new Csc()
+    registry_url = "https://ts-dockerhub.lsst.org"
+    registry_credentials_id = "nexus3-lsst_jenkins"
+    image_value = "ts-dockerhub.lsst.org/conda_package_builder:latest"
     emails = csc.email()
     slack_ids = csc.slack_id()
     arg_str = ""
@@ -15,16 +18,6 @@ def call(config_repo, name, module_name,arch="linux-64"){
             println(clone_str)
             println(emails[name])
         }
-    }
-    if (arch=="linux-aarch64") {
-        image_value = "lsstts/conda_package_builder_aarch64:latest"
-        registry_url = ""
-        registry_credentials_id = ""
-    }
-    else {
-        image_value = "ts-dockerhub.lsst.org/conda_package_builder:latest"
-        registry_url = "https://ts-dockerhub.lsst.org"
-        registry_credentials_id = "nexus3-lsst_jenkins"
     }
     properties(
         [
