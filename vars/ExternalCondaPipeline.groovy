@@ -3,22 +3,14 @@ import org.lsst.ts.jenkins.components.Csc
 def call(name, arch="noarch"){
     // Create a conda build pipeline
     Csc csc = new Csc()
+    label_value = "CSC_Conda_Node"
+    image_value = "ts-dockerhub.lsst.org/conda_package_builder:latest"
+    registry_url = "https://ts-dockerhub.lsst.org"
+    registry_credentials_id = "nexus3-lsst_jenkins"
     emails = csc.email()
     slack_ids = csc.slack_id()
     arg_str = ""
     clone_str = ""
-    if (arch=="linux-aarch64") {
-        label_value = "Arm64_2CPU"
-        image_value = "lsstts/conda_package_builder_aarch64:latest"
-        registry_url = ""
-        registry_credentials_id = ""
-    }
-    else {
-        label_value = "CSC_Conda_Node"
-        image_value = "ts-dockerhub.lsst.org/conda_package_builder:latest"
-        registry_url = "https://ts-dockerhub.lsst.org"
-        registry_credentials_id = "nexus3-lsst_jenkins"
-    }
     properties(
         [
         buildDiscarder
