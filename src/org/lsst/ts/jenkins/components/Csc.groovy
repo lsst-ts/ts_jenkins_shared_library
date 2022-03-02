@@ -219,15 +219,6 @@ def upload_conda(name, label, arch) {
     }
 }
 
-def upload_pypi() {
-    sh """
-        source /home/saluser/.setup.sh
-        pip install --upgrade twine
-        python setup.py sdist bdist_wheel
-        python -m twine upload -u ${env.PYPI_CREDS_USR} -p ${env.PYPI_CREDS_PSW} dist/*
-    """
-}
-
 // Return branch name. If changeTarget isn't defined, use branchName.
 def getBranchName(changeTarget, branchName) {
     def branch = (changeTarget != "null") ? changeTarget : branchName

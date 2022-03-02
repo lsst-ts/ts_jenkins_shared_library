@@ -105,15 +105,6 @@ def call(){
                     }
                 }
             }//Push Dev
-            stage("Create IDL pypi package") {
-                steps {
-                    catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                        script {
-                            csc.upload_pypi()
-                        }
-                    }
-                }
-            }//PyPy package
         }//stages
         post {
             cleanup {
