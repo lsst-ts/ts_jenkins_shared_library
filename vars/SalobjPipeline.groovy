@@ -138,15 +138,6 @@ def call(config_repo){
                     }
                 }
             }//Push Dev
-            stage("Create SALObj pypi package") {
-                steps {
-                    catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                        script {
-                            csc.upload_pypi()
-                        }
-                    }
-                }
-            }//PyPy package
             stage("Trigger CSC Conda Broker Job") {
                     when { expression { return env.buildCSCConda.toBoolean() } }
                     steps {

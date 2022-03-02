@@ -119,15 +119,6 @@ def call(){
                     }
                 }
             }//Push Dev
-            stage("Create IDL pypi package") {
-                steps {
-                    catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                        script {
-                            csc.upload_pypi()
-                        }
-                    }
-                }
-            }//PyPy package
             stage("Trigger Salobj Conda Package build") {
                     when { expression { return env.buildSalObjConda.toBoolean() } }
                     steps {
