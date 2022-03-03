@@ -212,9 +212,14 @@ def upload_conda(name, label, arch) {
     // Upload the conda package
     // Takes the name of the package and a label
     if ((arch=="linux-aarch64") || (arch=="noarch") || (arch=="linux-64")) {
+        if (label == "rc") {
+            label_option = "--label ${label} --label main"
+        } else {
+            label_option = "--label ${label}"
+        }
         sh """
             source /home/saluser/.setup.sh
-            anaconda upload -u lsstts --label ${label} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.tar.bz2
+            anaconda upload -u lsstts ${label_option} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.tar.bz2
         """
     }
     else {
