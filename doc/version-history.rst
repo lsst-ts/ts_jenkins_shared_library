@@ -18,3 +18,4 @@ Unreleased
 * Added flexible configuration_repo argument
 * Added documentation
 * Removed code that uploads python packages to pypi.
+* Added the possibility to push release candidate conda packages for ts_salobj.
