@@ -12,7 +12,8 @@ def email() {
                 "ts-cbp": "ecoughlin@lsst.org",
                 "ts-criopy": "tribeiro@lsst.org",
                 "ts-ddsconfig": "tribeiro@lsst.org",
-                "ts-dimm": "wvreeven@lsst.org",
+                "ts-dimm": "dmills@lsst.org",
+                "ts-dream": "pkubanek@lsst.org",
                 "ts-dsm": "mreuter@lsst.org",
                 "ts-eas": "wvreeven@lsst.org",
                 "ts-electrometer": "ecoughlin@lsst.org",
@@ -21,7 +22,7 @@ def email() {
                 "ts-ess-controller": "wvreeven@lsst.org",
                 "ts-externalscripts": "tribeiro@lsst.org",
                 "ts-fiberspectrograph": "rowen@uw.edu",
-                "ts-genericcamera": "wvreeven@lsst.org",
+                "ts-genericcamera": "pkubanek@lsst.org",
                 "ts-hexrotcomm": "rowen@uw.edu",
                 "ts-hvac": "wvreeven@lsst.org",
                 "ts-idl": "tribeiro@lsst.org",
@@ -50,8 +51,10 @@ def email() {
 }
 
 def slack_id() {
+    String dave = "U2N3R1J5R"
     String eric = "UAS4QHFSB"
     String michael = "U2JPDUE86"
+    String petr = "UURCFJJVB"
     String rob = "U2NF4GWV8"
     String russell = "U2JPAP0F6"
     String tiago = "U72CH91L2"
@@ -67,7 +70,8 @@ def slack_id() {
                 "ts-cbp": eric,
                 "ts-criopy": tiago,
                 "ts-ddsconfig": tiago,
-                "ts-dimm": wouter,
+                "ts-dimm": dave,
+                "ts-dream": petr,
                 "ts-dsm": michael,
                 "ts-eas": wouter,
                 "ts-electrometer": eric,
@@ -76,7 +80,7 @@ def slack_id() {
                 "ts-ess-controller": wouter,
                 "ts-externalscripts": tiago,
                 "ts-fiberspectrograph": russell,
-                "ts-genericcamera": wouter,
+                "ts-genericcamera": petr,
                 "ts-hexrotcomm": russell,
                 "ts-hvac": wouter,
                 "ts-idl": tiago,
