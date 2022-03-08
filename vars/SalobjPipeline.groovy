@@ -192,20 +192,22 @@ def call(config_repo){
             always {
                 step([$class: 'Mailer',
                     notifyEveryUnstableBuild: false,
-                    recipients: "tribeiro@lsst.org",
+                    recipients: "tribeiro@lsst.org, wvreeven@lsst.org",
                     sendToIndividuals: true])
             }
             regression {
                 script {
                     def userId = "U72CH91L2" //Tiago
-                    slackSend(color: "danger", message: "<@$userId> ${JOB_NAME} has suffered a regression ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
+                    def userId2 = "URY8ACN4S" //Wouter
+                    slackSend(color: "danger", message: "<@$userId> <@$userId2> ${JOB_NAME} has suffered a regression ${BUILD_URL}", channel: "#jenkins-builds, @$userId, @$userId")
                 }
 
             }
             fixed {
                 script {
                     def userId = "U72CH91L2" //Tiago
-                    slackSend(color: "good", message: "<@$userId> ${JOB_NAME} has been fixed ${BUILD_URL}", channel: "#jenkins-builds, @$userId")
+                    def userId2 = "URY8ACN4S" //Wouter
+                    slackSend(color: "good", message: "<@$userId> <@$userId2> ${JOB_NAME} has been fixed ${BUILD_URL}", channel: "#jenkins-builds, @$userId, @$userId2")
                 }
             }
         }//post
