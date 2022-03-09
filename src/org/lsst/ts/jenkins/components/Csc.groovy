@@ -1,7 +1,8 @@
 package org.lsst.ts.jenkins.components
 
 def email() {
-    emails = [  "ts-ataos":"tribeiro@lsst.org",
+    emails = [  "ts-adamsensors":"rowen@uw.edu",
+                "ts-ataos":"tribeiro@lsst.org",
                 "ts-atdome":"rowen@uw.edu",
                 "ts-atdometrajectory":"rowen@uw.edu",
                 "ts-athexapod":"ecoughlin@lsst.org",
@@ -59,7 +60,8 @@ def slack_id() {
     String russell = "U2JPAP0F6"
     String tiago = "U72CH91L2"
     String wouter = "URY8ACN4S"
-    slack_ids = ["ts-ataos": tiago,
+    slack_ids = ["ts-adamsensors":russell,
+                "ts-ataos": tiago,
                 "ts-atdome": russell,
                 "ts-atdometrajectory": russell,
                 "ts-athexapod": eric,
