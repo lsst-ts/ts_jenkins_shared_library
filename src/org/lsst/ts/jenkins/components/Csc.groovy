@@ -94,7 +94,7 @@ def slack_id() {
                 "ts-mtrotator": russell,
                 "ts-observatory-control": tiago,
                 "ts-salkafka": tiago,
-                "ts-salobj": tiago, wouter
+                "ts-salobj": wouter,
                 "ts-scriptqueue": tiago,
                 "ts-simacutuators": russell,
                 "ts-standardscripts": tiago,
