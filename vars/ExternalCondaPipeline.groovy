@@ -78,7 +78,7 @@ def call(name, arch="noarch"){
                     }
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}/ts_recipes/${package_name}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}/ts_recipes/${package_name}", "CONDA_BUILD_TAG=${env.branch}"]) {
                         dir(env.WORKSPACE + '/ts_recipes') {
                             git branch: "${env.branch}", url: 'https://github.com/lsst-ts/ts_recipes'
                         }
