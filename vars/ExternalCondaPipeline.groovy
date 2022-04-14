@@ -7,6 +7,10 @@ def call(name, arch="noarch"){
     image_value = "ts-dockerhub.lsst.org/conda_package_builder:latest"
     registry_url = "https://ts-dockerhub.lsst.org"
     registry_credentials_id = "nexus3-lsst_jenkins"
+    if (arch == "linux-aarch64") {
+        label_value = "Arm64_2CPU"
+        image_value = "ts-dockerhub.lsst.org/conda_package_builder_aarch64:latest"
+    }
     emails = csc.email()
     slack_ids = csc.slack_id()
     arg_str = ""
