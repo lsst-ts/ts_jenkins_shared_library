@@ -19,3 +19,4 @@ Unreleased
 * Added documentation
 * Removed code that uploads python packages to pypi.
 * Added the possibility to push release candidate conda packages for ts_salobj.
+* Added support for linux-aarch64 builds to ExternalCondaPipeline.
