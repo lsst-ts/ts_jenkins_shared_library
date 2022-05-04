@@ -1,7 +1,7 @@
 package org.lsst.ts.jenkins.components
 
 def email() {
-                "ts-ataos": "tribeiro@lsst.org",
+    emails = [  "ts-ataos": "tribeiro@lsst.org",
                 "ts-atdome": "rowen@uw.edu",
                 "ts-atdometrajectory": "rowen@uw.edu",
                 "ts-athexapod": "ecoughlin@lsst.org",
