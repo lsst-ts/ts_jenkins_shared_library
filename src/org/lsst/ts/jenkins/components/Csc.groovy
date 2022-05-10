@@ -13,6 +13,7 @@ def email() {
                 "ts-conda-build": "wvreeven@lsst.org",
                 "ts-conda-build-aarch64": "wvreeven@lsst.org",
                 "ts-criopy": "tribeiro@lsst.org",
+                "ts-dds": "tribeiro@lsst.org",
                 "ts-ddsconfig": "tribeiro@lsst.org",
                 "ts-develop": "wvreeven@lsst.org",
                 "ts-develop-aarch64": "wvreeven@lsst.org",
@@ -40,18 +41,18 @@ def email() {
                 "ts-mtmount": "rowen@uw.edu",
                 "ts-mtrotator": "rowen@uw.edu",
                 "ts-observatory-control": "tribeiro@lsst.org",
+                "ts-pmd": "ecoughlin@lsst.org" ,
                 "ts-salkafka": "tribeiro@lsst.org",
                 "ts-salobj": "tribeiro@lsst.org, wvreeven@lsst.org",
+                "ts-scheduler": "tribeiro@lsst.org",
                 "ts-scriptqueue": "tribeiro@lsst.org",
                 "ts-simactuators": "rowen@uw.edu",
                 "ts-standardscripts": "tribeiro@lsst.org",
-                "ts-dds": "tribeiro@lsst.org",
+                "ts-tcpip": "rowen@uw.edu",
                 "ts-tunablelaser": "ecoughlin@lsst.org",
                 "ts-utils": "tribeiro@lsst.org",
                 "ts-watcher": "rowen@uw.edu",
-                "ts-weatherstation": "wvreeven@lsst.org",
-                "ts-scheduler": "tribeiro@lsst.org",
-                "ts-pmd": "ecoughlin@lsst.org" ]
+                "ts-weatherstation": "wvreeven@lsst.org"]
     return emails
 }
 
@@ -76,6 +77,7 @@ def slack_id() {
                 "ts-conda-build": wouter,
                 "ts-conda-build-aarch64": wouter,
                 "ts-criopy": tiago,
+                "ts-dds": tiago,
                 "ts-ddsconfig": tiago,
                 "ts-develop": wouter,
                 "ts-develop-aarch64": wouter,
@@ -103,18 +105,18 @@ def slack_id() {
                 "ts-mtmount": russell,
                 "ts-mtrotator": russell,
                 "ts-observatory-control": tiago,
+                "ts-pmd": eric,
                 "ts-salkafka": tiago,
                 "ts-salobj": wouter,
+                "ts-scheduler": tiago,
                 "ts-scriptqueue": tiago,
                 "ts-simactuators": russell,
                 "ts-standardscripts": tiago,
-                "ts-dds": tiago,
                 "ts-utils": tiago,
+                "ts-tcpip": russell,
                 "ts-tunablelaser": eric,
                 "ts-watcher": russell,
                 "ts-weatherstation": wouter,
-                "ts-pmd": eric,
-                "ts-scheduler": tiago,
                 "rubin-sim": tiago]
     return slack_ids
 }
