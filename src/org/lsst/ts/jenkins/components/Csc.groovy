@@ -144,12 +144,14 @@ def test() {
 
 def build_csc_conda(label) {
     // Build the conda package
+    // if the boa package is installed, then mambabuild can be used, otherwise the normal conda build
     sh """
         cd ${WHOME}/conda
         source /home/saluser/.setup.sh
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, idl_version: ${params.idl_version}}" --prefix-length 100 .
+        pkg="boa"; build="build"; if conda list ${pkg} | grep -q "^${pkg} "; then build="mambabuild"; fi
+        conda ${build} -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, idl_version: ${params.idl_version}}" --prefix-length 100 .
     """
 }
 
