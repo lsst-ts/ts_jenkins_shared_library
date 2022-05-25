@@ -14,9 +14,10 @@ Unreleased
 ----------
 
 * initial library
-* Added salobj pipeline
-* Added flexible configuration_repo argument
-* Added documentation
-* Removed code that uploads python packages to pypi.
-* Added the possibility to push release candidate conda packages for ts_salobj.
-* Added support for linux-aarch64 builds to ExternalCondaPipeline.
+* Add salobj pipeline
+* Add flexible configuration_repo argument
+* Add documentation
+* Remove code that uploads python packages to pypi.
+* Add the possibility to push release candidate conda packages for ts_salobj.
+* Add support for linux-aarch64 builds to ExternalCondaPipeline.
+* Add support for ts_cycle_build conda packages to ExternalCondaPipeline.
