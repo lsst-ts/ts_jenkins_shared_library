@@ -1,6 +1,6 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(name, arch="noarch"){
+def call(name, arch="noarch", repo="ts_recipes"){
     // Create a conda build pipeline
     Csc csc = new Csc()
     label_value = "CSC_Conda_Node"
@@ -10,6 +10,10 @@ def call(name, arch="noarch"){
     if (arch == "linux-aarch64") {
         label_value = "Arm64_2CPU"
         image_value = "ts-dockerhub.lsst.org/conda_package_builder_aarch64:latest"
+    }
+    work_dir = repo
+    if (repo == "ts_cycle_build") {
+        work_dir = "${repo}/recipe"
     }
     emails = csc.email()
     slack_ids = csc.slack_id()
@@ -54,8 +58,8 @@ def call(name, arch="noarch"){
 
             stage ('Cloning Recipe Repos') {
                 steps {
-                    dir(env.WORKSPACE + '/ts_recipes') {
-                        git branch: 'main', url: 'https://github.com/lsst-ts/ts_recipes'
+                    dir(env.WORKSPACE + "/${repo}") {
+                        git branch: 'main', url: "https://github.com/lsst-ts/${repo}"
                     }
                     script{
                         sh "printenv"
@@ -68,7 +72,7 @@ def call(name, arch="noarch"){
                     buildingTag()
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}/ts_recipes/${package_name}", "CONDA_BUILD_TAG=${TAG_NAME}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}/${work_dir}/${package_name}", "CONDA_BUILD_TAG=${TAG_NAME}"]) {
                         script {
                             csc.build_csc_conda("main")
                         }
@@ -82,9 +86,9 @@ def call(name, arch="noarch"){
                     }
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}/ts_recipes/${package_name}", "CONDA_BUILD_TAG=${env.branch}"]) {
-                        dir(env.WORKSPACE + '/ts_recipes') {
-                            git branch: "${env.branch}", url: 'https://github.com/lsst-ts/ts_recipes'
+                    withEnv(["WHOME=${env.WORKSPACE}/${work_dir}/${package_name}", "CONDA_BUILD_TAG=${env.branch}"]) {
+                        dir(env.WORKSPACE + "/${repo}") {
+                            git branch: "${env.branch}", url: "https://github.com/lsst-ts/${repo}"
                         }
                         script {
                             csc.build_csc_conda("dev")
