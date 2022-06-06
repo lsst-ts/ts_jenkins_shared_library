@@ -61,7 +61,7 @@ def call(config_repo){
                             concatVersion = ''
                         }
                         else {
-                            concatVersion = params.idl_version  + '_' + params.xml_version + '_' + params.sal_version
+                            concatVersion = params.idl_version  + '=' + params.xml_version + '_' + params.sal_version
                         }
                     }
                     sh """
