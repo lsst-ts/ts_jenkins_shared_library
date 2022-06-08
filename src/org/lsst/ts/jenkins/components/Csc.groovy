@@ -196,7 +196,12 @@ def build_idl_conda(label) {
         source /home/saluser/.setup.sh
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build -c lsstts/label/${label} --prefix-length 100 .
+        pkg="boa"
+        build="build"
+        if conda list \$pkg | grep -q "^\$pkg "; then
+          build="mambabuild"
+        fi
+        conda \$build -c lsstts/label/${label} --prefix-length 100 .
     """
 }
 
@@ -206,7 +211,12 @@ def build_integrationtests_conda(label) {
         source /home/saluser/.setup.sh
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build -c lsstts/label/${label} --prefix-length 100 .
+        pkg="boa"
+        build="build"
+        if conda list \$pkg | grep -q "^\$pkg "; then
+          build="mambabuild"
+        fi
+        conda \$build -c lsstts/label/${label} --prefix-length 100 .
     """
 }
 
@@ -216,7 +226,12 @@ def build_salobj_conda(label, concatVersion) {
         source /home/saluser/.setup.sh
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build -c lsstts/label/${label} --variants "{idl_version: ${concatVersion}}" --prefix-length 100 .
+        pkg="boa"
+        build="build"
+        if conda list \$pkg | grep -q "^\$pkg "; then
+          build="mambabuild"
+        fi
+        conda \$build -c lsstts/label/${label} --variants "{idl_version: ${concatVersion}}" --prefix-length 100 .
     """
 }
 
