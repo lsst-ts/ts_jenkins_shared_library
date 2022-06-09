@@ -99,6 +99,25 @@ def call(){
                     }
                 }
             }//Push Release
+            stage("Push Conda Release Candidate package") {
+                when {
+                    buildingTag()
+                    tag pattern: "^v\\d\\.\\d\\.\\d\\.rc\\.\\d\$", comparator: "REGEXP"
+                }
+                steps {
+                    withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
+                        withEnv(["WHOME=${env.WORKSPACE}"]) {
+                            sh """
+                            source /home/saluser/miniconda3/bin/activate
+                            anaconda login --user ${anaconda_user} --password ${anaconda_pass}
+                            """
+                            script {
+                                csc.upload_conda("ts-idl","rc","noarch")
+                            }
+                        }
+                    }
+                }
+            }//Push Release Candidate
             stage("Push Conda Dev package") {
                 when {
                     not {
