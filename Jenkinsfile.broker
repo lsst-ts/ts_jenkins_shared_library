@@ -44,13 +44,13 @@ pipeline {
                         sh "echo This is a test"
                         jobs = ['IntegrationTests']
                     } else {
-                        jobs = ['EssCommon', 'ATAOS', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'ATWhiteLightSource', 
-                            'CBP', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 'FiberSpectrograph', 'GenericCamera', 'hexrotcomm', 
-                            'M2simulator', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'PMD', 'salkafka', 'SimActuators', 'StandardScripts',  
+                        jobs = ['EssCommon', 'ATAOS', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'ATWhiteLightSource',
+                            'CBP', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 'FiberSpectrograph', 'GenericCamera', 'hexrotcomm',
+                            'M2simulator', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'PMD', 'salkafka', 'SimActuators', 'StandardScripts',
                             'Utils', 'TunableLaser', 'Watcher', 'WeatherStation', 'EssController', 'EssCsc', 'ObservatoryControl', 'MTRotator']
                     }
                     sal_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${SAL_Version} |sed 's/.pre[0-9]*//g'").trim()
-                    idl_version = "${idl_version}_${XML_Version}_${sal_ver}"
+                    idl_version = "${idl_version}=${XML_Version}_${sal_ver}"
                     salobj_version="${salobj_version}"
                     for (int i = 0; i < jobs.size(); ++i) {
                         if ("${jobs[i]}"=="ObservatoryControl") {
@@ -61,7 +61,7 @@ pipeline {
                             wait=0
                         }
                         echo "Starting the ${jobs[i]} job using the ${branch} branch and idl_version: ${idl_version}, salobj_version: ${salobj_version}"
-                        build quietPeriod: "${wait}", wait: false, job: "${jobs[i]}" + "_conda_package/" + branch, parameters: 
+                        build quietPeriod: "${wait}", wait: false, job: "${jobs[i]}" + "_conda_package/" + branch, parameters:
                             [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
                     }//ForLoop
                 }//script
