@@ -79,7 +79,7 @@ def call(){
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda(conda_name,"main","linux-64")
+                                csc.upload_conda(conda_name,"main","noarch")
                             }
                         }
                     }
@@ -99,7 +99,7 @@ def call(){
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda(conda_name,"dev","linux-64")
+                                csc.upload_conda(conda_name,"dev","noarch")
                             }
                         }
                     }
