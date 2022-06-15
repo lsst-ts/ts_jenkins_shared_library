@@ -45,7 +45,7 @@ pipeline {
                         jobs = ['IntegrationTests']
                     } else {
                         jobs = ['EssCommon', 'ATAOS', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'ATWhiteLightSource',
-                            'CBP', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 'FiberSpectrograph', 'GenericCamera', 'hexrotcomm',
+                            'CBP', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 'FiberSpectrograph', 'GenericCamera', 'hexrotcomm', 'LinearStage',
                             'M2simulator', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'PMD', 'salkafka', 'SimActuators', 'StandardScripts',
                             'Utils', 'TunableLaser', 'Watcher', 'WeatherStation', 'EssController', 'EssCsc', 'ObservatoryControl', 'MTRotator']
                     }
