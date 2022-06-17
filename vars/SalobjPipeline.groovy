@@ -158,7 +158,9 @@ def call(config_repo){
                 }
             }//Push Dev
             stage("Trigger CSC Conda Broker Job") {
-                    when { expression { return env.buildCSCConda.toBoolean() } }
+                    when {
+                        expression { params.buildCSCConda != null && params.buildCSCConda == true }
+                    }
                     steps {
                         script {
                             def SALOBJVERSION = sh (returnStdout: true, script:
