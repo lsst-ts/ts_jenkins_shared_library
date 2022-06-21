@@ -79,17 +79,39 @@ def call(name, arch="noarch", repo="ts_recipes"){
                     }
                 }
             }
-            stage("Create Conda dev package") {
+            stage("Create Conda dev package - local package") {
                 when {
                     not {
                         buildingTag()
                     }
+                    expression {
+                            return env.repo == 'ts_recipes';
+                    }
                 }
                 steps {
+                    echo 'Running local package'
                     withEnv(["WHOME=${env.WORKSPACE}/${work_dir}/${package_name}", "CONDA_BUILD_TAG=${env.branch}"]) {
                         dir(env.WORKSPACE + "/${repo}") {
                             git branch: "${env.branch}", url: "https://github.com/lsst-ts/${repo}"
                         }
+                        script {
+                            csc.build_csc_conda("dev")
+                        }
+                    }
+                }
+            }
+            stage("Create Conda dev package - remote package") {
+                when {
+                    not {
+                        buildingTag()
+                    }
+                    expression {
+                            return env.repo != 'ts_recipes';
+                    }
+                }
+                steps {
+                    echo 'Running remote package'
+                    withEnv(["WHOME=${env.WORKSPACE}/${work_dir}/${package_name}", "CONDA_BUILD_TAG=${env.branch}"]) {
                         script {
                             csc.build_csc_conda("dev")
                         }
