@@ -85,7 +85,7 @@ def call(name, arch="noarch", repo="ts_recipes"){
                         buildingTag()
                     }
                     expression {
-                            return env.repo == 'ts_recipes';
+                            return env.repo == "ts_recipes";
                     }
                 }
                 steps {
@@ -106,7 +106,7 @@ def call(name, arch="noarch", repo="ts_recipes"){
                         buildingTag()
                     }
                     expression {
-                            return env.repo != 'ts_recipes';
+                            return env.repo != "ts_recipes";
                     }
                 }
                 steps {
