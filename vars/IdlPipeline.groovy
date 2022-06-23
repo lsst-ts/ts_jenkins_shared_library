@@ -139,7 +139,7 @@ def call(){
                 }
             }//Push Dev
             stage("Trigger Salobj Conda Package build") {
-                    when { expression { return env.buildSalObjConda.toBoolean() } }
+                    when { expression { return params.buildSalObjConda.toBoolean() } }
                     steps {
                         script {
                             def RESULT = sh (returnStdout: true, script:
