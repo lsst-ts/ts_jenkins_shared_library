@@ -36,6 +36,8 @@ def email() {
                 "ts-integrationtests": "rbovill@lsst.org",
                 "ts-linearstage": "ecoughlin@lsst.org",
                 "ts-m2": "tribeiro@lsst.org",
+                "ts-m2com": "ttsai@lsst.org",
+                "ts-mtalignment": "dmills@lsst.org, pkubanek@lsst.org, rowen@uw.edu",
                 "ts-mtaircompressor": "pkubanek@lsst.org",
                 "ts-mtdome": "wvreeven@lsst.org",
                 "ts-mtdometrajectory": "rowen@uw.edu",
@@ -67,6 +69,7 @@ def slack_id() {
     String rob = "U2NF4GWV8"
     String russell = "U2JPAP0F6"
     String tiago = "U72CH91L2"
+    String tewei = "U3F32NNJ2"
     String wouter = "URY8ACN4S"
     slack_ids = ["ts-ataos": tiago,
                 "ts-atdome": russell,
@@ -103,6 +106,8 @@ def slack_id() {
                 "ts-integrationtests": rob,
                 "ts-linearstage": eric,
                 "ts-m2": tiago,
+                "ts-m2com": tewei,
+                "ts-mtalignment": petr,
                 "ts-mtaircompressor": petr,
                 "ts-mtdome": wouter,
                 "ts-mtdometrajectory": russell,
