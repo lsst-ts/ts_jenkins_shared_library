@@ -1,7 +1,8 @@
 package org.lsst.ts.jenkins.components
 
 def email() {
-    emails = [  "ts-ataos": "tribeiro@lsst.org",
+    emails = [  "default": "rubinobs-tssw-worker@lsst.org",
+                "ts-ataos": "tribeiro@lsst.org",
                 "ts-atdome": "rowen@uw.edu",
                 "ts-atdometrajectory": "rowen@uw.edu",
                 "ts-athexapod": "ecoughlin@lsst.org",
@@ -9,6 +10,7 @@ def email() {
                 "ts-atpneumaticssimulator": "rowen@uw.edu",
                 "ts-atspec": "tribeiro@lsst.org",
                 "ts-atwhitelight": "rowen@uw.edu",
+                "ts-authorize": "wvreeven@lsst.org",
                 "ts-cbp": "ecoughlin@lsst.org",
                 "ts-conda-build": "wvreeven@lsst.org",
                 "ts-conda-build-aarch64": "wvreeven@lsst.org",
@@ -71,7 +73,8 @@ def slack_id() {
     String tiago = "U72CH91L2"
     String tewei = "U3F32NNJ2"
     String wouter = "URY8ACN4S"
-    slack_ids = ["ts-ataos": tiago,
+    slack_ids = ["default": rob,
+                "ts-ataos": tiago,
                 "ts-atdome": russell,
                 "ts-atdometrajectory": russell,
                 "ts-athexapod": eric,
@@ -79,6 +82,7 @@ def slack_id() {
                 "ts-atpneumaticssimulator": russell,
                 "ts-atspec": tiago,
                 "ts-atwhitelight": russell,
+                "ts-authorize": wvreeven,
                 "ts-cbp": eric,
                 "ts-conda-build": wouter,
                 "ts-conda-build-aarch64": wouter,
