@@ -82,7 +82,7 @@ def slack_id() {
                 "ts-atpneumaticssimulator": russell,
                 "ts-atspec": tiago,
                 "ts-atwhitelight": russell,
-                "ts-authorize": wvreeven,
+                "ts-authorize": wouter,
                 "ts-cbp": eric,
                 "ts-conda-build": wouter,
                 "ts-conda-build-aarch64": wouter,
