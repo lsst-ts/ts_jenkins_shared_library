@@ -60,6 +60,7 @@ def email() {
                 "ts-tunablelaser": "ecoughlin@lsst.org",
                 "ts-utils": "tribeiro@lsst.org",
                 "ts-watcher": "rowen@uw.edu",
+                "ts-weatherforecast": "ecoughlin@lsst.org"]
                 "ts-weatherstation": "wvreeven@lsst.org"]
     return emails
 }
@@ -133,6 +134,7 @@ def slack_id() {
                 "ts-tcpip": russell,
                 "ts-tunablelaser": eric,
                 "ts-watcher": russell,
+                "ts-weatherforecast": eric,
                 "ts-weatherstation": wouter,
                 "rubin-sim": tiago]
     return slack_ids
