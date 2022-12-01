@@ -60,7 +60,7 @@ def email() {
                 "ts-tunablelaser": "ecoughlin@lsst.org",
                 "ts-utils": "tribeiro@lsst.org",
                 "ts-watcher": "rowen@uw.edu",
-                "ts-weatherforecast": "ecoughlin@lsst.org"]
+                "ts-weatherforecast": "ecoughlin@lsst.org",
                 "ts-weatherstation": "wvreeven@lsst.org"]
     return emails
 }
