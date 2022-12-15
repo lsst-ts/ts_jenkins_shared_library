@@ -255,9 +255,9 @@ def build_salobj_conda(label, concatVersion) {
 def download_git_lfs_files(){
     sh """
         cd ${WHOME}/
-        # FIXME: (DM-37374) Remove workaround once we find a solution to the
-        # failure in git lfs install
-        git lfs install || echo "Error installing git lfs..."
+        # Since Jenkins sets the hooks path to /dev/null, set it to a real location.
+        git config --local core.hooksPath .git/hooks
+        git lfs install
         git lfs fetch --all
         git lfs checkout
     """
