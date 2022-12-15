@@ -255,7 +255,9 @@ def build_salobj_conda(label, concatVersion) {
 def download_git_lfs_files(){
     sh """
         cd ${WHOME}/
-        git lfs install
+        # FIXME: (DM-37374) Remove workaround once we find a solution to the
+        # failure in git lfs install
+        git lfs install || echo "Error installing git lfs..."
         git lfs fetch --all
         git lfs checkout
     """
