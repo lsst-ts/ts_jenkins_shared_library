@@ -37,7 +37,7 @@ def call(config_repo, name, module_name, arch="linux-64"){
                 image image_value
                 alwaysPull true
                 label "${params.build_agent}"
-                args arg_str.concat("--env LSST_DDS_DOMAIN=citest -u root --entrypoint=''")
+                args arg_str.concat("--env LSST_DDS_DOMAIN=citest --entrypoint=''")
                 registryUrl registry_url
                 registryCredentialsId registry_credentials_id
             }
@@ -149,9 +149,6 @@ def call(config_repo, name, module_name, arch="linux-64"){
         }
         post {
             always {
-                withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh 'chown -R 1003:1003 ${HOME}/'
-                }
                 step([$class: 'Mailer', recipients: emails[name] ?: emails['default'], notifyEveryUnstableBuild: false, sendToIndividuals: true])
             }
             regression {

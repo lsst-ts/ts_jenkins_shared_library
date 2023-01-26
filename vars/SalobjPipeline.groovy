@@ -30,7 +30,7 @@ def call(config_repo){
                 image 'ts-dockerhub.lsst.org/conda_package_builder:latest'
                 alwaysPull true
                 label 'CSC_Conda_Node'
-                args arg_str.concat("--env LSST_DDS_DOMAIN=citest -u root --entrypoint=''")
+                args arg_str.concat("--env LSST_DDS_DOMAIN=citest --entrypoint=''")
                 registryUrl 'https://ts-dockerhub.lsst.org'
                 registryCredentialsId 'nexus3-lsst_jenkins'
             }
@@ -186,11 +186,6 @@ def call(config_repo){
             }//Trigger Broker
         }//stages
         post {
-            cleanup {
-                withEnv(["WHOME=${env.WORKSPACE}"]) {
-                    sh 'chown -R 1003:1003 ${WHOME}/'
-                }
-            }
             always {
                 step([$class: 'Mailer',
                     notifyEveryUnstableBuild: false,
