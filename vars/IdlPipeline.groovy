@@ -163,12 +163,6 @@ def call(){
             }//TriggerSalObj
         }//stages
         post {
-            cleanup {
-                sh """
-                    chmod -R a+rw .
-                    chown -R 1003:1003 .
-                """
-            }
             always {
                 step([$class: 'Mailer',
                     notifyEveryUnstableBuild: false,

@@ -38,7 +38,7 @@ def call(name, arch="noarch", repo="ts_recipes"){
                 image image_value
                 alwaysPull true
                 label label_value
-                args arg_str.concat("-u root --entrypoint=''")
+                args arg_str.concat("--entrypoint=''")
                 registryUrl registry_url
                 registryCredentialsId registry_credentials_id
             }
@@ -161,9 +161,6 @@ def call(name, arch="noarch", repo="ts_recipes"){
         }
         post {
             always {
-                withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh 'chown -R 1003:1003 ${HOME}/'
-                }
                 step([$class: 'Mailer', recipients: emails[name], notifyEveryUnstableBuild: false, sendToIndividuals: true])
             }
             regression {

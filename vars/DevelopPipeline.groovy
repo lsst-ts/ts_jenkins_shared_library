@@ -9,7 +9,7 @@ def call(name, idl_name) {
                 docker {
                     alwaysPull true
                     image 'lsstts/develop-env:develop'
-                    args "-u root --entrypoint=''"
+                    args "--entrypoint=''"
                 }
             }
             environment {
@@ -62,10 +62,6 @@ def call(name, idl_name) {
             }
             post {
                 always {
-                    withEnv(["HOME=${env.WORKSPACE}"]) {
-                        sh 'chown -R 1003:1003 ${HOME}/'
-                    }
-
                     junit 'jenkinsReport/*.xml'
 
                     publishHTML (target: [
