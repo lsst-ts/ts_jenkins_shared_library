@@ -142,23 +142,45 @@ def slack_id() {
 
 def build_docs() {
     // Build the documentation
-    sh "package-docs build"
+    sh """
+        source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
+        setup -kr .
+        package-docs build
+    """
 }
 
 def upload_docs(name) {
     // upload the documentation
     // Takes the product name as an argument
-    sh "ltd upload --product ${name} --git-ref ${GIT_BRANCH} --dir doc/_build/html"
+    sh """
+        source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
+        setup -kr .
+        ltd upload --product ${name} --git-ref ${GIT_BRANCH} --dir doc/_build/html
+    """
 }
 
-def install() {
+def install(eups=true) {
     // Install the development requirements
-    sh "pip install .[dev]"
+    if (!eups) {
+        sh """
+            source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
+            pip install -e .
+        """
+    } else {
+            sh """
+            source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
+            setup -kr .
+        """
+    }
 }
 
 def test() {
     // Run the tests
-    sh "pytest --cov-report html --cov=${env.MODULE_NAME} --junitxml=${env.XML_REPORT}"
+    sh """
+        source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
+        setup -kr .
+        pytest --cov-report html --cov=${env.MODULE_NAME} --junitxml=${env.XML_REPORT}
+    """
 }
 
 def build_csc_conda(label) {
@@ -288,6 +310,36 @@ def getBranchName(changeTarget, branchName) {
     def branch = (changeTarget != "null") ? changeTarget : branchName
     print("!!! changeTarget: " + changeTarget + " branchName: " + branchName + " -> Returning " + branch + " !!!\n")
     return branch
+}
+
+def update_container_branches() {
+    withEnv([]){
+        sh """
+        source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
+
+        for repo in \$(ls /home/saluser/repos/)
+        do
+            cd /home/saluser/repos/\$repo
+            /home/saluser/.checkout_repo.sh ${WORK_BRANCHES}
+            git pull
+        done
+    """
+    }
+}
+
+def make_idl_files(components, all=false) {
+    if (all) {
+        sh """
+            source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
+            make_idl_files.py --all
+        """
+    }
+    else {
+        sh """
+            source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
+            make_idl_files.py ${components}
+        """
+    }
 }
 
 
