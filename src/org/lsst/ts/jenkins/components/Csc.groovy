@@ -154,8 +154,9 @@ def upload_docs(name) {
     // Takes the product name as an argument
     sh """
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
+        cd ${env.WORKSPACE}/repo/${name}
         setup -kr .
-        ltd upload --product ${name} --git-ref ${GIT_BRANCH} --dir doc/_build/html
+        ltd upload --product ${name} --git-ref ${BRANCH_NAME} --dir doc/_build/html
     """
 }
 
@@ -322,6 +323,17 @@ def update_container_branches() {
             cd /home/saluser/repos/\$repo
             /home/saluser/.checkout_repo.sh ${WORK_BRANCHES}
             git pull
+        done
+        for repo in \$(ls ${env.WORKSPACE}/ci/)
+        do
+            cd ${env.WORKSPACE}/ci/\$repo
+            git_branch=\$(git rev-parse --abbrev-ref HEAD)
+            git branch --set-upstream-to=origin/\$git_branch \$git_branch
+            /home/saluser/.checkout_repo.sh ${WORK_BRANCHES}
+            git pull
+            eups declare -r . -t current
+            setup -kr .
+            scons
         done
     """
     }
