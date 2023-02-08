@@ -33,17 +33,42 @@ def call(name, idl_name, module_name, required_idl=[], build_all_idl=false, extr
                 args "--entrypoint=''"
             }
         }
+        options {
+            skipDefaultCheckout()
+        }
         environment {
             user_ci = credentials('lsst-io')
             LTD_USERNAME="${user_ci_USR}"
             LTD_PASSWORD="${user_ci_PSW}"
-            WORK_BRANCHES = "${GIT_BRANCH} ${CHANGE_BRANCH} develop"
+            WORK_BRANCHES = "${env.BRANCH_NAME} ${env.CHANGE_BRANCH} develop"
             IDL_NAME = "${idl_name}"
             XML_REPORT= "jenkinsReport/report.xml"
             MODULE_NAME = "${module_name}"
         }
 
         stages {
+            stage ("Clone extra repos") {
+                steps {
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
+                        script {
+                            if (!extra_packages.isEmpty()) {
+                                extra_packages.each { extra_package ->
+                                    split = extra_package.split('/')
+                                    org = split[0]
+                                    package_name = split[1]
+                                    branch_name = split[2]
+                                    dir("${env.WORKSPACE}/ci/${package_name}") {
+                                        git url: "https://github.com/${org}/${package_name}.git", branch: "${branch_name}"
+                                    }
+                                }
+                            }
+                            dir("${env.WORKSPACE}/repo/${name}") {
+                                checkout scm
+                            }
+                        }
+                    }
+                }
+            }
             stage ('Install Requirements and Update Branches') {
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
@@ -59,8 +84,10 @@ def call(name, idl_name, module_name, required_idl=[], build_all_idl=false, extr
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.install()
-                            csc.test()
+                            dir("${env.WORKSPACE}/repo/${name}") {
+                                csc.install()
+                                csc.test()
+                            }
                         }
                     }
                 }
@@ -69,8 +96,10 @@ def call(name, idl_name, module_name, required_idl=[], build_all_idl=false, extr
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_docs()
-                            csc.upload_docs("${name}")
+                            dir("${env.WORKSPACE}/repo/${name}") {
+                                csc.build_docs()
+                                csc.upload_docs("${name}")
+                            }
                         }
                     }
                 }
@@ -79,16 +108,18 @@ def call(name, idl_name, module_name, required_idl=[], build_all_idl=false, extr
         }
         post {
             always {
-                junit 'jenkinsReport/*.xml'
+                dir("${env.WORKSPACE}/repo/${name}") {
+                    junit 'jenkinsReport/*.xml'
 
-                publishHTML (target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: false,
-                keepAll: true,
-                reportDir: 'htmlcov',
-                reportFiles: 'index.html',
-                reportName: "Coverage Report"
-            ])
+                    publishHTML (target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: "htmlcov",
+                    reportFiles: 'index.html',
+                    reportName: "Coverage Report"
+                    ])
+                }
             }
             cleanup {
                 deleteDir()
