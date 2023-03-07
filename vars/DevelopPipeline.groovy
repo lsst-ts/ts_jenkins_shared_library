@@ -1,6 +1,6 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(name, idl_name, module_name, required_idl=[], build_all_idl=false, extra_packages=[]) {
+def call(name, idl_name, module_name, pre_commit_flags="", required_idl=[], build_all_idl=false, extra_packages=[]) {
     // create a developer build pipeline
     Csc csc = new Csc()
     idl_string = "${idl_name} "
@@ -85,6 +85,7 @@ def call(name, idl_name, module_name, required_idl=[], build_all_idl=false, extr
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             dir("${env.WORKSPACE}/repo/${name}") {
+                                csc.setup_and_run_pre_commit(pre_commit_flags)
                                 csc.install()
                                 csc.test()
                             }
