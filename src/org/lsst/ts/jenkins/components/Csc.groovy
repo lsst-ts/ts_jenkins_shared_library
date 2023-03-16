@@ -153,12 +153,14 @@ def build_docs() {
 def upload_docs(name) {
     // upload the documentation
     // Takes the product name as an argument
+    // Changes the underscore to a dash for doc upload
+    doc_name = name.replace("_", "-")
     sh """
         set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         cd $WHOME/repo/${name}
         setup -kr .
-        ltd -u \$user_ci_USR -p \$user_ci_PSW upload --product ${name} --git-ref ${BRANCH_NAME} --dir doc/_build/html
+        ltd -u \$user_ci_USR -p \$user_ci_PSW upload --product ${doc_name} --git-ref ${BRANCH_NAME} --dir doc/_build/html
     """
 }
 
