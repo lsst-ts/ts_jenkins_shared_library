@@ -154,9 +154,9 @@ def upload_docs(name) {
     // Takes the product name as an argument
     sh """
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
-        cd ${env.WORKSPACE}/repo/${name}
+        cd $WHOME/repo/${name}
         setup -kr .
-        ltd upload --product ${name} --git-ref ${BRANCH_NAME} --dir doc/_build/html
+        ltd -u \$user_ci_USR -p \$user_ci_PSW upload --product ${name} --git-ref ${BRANCH_NAME} --dir doc/_build/html
     """
 }
 
