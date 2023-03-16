@@ -143,6 +143,7 @@ def slack_id() {
 def build_docs() {
     // Build the documentation
     sh """
+        set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         setup -kr .
         package-docs build
@@ -153,6 +154,7 @@ def upload_docs(name) {
     // upload the documentation
     // Takes the product name as an argument
     sh """
+        set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         cd $WHOME/repo/${name}
         setup -kr .
@@ -164,11 +166,13 @@ def install(eups=true) {
     // Install the development requirements
     if (!eups) {
         sh """
+            set +x
             source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
             pip install -e .
         """
     } else {
             sh """
+            set +x
             source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
             setup -kr .
         """
@@ -178,6 +182,7 @@ def install(eups=true) {
 def test() {
     // Run the tests
     sh """
+        set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         setup -kr .
         pytest --cov-report html --cov=${env.MODULE_NAME} --junitxml=${env.XML_REPORT}
@@ -316,6 +321,7 @@ def getBranchName(changeTarget, branchName) {
 def update_container_branches() {
     withEnv([]){
         sh """
+        set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
 
         for repo in \$(ls /home/saluser/repos/)
@@ -342,12 +348,14 @@ def update_container_branches() {
 def make_idl_files(components, all=false) {
     if (all) {
         sh """
+            set +x
             source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
             make_idl_files.py --all
         """
     }
     else {
         sh """
+            set +x
             source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
             make_idl_files.py ${components}
         """
@@ -356,6 +364,7 @@ def make_idl_files(components, all=false) {
 
 def setup_and_run_pre_commit(flags) {
     sh """
+        set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         generate_pre_commit_conf ${flags}
         pre-commit run --all
