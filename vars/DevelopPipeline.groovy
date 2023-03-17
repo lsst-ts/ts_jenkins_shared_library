@@ -54,9 +54,8 @@ def call(name, idl_name, module_name, pre_commit_flags="", required_idl=[], buil
                                     split = extra_package.split('/')
                                     org = split[0]
                                     package_name = split[1]
-                                    branch_name = split[2]
                                     dir("${env.WORKSPACE}/ci/${package_name}") {
-                                        git url: "https://github.com/${org}/${package_name}.git", branch: "${branch_name}"
+                                        git url: "https://github.com/${org}/${package_name}.git", branch: "develop"
                                     }
                                 }
                             }
