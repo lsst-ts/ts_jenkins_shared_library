@@ -38,8 +38,6 @@ def call(name, idl_name, module_name, pre_commit_flags="", required_idl=[], buil
         }
         environment {
             user_ci = credentials('lsst-io')
-            LTD_USERNAME='{$user_ci_USR}'
-            LTD_PASSWORD='{$user_ci_PSW}'
             WORK_BRANCHES = "${env.BRANCH_NAME} ${env.CHANGE_BRANCH} develop"
             IDL_NAME = "${idl_name}"
             XML_REPORT= "jenkinsReport/report.xml"
