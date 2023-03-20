@@ -4,6 +4,9 @@ def call(Map pipeline_args = [:]) {
     // create a developer build pipeline
     defaultArgs = [pre_commit_flags: "", required_idl: [], build_all_idl: false, extra_packages: []]
     pipeline_args = defaultArgs << pipeline_args
+    if((!pipeline_args["name"]) || (!pipeline_args["idl_name"]) || (!pipeline_args["module_name"])) {
+        error "Need to define name, idl_name and module_name."
+    }
     Csc csc = new Csc()
     idl_string = "${pipeline_args.idl_name} "
     if (!pipeline_args.required_idl.isEmpty()) {
