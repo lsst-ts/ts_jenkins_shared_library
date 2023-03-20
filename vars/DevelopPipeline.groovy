@@ -1,11 +1,16 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(name, idl_name, module_name, pre_commit_flags="", required_idl=[], build_all_idl=false, extra_packages=[]) {
+def call(Map pipeline_args = [:]) {
     // create a developer build pipeline
+    defaultArgs = [pre_commit_flags: "", required_idl: [], build_all_idl: false, extra_packages: []]
+    pipeline_args = defaultArgs << pipeline_args
+    if((!pipeline_args["name"]) || (!pipeline_args["idl_name"]) || (!pipeline_args["module_name"])) {
+        error "Need to define name, idl_name and module_name."
+    }
     Csc csc = new Csc()
-    idl_string = "${idl_name} "
-    if (!required_idl.isEmpty()) {
-        required_idl.each { idl ->
+    idl_string = "${pipeline_args.idl_name} "
+    if (!pipeline_args.required_idl.isEmpty()) {
+        pipeline_args.required_idl.each { idl ->
             idl_string = idl_string.concat("${idl} ")
         }
     }
@@ -39,9 +44,9 @@ def call(name, idl_name, module_name, pre_commit_flags="", required_idl=[], buil
         environment {
             user_ci = credentials('lsst-io')
             WORK_BRANCHES = "${env.BRANCH_NAME} ${env.CHANGE_BRANCH} develop"
-            IDL_NAME = "${idl_name}"
+            IDL_NAME = "${pipeline_args.idl_name}"
             XML_REPORT= "jenkinsReport/report.xml"
-            MODULE_NAME = "${module_name}"
+            MODULE_NAME = "${pipeline_args.module_name}"
         }
 
         stages {
@@ -49,18 +54,17 @@ def call(name, idl_name, module_name, pre_commit_flags="", required_idl=[], buil
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            if (!extra_packages.isEmpty()) {
-                                extra_packages.each { extra_package ->
+                            if (!pipeline_args.extra_packages.isEmpty()) {
+                                pipeline_args.extra_packages.each { extra_package ->
                                     split = extra_package.split('/')
                                     org = split[0]
                                     package_name = split[1]
-                                    branch_name = split[2]
                                     dir("${env.WORKSPACE}/ci/${package_name}") {
-                                        git url: "https://github.com/${org}/${package_name}.git", branch: "${branch_name}"
+                                        git url: "https://github.com/${org}/${package_name}.git", branch: "develop"
                                     }
                                 }
                             }
-                            dir("${env.WORKSPACE}/repo/${name}") {
+                            dir("${env.WORKSPACE}/repo/${pipeline_args.name}") {
                                 checkout scm
                             }
                         }
@@ -72,7 +76,7 @@ def call(name, idl_name, module_name, pre_commit_flags="", required_idl=[], buil
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             csc.update_container_branches()
-                            csc.make_idl_files("${idl_string}", build_all_idl)
+                            csc.make_idl_files(idl_string, pipeline_args.build_all_idl)
                         }
                     }
                 }
@@ -82,8 +86,8 @@ def call(name, idl_name, module_name, pre_commit_flags="", required_idl=[], buil
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            dir("${env.WORKSPACE}/repo/${name}") {
-                                csc.setup_and_run_pre_commit(pre_commit_flags)
+                            dir("${env.WORKSPACE}/repo/${pipeline_args.name}") {
+                                csc.setup_and_run_pre_commit(pipeline_args.pre_commit_flags)
                                 csc.install()
                                 csc.test()
                             }
@@ -95,9 +99,9 @@ def call(name, idl_name, module_name, pre_commit_flags="", required_idl=[], buil
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            dir("${env.WORKSPACE}/repo/${name}") {
+                            dir("${env.WORKSPACE}/repo/${pipeline_args.name}") {
                                 csc.build_docs()
-                                csc.upload_docs("${name}")
+                                csc.upload_docs(pipeline_args.name)
                             }
                         }
                     }
@@ -107,7 +111,7 @@ def call(name, idl_name, module_name, pre_commit_flags="", required_idl=[], buil
         }
         post {
             always {
-                dir("${env.WORKSPACE}/repo/${name}") {
+                dir("${env.WORKSPACE}/repo/${pipeline_args.name}") {
                     junit 'jenkinsReport/*.xml'
 
                     publishHTML (target: [
