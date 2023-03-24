@@ -2,7 +2,7 @@ import org.lsst.ts.jenkins.components.Csc
 
 def call(Map pipeline_args = [:]) {
     // create a developer build pipeline
-    defaultArgs = [pre_commit_flags: "", idl_names: [], build_all_idl: false, extra_packages: []]
+    defaultArgs = [pre_commit_flags: "", idl_names: [], build_all_idl: false, extra_packages: [], kickoff_jobs: []]
     pipeline_args = defaultArgs << pipeline_args
     if((!pipeline_args["name"]) || (!pipeline_args["module_name"])) {
         error "Need to define name and module_name."
@@ -109,7 +109,17 @@ def call(Map pipeline_args = [:]) {
                     }
                 }
             }
-            
+            stage ('Kickoff jobs') {
+                steps {
+                    script {
+                        if(!pipeline_args.kickoff_jobs.isEmpty()) {
+                            pipeline_args.kickoff_jobs.each { kickoff_job ->
+                                build job: "LSST_Telescope-and-Site/${kickoff_job}", wait: false
+                            }
+                        }
+                    }
+                }
+            }
         }
         post {
             always {
