@@ -2,15 +2,15 @@ import org.lsst.ts.jenkins.components.Csc
 
 def call(Map pipeline_args = [:]) {
     // create a developer build pipeline
-    defaultArgs = [pre_commit_flags: "", required_idl: [], build_all_idl: false, extra_packages: []]
+    defaultArgs = [pre_commit_flags: "", idl_names: [], build_all_idl: false, extra_packages: []]
     pipeline_args = defaultArgs << pipeline_args
-    if((!pipeline_args["name"]) || (!pipeline_args["idl_name"]) || (!pipeline_args["module_name"])) {
-        error "Need to define name, idl_name and module_name."
+    if((!pipeline_args["name"]) || (!pipeline_args["module_name"])) {
+        error "Need to define name and module_name."
     }
     Csc csc = new Csc()
-    idl_string = "${pipeline_args.idl_name} "
-    if (!pipeline_args.required_idl.isEmpty()) {
-        pipeline_args.required_idl.each { idl ->
+    idl_string = ""
+    if (!pipeline_args.idl_names.isEmpty()) {
+        pipeline_args.idl_names.each { idl ->
             idl_string = idl_string.concat("${idl} ")
         }
     }
@@ -76,7 +76,9 @@ def call(Map pipeline_args = [:]) {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             csc.update_container_branches()
-                            csc.make_idl_files(idl_string, pipeline_args.build_all_idl)
+                            if(idl_string) {
+                                csc.make_idl_files(idl_string, pipeline_args.build_all_idl)
+                            }
                         }
                     }
                 }
