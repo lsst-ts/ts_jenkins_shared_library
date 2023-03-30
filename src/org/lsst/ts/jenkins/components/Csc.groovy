@@ -364,11 +364,11 @@ def make_idl_files(components, all=false) {
     }
 }
 
-def setup_and_run_pre_commit(flags) {
+def setup_and_run_pre_commit() {
     sh """
         set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
-        generate_pre_commit_conf ${flags}
+        generate_pre_commit_conf
         pre-commit run --all
     """
 }

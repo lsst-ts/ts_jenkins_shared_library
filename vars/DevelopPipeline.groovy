@@ -2,7 +2,7 @@ import org.lsst.ts.jenkins.components.Csc
 
 def call(Map pipeline_args = [:]) {
     // create a developer build pipeline
-    defaultArgs = [pre_commit_flags: "", idl_names: [], build_all_idl: false, extra_packages: [], kickoff_jobs: []]
+    defaultArgs = [idl_names: [], build_all_idl: false, extra_packages: [], kickoff_jobs: []]
     pipeline_args = defaultArgs << pipeline_args
     if((!pipeline_args["name"]) || (!pipeline_args["module_name"])) {
         error "Need to define name and module_name."
@@ -82,14 +82,14 @@ def call(Map pipeline_args = [:]) {
                         }
                     }
                 }
-                
+
             }
             stage ('Unit Tests and Coverage Analysis') {
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             dir("${env.WORKSPACE}/repo/${pipeline_args.name}") {
-                                csc.setup_and_run_pre_commit(pipeline_args.pre_commit_flags)
+                                csc.setup_and_run_pre_commit()
                                 csc.install()
                                 csc.test()
                             }
