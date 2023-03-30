@@ -1,7 +1,34 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(config_repo, name, module_name, arch="linux-64"){
+def call(Map pipeline_args= [:], @Deprecated config_repo=[], @Deprecated name="", @Deprecated module_name="", @ Deprecated arch="linux-64"){
     // Create a conda build pipeline
+    if(config_repo) {
+        echo 'config_repo positional parameter is deprecated. Use named parameter config_repo: [x] instead.'
+    }
+    if(name) {
+        echo 'name positional parameter is deprecated. Use named parameter name: x instead.'
+    }
+    if(module_name) {
+        echo 'module_name positional parameter is deprecated. Use named parameter module_name: x instead.'
+    }
+    if(arch) {
+        echo 'arch positional parameter is deprecated. Use named parameter arch: x instead.'
+    }
+    if(pipeline_args["config_repo"]){
+        config_repo = pipeline_args.config_repo
+    }
+    if(pipeline_args["name"]){
+        name = pipeline_args.name
+    }
+    if(pipeline_args["module_name"]){
+        module_name = pipeline_args.module_name
+    }
+    if(pipeline_args["arch"]){
+        arch=pipeline_args.arch
+    }
+    else {
+    	arch="linux-64"
+    }
     Csc csc = new Csc()
     registry_url = "https://ts-dockerhub.lsst.org"
     registry_credentials_id = "nexus3-lsst_jenkins"
