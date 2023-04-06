@@ -57,6 +57,9 @@ def call(Map pipeline_args = [:]) {
                             if (!pipeline_args.extra_packages.isEmpty()) {
                                 pipeline_args.extra_packages.each { extra_package ->
                                     split = extra_package.split('/')
+                                    if(split.size() != 2) {
+                                        error 'extra_packages must use format org/repo.'
+                                    }
                                     org = split[0]
                                     package_name = split[1]
                                     dir("${env.WORKSPACE}/ci/${package_name}") {
