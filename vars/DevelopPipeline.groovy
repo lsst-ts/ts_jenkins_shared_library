@@ -2,7 +2,7 @@ import org.lsst.ts.jenkins.components.Csc
 
 def call(Map pipeline_args = [:]) {
     // create a developer build pipeline
-    defaultArgs = [idl_names: [], build_all_idl: false, extra_packages: [], kickoff_jobs: []]
+    defaultArgs = [idl_names: [], build_all_idl: false, extra_packages: [], kickoff_jobs: [], has_doc_site: true]
     pipeline_args = defaultArgs << pipeline_args
     if((!pipeline_args["name"]) || (!pipeline_args["module_name"])) {
         error "Need to define name and module_name."
@@ -98,6 +98,11 @@ def call(Map pipeline_args = [:]) {
                 }
             }
             stage ('Build and Upload documentation') {
+	    	when {
+		    expression {
+		        return pipeline_args.has_doc_site
+		    }
+		}
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
