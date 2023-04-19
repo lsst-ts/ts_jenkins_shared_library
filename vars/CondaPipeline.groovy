@@ -27,7 +27,7 @@ def call(@Deprecated config_repo=[], @Deprecated name="", @Deprecated module_nam
         arch=pipeline_args.arch
     }
     else {
-    	arch="linux-64"
+    	arch=arch
     }
     Csc csc = new Csc()
     registry_url = "https://ts-dockerhub.lsst.org"
