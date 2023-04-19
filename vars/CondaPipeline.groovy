@@ -1,6 +1,6 @@
 import org.lsst.ts.jenkins.components.Csc
 
-def call(Map pipeline_args= [:], @Deprecated config_repo=[], @Deprecated name="", @Deprecated module_name="", @ Deprecated arch="linux-64"){
+def call(@Deprecated config_repo=[], @Deprecated name="", @Deprecated module_name="", @ Deprecated arch="linux-64", Map pipeline_args=[:]){
     // Create a conda build pipeline
     if(config_repo) {
         echo 'config_repo positional parameter is deprecated. Use named parameter config_repo: [x] instead.'
