@@ -29,6 +29,7 @@ def email() {
                 "ts-ess-csc": "wvreeven@lsst.org",
                 "ts-ess-common": "wvreeven@lsst.org",
                 "ts-ess-controller": "wvreeven@lsst.org",
+                "ts-ess-labjack": "wvreeven@lsst.org",
                 "ts-externalscripts": "tribeiro@lsst.org",
                 "ts-fbs-utils": "tribeiro@lsst.org",
                 "ts-fiberspectrograph": "rowen@uw.edu",
@@ -61,7 +62,7 @@ def email() {
                 "ts-utils": "tribeiro@lsst.org",
                 "ts-watcher": "rowen@uw.edu",
                 "ts-weatherforecast": "ecoughlin@lsst.org",
-                "ts-weatherstation": "wvreeven@lsst.org"]
+                "ts-xml": "rbovill@lsst.org"]
     return emails
 }
 
@@ -103,6 +104,7 @@ def slack_id() {
                 "ts-ess-csc": wouter,
                 "ts-ess-common": wouter,
                 "ts-ess-controller": wouter,
+                "ts-ess-labjack": wouter,
                 "ts-externalscripts": tiago,
                 "ts-fbs-utils": tiago,
                 "ts-fiberspectrograph": russell,
@@ -135,7 +137,7 @@ def slack_id() {
                 "ts-tunablelaser": eric,
                 "ts-watcher": russell,
                 "ts-weatherforecast": eric,
-                "ts-weatherstation": wouter,
+                "ts-xml": rbovill,
                 "rubin-sim": tiago]
     return slack_ids
 }
