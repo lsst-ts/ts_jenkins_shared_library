@@ -137,7 +137,7 @@ def slack_id() {
                 "ts-tunablelaser": eric,
                 "ts-watcher": russell,
                 "ts-weatherforecast": eric,
-                "ts-xml": rbovill,
+                "ts-xml": rob,
                 "rubin-sim": tiago]
     return slack_ids
 }
