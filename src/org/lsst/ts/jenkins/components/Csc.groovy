@@ -343,7 +343,6 @@ def update_container_branches() {
             git pull
             eups declare -r . -t current
             setup -kr .
-            scons
         done
     """
     }
