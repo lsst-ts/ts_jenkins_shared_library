@@ -47,7 +47,7 @@ pipeline {
                         jobs = ['EssCommon', 'ATAOS', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'ATWhiteLight', 'Authorize',
                             'CBP', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 'FiberSpectrograph', 'GenericCamera', 'hexrotcomm', 'IntegrationTests', 'LaserTracker',
                             'LinearStage', 'M2Com', 'M2simulator', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'PMD', 'salkafka', 'SimActuators', 'StandardScripts',
-                            'Utils', 'TunableLaser', 'Watcher', 'EssController', 'EssCsc' 'EssLabjack', 'XML', 'ObservatoryControl', 'MTRotator']
+                            'Utils', 'TunableLaser', 'Watcher', 'EssController', 'EssCsc', 'EssLabjack', 'XML', 'ObservatoryControl', 'MTRotator']
                     }
                     sal_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${SAL_Version} |sed 's/.pre[0-9]*//g'").trim()
                     idl_version = "${idl_version}=${XML_Version}_${sal_ver}"
