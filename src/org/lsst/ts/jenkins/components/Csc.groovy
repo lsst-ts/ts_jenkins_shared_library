@@ -189,7 +189,11 @@ def test() {
         set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         setup -kr .
-        pytest --cov-report html --cov=${env.MODULE_NAME} --junitxml=${env.XML_REPORT}
+	if [ "${env.MODULE_NAME}" = "null" ]; then
+	    pytest
+	else
+            pytest --cov-report html --cov=${env.MODULE_NAME} --junitxml=${env.XML_REPORT}
+	fi
     """
 }
 
