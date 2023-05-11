@@ -7,6 +7,9 @@ def call(Map pipeline_args = [:]) {
     if((!pipeline_args["name"]) || (!pipeline_args["module_name"] == null)) {
         error "Need to define name and module_name."
     }
+    if(pipeline_args["module_name"] == "") {
+    	pipeline_args["has_doc_site"] = false
+    }
     Csc csc = new Csc()
     idl_string = ""
     if (!pipeline_args.idl_names.isEmpty()) {
