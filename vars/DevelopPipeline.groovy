@@ -118,6 +118,11 @@ def call(Map pipeline_args = [:]) {
                 }
             }
             stage ('Kickoff jobs') {
+	    	when {
+		    expression {
+		        return pipeline_args.kickoff_jobs
+		    }
+		}
                 steps {
                     script {
                         if(!pipeline_args.kickoff_jobs.isEmpty()) {
