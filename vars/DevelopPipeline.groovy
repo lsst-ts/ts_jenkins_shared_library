@@ -4,8 +4,11 @@ def call(Map pipeline_args = [:]) {
     // create a developer build pipeline
     defaultArgs = [idl_names: [], build_all_idl: false, extra_packages: [], kickoff_jobs: [], has_doc_site: true]
     pipeline_args = defaultArgs << pipeline_args
-    if((!pipeline_args["name"]) || (!pipeline_args["module_name"])) {
+    if((!pipeline_args["name"]) || (!pipeline_args["module_name"] == null)) {
         error "Need to define name and module_name."
+    }
+    if(pipeline_args["module_name"] == "") {
+    	pipeline_args["has_doc_site"] = false
     }
     Csc csc = new Csc()
     idl_string = ""
@@ -115,6 +118,11 @@ def call(Map pipeline_args = [:]) {
                 }
             }
             stage ('Kickoff jobs') {
+	    	when {
+		    expression {
+		        return pipeline_args.kickoff_jobs
+		    }
+		}
                 steps {
                     script {
                         if(!pipeline_args.kickoff_jobs.isEmpty()) {
@@ -129,10 +137,10 @@ def call(Map pipeline_args = [:]) {
         post {
             always {
                 dir("${env.WORKSPACE}/repo/${pipeline_args.name}") {
-                    junit 'jenkinsReport/*.xml'
+                    junit allowEmptyResults: true, testResults: 'jenkinsReport/*.xml'
 
                     publishHTML (target: [
-                    allowMissing: false,
+                    allowMissing: true,
                     alwaysLinkToLastBuild: false,
                     keepAll: true,
                     reportDir: "htmlcov",

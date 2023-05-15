@@ -189,7 +189,13 @@ def test() {
         set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         setup -kr .
-        pytest --cov-report html --cov=${env.MODULE_NAME} --junitxml=${env.XML_REPORT}
+	# We compare to null for bash as the way groovy passes the value
+	# is not the same as comparing for an empty string.
+	if [ "${env.MODULE_NAME}" = "null" ]; then
+	    pytest -ra
+	else
+            pytest -ra --cov-report html --cov=${env.MODULE_NAME} --junitxml=${env.XML_REPORT}
+	fi
     """
 }
 
