@@ -189,13 +189,13 @@ def test() {
         set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         setup -kr .
-	# We compare to null for bash as the way groovy passes the value
-	# is not the same as comparing for an empty string.
-	if [ "${env.MODULE_NAME}" = "null" ]; then
-	    pytest -ra
-	else
+        # We compare to null for bash as the way groovy passes the value
+        # is not the same as comparing for an empty string.
+        if [ "${env.MODULE_NAME}" = "null" ]; then
+            pytest -ra
+        else
             pytest -ra --cov-report html --cov=${env.MODULE_NAME} --junitxml=${env.XML_REPORT}
-	fi
+        fi
     """
 }
 
@@ -332,23 +332,27 @@ def update_container_branches() {
     withEnv([]){
         sh """
         set +x
+        shopt -s extglob
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
 
+        # Update branches internal to container
         for repo in \$(ls /home/saluser/repos/)
         do
             cd /home/saluser/repos/\$repo
             /home/saluser/.checkout_repo.sh ${WORK_BRANCHES}
-            git pull
         done
+        cd ${env.WORKSPACE}/ci/
+        # Deal with some extraneous files
+        rm Jenkinsfile || true
+        rm -rf *@tmp*
+        # Update branches for extra packages if used
         for repo in \$(ls ${env.WORKSPACE}/ci/)
         do
+            echo \$repo
             cd ${env.WORKSPACE}/ci/\$repo
             git_branch=\$(git rev-parse --abbrev-ref HEAD)
             git branch --set-upstream-to=origin/\$git_branch \$git_branch
             /home/saluser/.checkout_repo.sh ${WORK_BRANCHES}
-            git pull
-            eups declare -r . -t current
-            setup -kr .
         done
     """
     }

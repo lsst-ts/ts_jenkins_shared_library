@@ -8,7 +8,7 @@ def call(Map pipeline_args = [:]) {
         error "Need to define name and module_name."
     }
     if(pipeline_args["module_name"] == "") {
-    	pipeline_args["has_doc_site"] = false
+	pipeline_args["has_doc_site"] = false
     }
     Csc csc = new Csc()
     idl_string = ""
@@ -64,6 +64,7 @@ def call(Map pipeline_args = [:]) {
                                     package_name = split[1]
                                     dir("${env.WORKSPACE}/ci/${package_name}") {
                                         git url: "https://github.com/${org}/${package_name}.git", branch: "develop"
+					sh "source /home/saluser/.setup_dev.sh && eups declare -r . -t current"
                                     }
                                 }
                             }
@@ -101,9 +102,9 @@ def call(Map pipeline_args = [:]) {
                 }
             }
             stage ('Build and Upload documentation') {
-	    	when {
+		when {
 		    expression {
-		        return pipeline_args.has_doc_site
+			return pipeline_args.has_doc_site
 		    }
 		}
                 steps {
@@ -118,9 +119,9 @@ def call(Map pipeline_args = [:]) {
                 }
             }
             stage ('Kickoff jobs') {
-	    	when {
+		when {
 		    expression {
-		        return pipeline_args.kickoff_jobs
+			return pipeline_args.kickoff_jobs
 		    }
 		}
                 steps {
