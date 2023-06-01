@@ -341,10 +341,14 @@ def update_container_branches() {
             cd /home/saluser/repos/\$repo
             /home/saluser/.checkout_repo.sh ${WORK_BRANCHES}
         done
-        cd ${env.WORKSPACE}/ci/
-        # Deal with some extraneous files
-        rm Jenkinsfile || true
-        rm -rf *@tmp*
+	# only sanitize if extra packages are there
+	if [ -d ${env.WORKSPACE}/ci/ ]
+	then
+           cd ${env.WORKSPACE}/ci/
+           # Deal with some extraneous files
+           rm Jenkinsfile || true
+           rm -rf *@tmp*
+	fi
         # Update branches for extra packages if used
         for repo in \$(ls ${env.WORKSPACE}/ci/)
         do
