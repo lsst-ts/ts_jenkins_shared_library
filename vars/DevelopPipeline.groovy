@@ -64,7 +64,6 @@ def call(Map pipeline_args = [:]) {
                                     package_name = split[1]
                                     dir("${env.WORKSPACE}/ci/${package_name}") {
                                         git url: "https://github.com/${org}/${package_name}.git", branch: "develop"
-					sh "source /home/saluser/.setup_dev.sh && eups declare -r . -t current"
                                     }
                                 }
                             }
