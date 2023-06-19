@@ -357,6 +357,7 @@ def update_container_branches() {
             git_branch=\$(git rev-parse --abbrev-ref HEAD)
             git branch --set-upstream-to=origin/\$git_branch \$git_branch
             /home/saluser/.checkout_repo.sh ${WORK_BRANCHES}
+            eups declare -r . -t current
         done
     """
     }
