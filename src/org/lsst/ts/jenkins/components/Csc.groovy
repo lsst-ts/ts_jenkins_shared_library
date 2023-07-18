@@ -2,6 +2,9 @@ package org.lsst.ts.jenkins.components
 
 def email() {
     emails = [  "default": "rubinobs-tssw-worker@lsst.org",
+                "love-commander": "saranda@lsst.org",
+                "love-producer": "saranda@lsst.org",
+                "ts-astrosky-model": "tribeiro@lsst.org",
                 "ts-ataos": "tribeiro@lsst.org",
                 "ts-atdome": "wvreeven@lsst.org",
                 "ts-atdometrajectory": "wvreeven@lsst.org",
@@ -17,6 +20,7 @@ def email() {
                 "ts-conda-build-linux-aarch64": "wvreeven@lsst.org",
                 "ts-criopy": "tribeiro@lsst.org",
                 "ts-cycle": "wvreeven@lsst.org",
+                "ts-dateloc": "tribeiro@lsst.org",
                 "ts-dds": "tribeiro@lsst.org",
                 "ts-ddsconfig": "tribeiro@lsst.org",
                 "ts-develop": "wvreeven@lsst.org",
@@ -34,6 +38,7 @@ def email() {
                 "ts-fbs-utils": "tribeiro@lsst.org",
                 "ts-fiberspectrograph": "ecoughlin@lsst.org",
                 "ts-genericcamera": "pkubanek@lsst.org",
+                "ts-gis": "ecoughlin@lsst.org",
                 "ts-hexrotcomm": "ecoughlin@lsst.org",
                 "ts-hvac": "wvreeven@lsst.org",
                 "ts-idl": "tribeiro@lsst.org",
@@ -50,7 +55,9 @@ def email() {
                 "ts-mtmount": "dmills@lsst.org",
                 "ts-mtrotator": "ttsai@lsst.org",
                 "ts-observatory-control": "tribeiro@lsst.org",
+                "ts-observatory-model": "tribeiro@lsst.org",
                 "ts-pmd": "ecoughlin@lsst.org" ,
+                "ts-pre-commit-config": "wvreeven@lsst.org",
                 "ts-salkafka": "tribeiro@lsst.org",
                 "ts-salobj": "tribeiro@lsst.org, wvreeven@lsst.org",
                 "ts-scheduler": "tribeiro@lsst.org",
@@ -73,10 +80,14 @@ def slack_id() {
     String michael = "U2JPDUE86"
     String petr = "UURCFJJVB"
     String rob = "U2NF4GWV8"
+    String sebastian = "U02CCN5J8UX"
     String tiago = "U72CH91L2"
     String tewei = "U3F32NNJ2"
     String wouter = "URY8ACN4S"
     slack_ids = ["default": rob,
+                "love-commander": sebastian,
+                "love-producer": sebastian,
+                "ts-astrosky-model": tiago,
                 "ts-ataos": tiago,
                 "ts-atdome": wouter,
                 "ts-atdometrajectory": wouter,
@@ -92,6 +103,7 @@ def slack_id() {
                 "ts-conda-build-linux-aarch64": wouter,
                 "ts-criopy": tiago,
                 "ts-cycle": wouter,
+                "ts-dateloc": tiago,
                 "ts-dds": tiago,
                 "ts-ddsconfig": tiago,
                 "ts-develop": wouter,
@@ -109,6 +121,7 @@ def slack_id() {
                 "ts-fbs-utils": tiago,
                 "ts-fiberspectrograph": eric,
                 "ts-genericcamera": petr,
+                "ts-gis": eric,
                 "ts-hexrotcomm": eric,
                 "ts-hvac": wouter,
                 "ts-idl": tiago,
@@ -125,7 +138,9 @@ def slack_id() {
                 "ts-mtmount": dave,
                 "ts-mtrotator": tewei,
                 "ts-observatory-control": tiago,
+                "ts-observatory-model": tiago,
                 "ts-pmd": eric,
+                "ts-pre-commit-config": wouter,
                 "ts-salkafka": tiago,
                 "ts-salobj": wouter,
                 "ts-scheduler": tiago,
