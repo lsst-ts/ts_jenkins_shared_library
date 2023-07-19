@@ -63,11 +63,13 @@ pipeline {
                             wait=0
                         }
                         // The Cycle conda job uses the main branch as the default.
-                        if ("${jobs[i]}"=="Cycle") {
-                            branch=main
+                        if (("${jobs[i]}"=="Cycle") || ("${jobs[i]}"=="Vanward")) {
+                            build_branch="main"
+                        } else {
+                            build_branch=branch
                         }
-                        echo "Starting the ${jobs[i]} job using the ${branch} branch and idl_version: ${idl_version}, salobj_version: ${salobj_version}"
-                        build quietPeriod: "${wait}", wait: false, job: "${jobs[i]}" + "_conda_package/" + branch, parameters:
+                        echo "Starting the ${jobs[i]} job using the ${build_branch} branch and idl_version: ${idl_version}, salobj_version: ${salobj_version}"
+                        build quietPeriod: "${wait}", wait: false, job: "${jobs[i]}" + "_conda_package/" + build_branch, parameters:
                             [string(name: 'idl_version', value: idl_version), string(name: 'salobj_version', value: salobj_version)]
                     }//ForLoop
                 }//script
