@@ -70,7 +70,7 @@ def call(Object... varargs){
                 image image_value
                 alwaysPull true
                 label "${params.build_agent}"
-                args arg_str.concat("--env LSST_DDS_DOMAIN=citest --entrypoint=''")
+                args arg_str.concat("--env LSST_DDS_DOMAIN=citest --entrypoint='' --network=kafka")
                 registryUrl registry_url
                 registryCredentialsId registry_credentials_id
             }
