@@ -32,8 +32,8 @@ def call(){
             PYPI_CREDS = credentials("pypi")
         }
         parameters {
-            string(defaultValue: '7.1.0', description: 'The XML Version, exclude any preceeding "v" characters: X.Y.Z', name: 'XML_Version')
-            string(defaultValue: '5.0.1', description: 'The ts_sal version, exclude any preceeding "v" characters: X.Y.Z', name: 'SAL_Version')
+            string(defaultValue: '20.0.0', description: 'The XML Version, exclude any preceeding "v" characters: X.Y.Z', name: 'XML_Version')
+            string(defaultValue: '7.4.1', description: 'The ts_sal version, exclude any preceeding "v" characters: X.Y.Z', name: 'SAL_Version')
             choice choices: ['Release', 'Daily', 'Bleed'], description: 'The upstream build type (Bleed, Daily or Release). This determines from where to pull the RPM.', name: 'build_type'
             booleanParam(defaultValue: false, description: "Is this a development build?", name: 'develop')
             booleanParam(defaultValue: false, description: "Are we building the salobj conda package after this?", name: 'buildSalObjConda')
