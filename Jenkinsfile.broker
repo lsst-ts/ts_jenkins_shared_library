@@ -44,12 +44,12 @@ pipeline {
                         sh "echo This is a test"
                         jobs = ['IntegrationTests']
                     } else {
-                        jobs = ['EssCommon', 'AstroskyModel', 'ATAOS', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'attcpip', 'ATWhiteLight',
-                            'CBP', 'CRIOPy', 'Cycle', 'DateLoc', 'ddsconfig', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 'FiberSpectrograph', 'GIS', 'GenericCamera',
-                            'hexrotcomm', 'HVAC', 'IntegrationTests', 'LaserTracker', 'LinearStage', 'LOVE_commander', 'LOVE_producer',
-                            'M2Com', 'M2simulator', 'MTAirCompressor', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'ObservatoryModel', 'PMD', 'PreCommitConfig',
-                            'salkafka', 'Scheduler', 'SimActuators', 'StandardScripts', 'TcpIP', 'TunableLaser', 'Utils', 'Vanward', 'Watcher', 'WeatherForecast',
-                            'EssController', 'EssCsc', 'EssLabjack', 'XML', 'ObservatoryControl', 'MTRotator']
+                        jobs = ['EssCommon', 'AstroskyModel', 'ATAOS', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'attcpip', 
+                            'ATWhiteLight', 'AudioBroadcaster', 'CBP', 'CRIOPy', 'Cycle', 'DateLoc', 'ddsconfig', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 
+                            'FiberSpectrograph', 'GIS', 'GenericCamera', 'hexrotcomm', 'HVAC', 'IntegrationTests', 'LaserTracker', 'LinearStage', 'LOVE_commander', 'LOVE_producer',
+                            'M2Com', M2Gui, 'M2simulator', 'MTAirCompressor', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'ObservatoryModel', 'PMD', 'PreCommitConfig',
+                            'salkafka', 'SimActuators', 'StandardScripts', 'TcpIP', 'TunableLaser', 'Utils', 'Vanward', 'Watcher', 'WeatherForecast',
+                            'EssController', 'EssCsc', 'EssLabjack', 'XML', 'ObservatoryControl', 'MTRotator', 'Scheduler']
                     }
                     sal_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${SAL_Version} |sed 's/.pre[0-9]*//g'").trim()
                     idl_version = "${idl_version}=${XML_Version}_${sal_ver}"
