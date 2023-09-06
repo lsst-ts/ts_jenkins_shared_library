@@ -8,7 +8,7 @@ def call(Map pipeline_args = [:]) {
         error "Need to define name and module_name."
     }
     if(pipeline_args["module_name"] == "") {
-	pipeline_args["has_doc_site"] = false
+	    pipeline_args["has_doc_site"] = false
     }
     Csc csc = new Csc()
     idl_string = ""
@@ -92,7 +92,9 @@ def call(Map pipeline_args = [:]) {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             dir("${env.WORKSPACE}/repo/${pipeline_args.name}") {
-                                csc.setup_and_run_pre_commit()
+                                if(!pipeline_args.name.equals("ts_pre_commit_conf")) {
+                                    csc.setup_and_run_pre_commit()
+                                }
                                 csc.install()
                                 csc.test()
                             }
