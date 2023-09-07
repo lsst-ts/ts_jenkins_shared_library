@@ -235,7 +235,6 @@ def build_csc_conda(label) {
         if conda list \$pkg | grep -q "^\$pkg "; then
           build="mambabuild"
         fi
-        conda \$build --python 3.10 -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, idl_version: ${params.idl_version}}" --prefix-length 100 .
         conda \$build --python 3.11 -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, idl_version: ${params.idl_version}}" --prefix-length 100 .
     """
 }
@@ -279,7 +278,6 @@ def build_idl_conda(label) {
         if conda list \$pkg | grep -q "^\$pkg "; then
           build="mambabuild"
         fi
-        conda \$build --python 3.10 -c lsstts/label/${label} --prefix-length 100 .
         conda \$build --python 3.11 -c lsstts/label/${label} --prefix-length 100 .
     """
 }
@@ -310,7 +308,6 @@ def build_salobj_conda(label, concatVersion) {
         if conda list \$pkg | grep -q "^\$pkg "; then
           build="mambabuild"
         fi
-        conda \$build --python 3.10 -c lsstts/label/${label} --variants "{idl_version: ${concatVersion}}" --prefix-length 100 .
         conda \$build --python 3.11 -c lsstts/label/${label} --variants "{idl_version: ${concatVersion}}" --prefix-length 100 .
     """
 }
