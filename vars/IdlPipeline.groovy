@@ -145,7 +145,7 @@ def call(){
                             def RESULT = sh (returnStdout: true, script:
                             """
                             source /home/saluser/miniconda3/bin/activate > /dev/null &&
-                            conda install -q -y setuptools_scm > /dev/null &&
+                            mamba install -y setuptools_scm=7 > /dev/null &&
                             python -c 'from setuptools_scm import get_version; print(get_version())'
                             """).trim()
 
