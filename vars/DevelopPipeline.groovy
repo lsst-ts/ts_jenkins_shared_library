@@ -38,7 +38,7 @@ def call(Map pipeline_args = [:]) {
             docker {
                 alwaysPull true
                 image 'lsstts/develop-env:develop'
-                args "--entrypoint=''"
+                args "--entrypoint='' --network kafka"
             }
         }
         options {

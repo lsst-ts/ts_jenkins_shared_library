@@ -29,8 +29,8 @@ def call(config_repo){
             docker {
                 image 'ts-dockerhub.lsst.org/conda_package_builder:latest'
                 alwaysPull true
-                label 'CSC_Conda_Node'
-                args arg_str.concat("--env LSST_DDS_DOMAIN=citest --entrypoint=''")
+                label "${params.build_agent}"
+                args arg_str.concat("--env LSST_DDS_DOMAIN=citest --entrypoint='' --network=kafka")
                 registryUrl 'https://ts-dockerhub.lsst.org'
                 registryCredentialsId 'nexus3-lsst_jenkins'
             }
@@ -45,6 +45,7 @@ def call(config_repo){
             string(defaultValue: '\'\'', description: 'The IDL Version', name: 'idl_version')
             string(defaultValue: '\'\'', description: 'The XML Version', name: 'xml_version')
             string(defaultValue: '\'\'', description: 'The SAL Version', name: 'sal_version')
+            choice choices: ['CSC_Conda_Node', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
             booleanParam(defaultValue: false, description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
 
         }
