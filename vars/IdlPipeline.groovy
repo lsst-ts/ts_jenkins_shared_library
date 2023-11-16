@@ -40,24 +40,12 @@ def call(){
             booleanParam(defaultValue: false, description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
         }
         stages {
-            stage("Define TS_SAL_VERSION EnvVar") {
-                steps {
-                    echo 'Remove .pre### extension from TS_SAL_VERSION EnvVar.'
-                    script {
-                        sal_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' +
-                            "echo ${params.SAL_Version} |sed 's/.pre[0-9]*//g'").trim()
-                        sh "echo 'sal_ver: ${sal_ver}'"
-                        env.TS_SAL_VERSION = "${sal_ver}"
-                    }
-                    echo "TS_SAL_VERSION: ${env.TS_SAL_VERSION}"
-                }
-            }
             stage("Create Conda Package") {
                 when {
                     buildingTag()
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}", "TS_SAL_VERSION=${env.TS_SAL_VERSION}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}", "TS_XML_VERSION=${env.TS_XML_VERSION}", "TS_SAL_VERSION=${env.TS_SAL_VERSION}"]) {
                         script {
                             csc.build_idl_conda("main")
                         }
@@ -150,13 +138,13 @@ def call(){
                             """).trim()
 
                             idl_version = "${RESULT}"
-                            echo "Starting the SalObj_Conda_package/develop job; sal_version: ${sal_ver}, xml_version: ${XML_Version}, idl_version: ${idl_version}, develop: ${develop}, buildCSCConda: ${buildCSCConda}"
+                            echo "Starting the SalObj_Conda_package/develop job; sal_version: ${SAL_Version}, xml_version: ${XML_Version}, idl_version: ${idl_version}, develop: ${develop}, buildCSCConda: ${buildCSCConda}"
                             build propagate: false, job: 'SalObj_Conda_package/develop', parameters: [
                                 booleanParam(name: 'develop', value: "${develop}" ),
                                 booleanParam(name: 'buildCSCConda', value: "${buildCSCConda}" ),
                                 string(name: 'idl_version',value: "${idl_version}" ),
                                 string(name: 'xml_version',value: "${XML_Version}" ),
-                                string(name: 'sal_version',value: "${sal_ver}" )
+                                string(name: 'sal_version',value: "${SAL_Version}" )
                             ], wait: false
                     }
                 }
