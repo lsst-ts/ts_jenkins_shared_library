@@ -246,6 +246,7 @@ def build_idl_conda(label) {
         echo 'The BuildType: ${params.build_type}'
     """
     echo "The TS_SAL_VERSION EnvVar: ${env.TS_SAL_VERSION}"
+    echo "The TS_XML_VERSION EnvVar: ${env.TS_XML_VERSION}"
     if ( params.build_type == "Bleed" ) {
         rpm_repo = "lsst-ts-bleed"
     } else if ( params.build_type == "Daily" ) {
@@ -278,6 +279,9 @@ def build_idl_conda(label) {
         if conda list \$pkg | grep -q "^\$pkg "; then
           build="mambabuild"
         fi
+        # Redefine XML_Version before building the Conda package.
+        dot_xml_version=\$(echo \$TS_XML_VERSION |sed 's/~/./g')
+        export TS_XML_VERSION=\$dot_xml_version
         conda \$build --python 3.11 -c lsstts/label/${label} --prefix-length 100 .
     """
 }

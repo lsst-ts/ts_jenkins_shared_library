@@ -51,8 +51,8 @@ pipeline {
                             'salkafka', 'SimActuators', 'StandardScripts', 'TcpIP', 'TunableLaser', 'Utils', 'Vanward', 'Watcher', 'WeatherForecast',
                             'EssController', 'EssCsc', 'EssLabjack', 'XML', 'ObservatoryControl', 'MTRotator', 'Scheduler']
                     }
-                    sal_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${SAL_Version} |sed 's/.pre[0-9]*//g'").trim()
-                    idl_version = "${idl_version}=${XML_Version}_${sal_ver}"
+                    xml_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${params.XML_Version} |sed 's/~post/.post/g'").trim()
+                    idl_version = "${params.idl_version}=${xml_ver}_${params.SAL_Version}"
                     salobj_version="${salobj_version}"
                     for (int i = 0; i < jobs.size(); ++i) {
                         if ("${jobs[i]}"=="ObservatoryControl") {
