@@ -45,7 +45,7 @@ def call(){
                     buildingTag()
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}", "TS_XML_VERSION=${env.TS_XML_VERSION}", "TS_SAL_VERSION=${env.TS_SAL_VERSION}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}", "TS_XML_VERSION=${params.XML_Version}", "TS_SAL_VERSION=${params.SAL_Version}"]) {
                         script {
                             csc.build_idl_conda("main")
                         }
