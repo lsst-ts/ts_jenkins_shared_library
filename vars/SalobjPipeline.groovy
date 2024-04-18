@@ -167,7 +167,8 @@ def call(config_repo){
                             def SALOBJVERSION = sh (returnStdout: true, script:
                             """
                             source /home/saluser/miniconda3/bin/activate > /dev/null &&
-                            mamba install -y setuptools_scm=7 > /dev/null &&
+                            conda config --set solver libmamba &&
+                            conda install -y setuptools_scm=8 > /dev/null &&
                             python -c 'from setuptools_scm import get_version; print(get_version())'
                             """).trim()
 
