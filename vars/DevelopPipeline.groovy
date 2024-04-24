@@ -112,8 +112,10 @@ def call(Map pipeline_args = [:]) {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             dir("${env.WORKSPACE}/repo/${pipeline_args.name}") {
-                                csc.build_docs()
-                                csc.upload_docs(pipeline_args.name)
+                                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                                    csc.build_docs()
+                                    csc.upload_docs(pipeline_args.name)
+                                }
                             }
                         }
                     }
