@@ -230,7 +230,7 @@ def build_csc_conda(label) {
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python 3.11 -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, idl_version: ${params.idl_version}}" --prefix-length 100 .
+        conda build -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, idl_version: ${params.idl_version}}" --prefix-length 100 .
     """
 }
 
@@ -273,7 +273,7 @@ def build_idl_conda(label) {
         # Redefine XML_Version before building the Conda package.
         dot_xml_version=\$(echo \$TS_XML_VERSION |sed 's/~/./g')
         export TS_XML_VERSION=\$dot_xml_version
-        conda build --python 3.11 -c lsstts/label/${label} --prefix-length 100 .
+        conda build -c lsstts/label/${label} --prefix-length 100 .
     """
 }
 
@@ -295,7 +295,7 @@ def build_salobj_conda(label, concatVersion) {
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python 3.11 -c lsstts/label/${label} --variants "{idl_version: ${concatVersion}}" --prefix-length 100 .
+        conda build -c lsstts/label/${label} --variants "{idl_version: ${concatVersion}}" --prefix-length 100 .
     """
 }
 
