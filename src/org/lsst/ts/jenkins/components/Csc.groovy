@@ -213,9 +213,9 @@ def install(eups=true) {
     }
 }
 
-def test() {
+def test(scons=false) {
     // Run the tests
-    sh """
+    test_shell_script = """
         set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         setup -kr .
@@ -226,7 +226,13 @@ def test() {
             export QT_API=PySide6
             export PYTEST_QT_API=PySide6
         fi
-
+    """
+    if (scons) {
+        test_shell_script += """
+            scons shebang
+        """
+    }
+    test_shell_script += """
         # We compare to null for bash as the way groovy passes the value
         # is not the same as comparing for an empty string.
         if [ "${env.MODULE_NAME}" = "null" ]; then
@@ -235,6 +241,7 @@ def test() {
             pytest -ra --cov-report html --cov=${env.MODULE_NAME} --junitxml=${env.XML_REPORT}
         fi
     """
+    sh test_shell_script
 }
 
 def build_csc_conda(label) {

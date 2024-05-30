@@ -9,7 +9,9 @@ def call(Map pipeline_args = [:]) {
         kickoff_jobs: [],
         slack_build_channel: "",
         has_doc_site: true,
-        use_pyside6: false
+        use_pyside6: false,
+        require_git_lfs: false,
+        require_scons: false
     ]
     pipeline_args = defaultArgs << pipeline_args
     if((!pipeline_args["name"]) || (!pipeline_args["module_name"] == null)) {
@@ -17,6 +19,12 @@ def call(Map pipeline_args = [:]) {
     }
     if(pipeline_args["module_name"] == "") {
 	    pipeline_args["has_doc_site"] = false
+    }
+    if(pipeline_args["require_git_lfs"]) {
+        label_str = 'Node3_4CPU'
+    }
+    else {
+        label_str = 'Node1_4CPU || Node2_8CPU || Node3_4CPU'
     }
     Csc csc = new Csc()
     idl_string = ""
@@ -49,6 +57,7 @@ def call(Map pipeline_args = [:]) {
                 alwaysPull true
                 image 'lsstts/develop-env:develop'
                 args "--entrypoint='' --network kafka"
+                label "${label_str}"
             }
         }
         options {
@@ -85,6 +94,20 @@ def call(Map pipeline_args = [:]) {
                     }
                 }
             }
+            stage("Download git-lfs files") {
+        when {
+            expression {
+                return pipeline_args.require_git_lfs
+            }
+        }
+                steps {
+                    withEnv(["WHOME=${env.WORKSPACE}/repo/${pipeline_args.name}"]) {
+                        script {
+                            csc.download_git_lfs_files()
+                        }
+                    }
+                }
+            }
             stage ('Install Requirements and Update Branches') {
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
@@ -107,7 +130,7 @@ def call(Map pipeline_args = [:]) {
                                     csc.setup_and_run_pre_commit()
                                 }
                                 csc.install()
-                                csc.test()
+                                csc.test(scons=pipeline_args.require_scons)
                             }
                         }
                     }
