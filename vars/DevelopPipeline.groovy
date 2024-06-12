@@ -8,7 +8,8 @@ def call(Map pipeline_args = [:]) {
         extra_packages: [],
         kickoff_jobs: [],
         slack_build_channel: "",
-        has_doc_site: true
+        has_doc_site: true,
+        use_pyside6: false
     ]
     pipeline_args = defaultArgs << pipeline_args
     if((!pipeline_args["name"]) || (!pipeline_args["module_name"] == null)) {
@@ -57,6 +58,8 @@ def call(Map pipeline_args = [:]) {
             IDL_NAME = "${pipeline_args.idl_name}"
             XML_REPORT= "jenkinsReport/report.xml"
             MODULE_NAME = "${pipeline_args.module_name}"
+            QT_API = "${pipeline_args.use_pyside6 == true ? 'PySide6' : 'PySide2'}"
+            PYTEST_QT_API = "${pipeline_args.use_pyside6 == true ? 'PySide6' : 'PySide2'}"
         }
 
         stages {
