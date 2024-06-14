@@ -25,6 +25,8 @@ def call(Map pipeline_args = [:]) {
             idl_string = idl_string.concat("${idl} ")
         }
     }
+    // TODO: Remove this in DM-44795
+    pipeline_args.use_pyside6 = Boolean.toString(pipeline_args.use_pyside6)
     properties(
         [
         buildDiscarder(
@@ -58,8 +60,7 @@ def call(Map pipeline_args = [:]) {
             IDL_NAME = "${pipeline_args.idl_name}"
             XML_REPORT= "jenkinsReport/report.xml"
             MODULE_NAME = "${pipeline_args.module_name}"
-            QT_API = "${pipeline_args.use_pyside6 == true ? 'PySide6' : 'PySide2'}"
-            PYTEST_QT_API = "${pipeline_args.use_pyside6 == true ? 'PySide6' : 'PySide2'}"
+            USE_PYSIDE6 = "${pipeline_args.use_pyside6}"
         }
 
         stages {

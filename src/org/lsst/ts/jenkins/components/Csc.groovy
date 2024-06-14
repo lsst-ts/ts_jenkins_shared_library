@@ -170,6 +170,14 @@ def build_docs() {
         set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         setup -kr .
+
+        # Update the variables of QT
+        # TODO: Remove this in DM-44795
+        if [ "${env.USE_PYSIDE6}" = "true" ]; then
+            export QT_API=PySide6
+            export PYTEST_QT_API=PySide6
+        fi
+
         package-docs build
     """
 }
@@ -211,6 +219,14 @@ def test() {
         set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         setup -kr .
+
+        # Update the variables of QT
+        # TODO: Remove this in DM-44795
+        if [ "${env.USE_PYSIDE6}" = "true" ]; then
+            export QT_API=PySide6
+            export PYTEST_QT_API=PySide6
+        fi
+
         # We compare to null for bash as the way groovy passes the value
         # is not the same as comparing for an empty string.
         if [ "${env.MODULE_NAME}" = "null" ]; then
