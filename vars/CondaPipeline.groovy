@@ -76,9 +76,10 @@ def call(Object... varargs){
             }
         }
         parameters {
+            choice choices: ['CSC_Conda_Node', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
             string(name: 'idl_version', defaultValue: '\'\'', description: 'The version of the IDL Conda package.')
             string(name: 'salobj_version', defaultValue: '\'\'', description: 'The version of the salobj Conda package.')
-            choice choices: ['CSC_Conda_Node', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
+            string(name: 'xml_conda_version', defaultValue: '\'\'', description: 'The XML Conda Version')
         }
         environment {
             package_name = "${name}"
