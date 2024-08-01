@@ -36,7 +36,8 @@ def call(){
             string(defaultValue: '7.4.1', description: 'The ts_sal version, exclude any preceeding "v" characters: X.Y.Z', name: 'SAL_Version')
             choice choices: ['Release', 'Daily', 'Bleed'], description: 'The upstream build type (Bleed, Daily or Release). This determines from where to pull the RPM.', name: 'build_type'
             booleanParam(defaultValue: false, description: "Is this a development build?", name: 'develop')
-            booleanParam(defaultValue: false, description: "Are we building the salobj conda package after this?", name: 'buildSalObjConda')
+            booleanParam(defaultValue: false, description: "Are we building the XML conda package after this?", name: 'buildXmlConda')
+            booleanParam(defaultValue: false, description: "Are we building the SalObj conda package after this?", name: 'buildSalObjConda')
             booleanParam(defaultValue: false, description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
         }
         stages {
@@ -126,8 +127,8 @@ def call(){
                     }
                 }
             }//Push Dev
-            stage("Trigger Salobj Conda Package build") {
-                    when { expression { return params.buildSalObjConda.toBoolean() } }
+            stage("Trigger XML Conda Package build") {
+                    when { expression { return params.buildXmlConda.toBoolean() } }
                     steps {
                         script {
                             def RESULT = sh (returnStdout: true, script:
@@ -139,9 +140,10 @@ def call(){
                             """).trim()
 
                             idl_version = "${RESULT}"
-                            echo "Starting the SalObj_Conda_package/develop job; sal_version: ${SAL_Version}, xml_version: ${XML_Version}, idl_version: ${idl_version}, develop: ${develop}, buildCSCConda: ${buildCSCConda}"
+                            echo "Starting the XmlObj_Conda_package/develop job; sal_version: ${SAL_Version}, xml_version: ${XML_Version}, idl_version: ${idl_version}, develop: ${develop}, buildSalObjConda: ${buildSalObjConda}, buildCSCConda: ${buildCSCConda}"
                             build propagate: false, job: 'SalObj_Conda_package/develop', parameters: [
                                 booleanParam(name: 'develop', value: "${develop}" ),
+                                booleanParam(name: 'buildSalObjConda', value: "${buildSalObjConda}" ),
                                 booleanParam(name: 'buildCSCConda', value: "${buildCSCConda}" ),
                                 string(name: 'idl_version',value: "${idl_version}" ),
                                 string(name: 'xml_version',value: "${XML_Version}" ),
@@ -149,7 +151,7 @@ def call(){
                             ], wait: false
                     }
                 }
-            }//TriggerSalObj
+            }//TriggerXmlObj
         }//stages
         post {
             always {
