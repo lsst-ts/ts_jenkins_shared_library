@@ -42,10 +42,11 @@ def call(config_repo){
             PYPI_CREDS = credentials("pypi")
         }
         parameters {
-            string(defaultValue: '\'\'', description: 'The IDL Version', name: 'idl_version')
-            string(defaultValue: '\'\'', description: 'The XML Version', name: 'xml_version')
-            string(defaultValue: '\'\'', description: 'The SAL Version', name: 'sal_version')
-            choice choices: ['CSC_Conda_Node', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
+            choice name: 'build_agent', choices: ['CSC_Conda_Node', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
+            string(name: 'sal_version', defaultValue: '\'\'', description: 'The SAL Version')
+            string(name: 'idl_version', defaultValue: '\'\'', description: 'The IDL Version')
+            string(name: 'xml_version', defaultValue: '\'\'', description: 'The XML Version')
+            string(name: 'xml_conda_version', defaultValue: '\'\'', description: 'The XML Conda Version')
             booleanParam(defaultValue: false, description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
 
         }
@@ -173,11 +174,12 @@ def call(config_repo){
                             """).trim()
 
 
-                            echo "Starting the CSC_Conda_broker/develop job; idl_version: ${idl_version}, salobj_version: ${SALOBJVERSION}, XML_Version: ${xml_version}, SAL_Version: ${sal_version}"
+                            echo "Starting the CSC_Conda_broker/develop job; idl_version: ${idl_version}, salobj_version: ${SALOBJVERSION}, XML_Conda_Version: ${xml_conda_version}, XML_Version: ${xml_version}, SAL_Version: ${sal_version}"
                             build job: 'CSC_Conda_Broker', parameters: [\
                                 string(name: 'idl_version', value: idl_version ), \
                                 string(name: 'salobj_version', value: SALOBJVERSION ), \
                                 string(name: 'XML_Version', value: xml_version ), \
+                                string(name: 'xml_conda_version', value: xml_conda_version ), \
                                 string(name: 'SAL_Version', value: sal_version ), \
                                 booleanParam(name: 'Bleed', value: false), \
                                 booleanParam(name: 'Daily', value: true), \
