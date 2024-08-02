@@ -244,6 +244,19 @@ def test(scons=false) {
     sh test_shell_script
 }
 
+def build_standalone_conda(label) {
+    // Build the XML Conda package
+    sh """
+        #!/bin/bash
+        cd ${WHOME}/conda
+        source /home/saluser/.setup.sh
+        conda config --set solver libmamba
+        conda config --add channels conda-forge
+        conda config --add channels lsstts
+        conda build --python 3.11 -c lsstts/label/${label} --prefix-length 100 .
+    """
+}
+
 def build_csc_conda(label) {
     // Build the conda package
     sh """
@@ -253,7 +266,7 @@ def build_csc_conda(label) {
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python 3.11 -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, idl_version: ${params.idl_version}}" --prefix-length 100 .
+        conda build --python 3.11 -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, idl_version: ${params.idl_version}}" --prefix-length 100 .
     """
 }
 
@@ -300,17 +313,6 @@ def build_idl_conda(label) {
     """
 }
 
-def build_integrationtests_conda(label) {
-    sh """
-        cd ${WHOME}/conda
-        source /home/saluser/.setup.sh
-        conda config --set solver libmamba
-        conda config --add channels conda-forge
-        conda config --add channels lsstts
-        conda build --python 3.11 -c lsstts/label/${label} --prefix-length 100 .
-    """
-}
-
 def build_salobj_conda(label, concatVersion) {
     sh """
         cd ${WHOME}/conda
@@ -318,7 +320,7 @@ def build_salobj_conda(label, concatVersion) {
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python 3.11 -c lsstts/label/${label} --variants "{idl_version: ${concatVersion}}" --prefix-length 100 .
+        conda build --python 3.11 -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}, idl_version: ${concatVersion}}" --prefix-length 100 .
     """
 }
 

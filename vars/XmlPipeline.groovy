@@ -63,7 +63,7 @@ def call(Object... varargs){
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_csc_conda("main")
+                            csc.build_standalone_conda("main")
                         }
                     }
                 }
@@ -77,7 +77,7 @@ def call(Object... varargs){
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_csc_conda("dev")
+                            csc.build_standalone_conda("dev")
                         }
                     }
                 }
