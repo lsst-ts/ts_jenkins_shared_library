@@ -45,7 +45,7 @@ def call(){
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_integrationtests_conda("main")
+                            csc.build_standalone_conda("main")
                         }
                     }
                 }
@@ -59,7 +59,7 @@ def call(){
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_integrationtests_conda("dev")
+                            csc.build_standalone_conda("dev")
                         }
                     }
                 }
