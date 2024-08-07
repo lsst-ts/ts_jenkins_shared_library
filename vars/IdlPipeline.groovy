@@ -141,7 +141,7 @@ def call(){
 
                             idl_version = "${RESULT}"
                             echo "Starting the XmlObj_Conda_package/develop job; sal_version: ${SAL_Version}, xml_version: ${XML_Version}, idl_version: ${idl_version}, develop: ${develop}, buildSalObjConda: ${buildSalObjConda}, buildCSCConda: ${buildCSCConda}"
-                            build propagate: false, job: 'SalObj_Conda_package/develop', parameters: [
+                            build propagate: false, job: 'XML_conda_package/develop', parameters: [
                                 booleanParam(name: 'develop', value: "${develop}" ),
                                 booleanParam(name: 'buildSalObjConda', value: "${buildSalObjConda}" ),
                                 booleanParam(name: 'buildCSCConda', value: "${buildCSCConda}" ),
