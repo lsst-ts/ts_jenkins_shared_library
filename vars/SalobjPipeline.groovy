@@ -42,7 +42,7 @@ def call(config_repo){
             PYPI_CREDS = credentials("pypi")
         }
         parameters {
-            choice name: 'build_agent', choices: ['CSC_Conda_Node', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
+            choice name: 'build_agent', choices: ['CSC_Conda_Node', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent'
             string(name: 'sal_version', defaultValue: '\'\'', description: 'The SAL Version')
             string(name: 'idl_version', defaultValue: '\'\'', description: 'The IDL Version')
             string(name: 'xml_version', defaultValue: '\'\'', description: 'The XML Version')
