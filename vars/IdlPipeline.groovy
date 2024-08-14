@@ -20,7 +20,7 @@ def call(){
                 image 'ts-dockerhub.lsst.org/conda_package_builder:latest'
                 alwaysPull true
                 label 'CSC_Conda_Node'
-                args "--env LSST_DDS_DOMAIN=citest --env TS_XML_VERSION=${params.XML_Version} --env TS_SAL_VERSION=${params.SAL_Version} -u root --entrypoint=''"
+                args "--env LSST_DDS_DOMAIN=citest --env TS_XML_VERSION=${params.XML_Version} --env TS_SAL_VERSION=${params.SAL_Version} --entrypoint=''"
                 registryUrl 'https://ts-dockerhub.lsst.org'
                 registryCredentialsId 'nexus3-lsst_jenkins'
             }
@@ -60,7 +60,7 @@ def call(){
                     }
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}"]) {
+                    withEnv(["WHOME=${env.WORKSPACE}", "TS_XML_VERSION=${params.XML_Version}", "TS_SAL_VERSION=${params.SAL_Version}"]) {
                         script {
                             csc.build_idl_conda("dev")
                         }
@@ -140,14 +140,14 @@ def call(){
                             """).trim()
 
                             idl_version = "${RESULT}"
-                            echo "Starting the XmlObj_Conda_package/develop job; SAL_version: ${SAL_Version}, XML_version: ${XML_Version}, idl_version: ${idl_version}, develop: ${develop}, buildSalObjConda: ${buildSalObjConda}, buildCSCConda: ${buildCSCConda}"
+                            echo "Starting the XmlObj_Conda_package/develop job; SAL_version: ${params.SAL_Version}, XML_version: ${params.XML_Version}, idl_version: ${idl_version}, develop: ${params.develop}, buildSalObjConda: ${params.buildSalObjConda}, buildCSCConda: ${params.buildCSCConda}"
                             build propagate: false, job: 'XML_conda_package/develop', parameters: [
-                                booleanParam(name: 'develop', value: "${develop}" ),
-                                booleanParam(name: 'buildSalObjConda', value: "${buildSalObjConda}" ),
-                                booleanParam(name: 'buildCSCConda', value: "${buildCSCConda}" ),
+                                booleanParam(name: 'develop', value: "${params.develop}" ),
+                                booleanParam(name: 'buildSalObjConda', value: "${params.buildSalObjConda}" ),
+                                booleanParam(name: 'buildCSCConda', value: "${params.buildCSCConda}" ),
                                 string(name: 'idl_version',value: "${idl_version}" ),
-                                string(name: 'XML_version',value: "${XML_Version}" ),
-                                string(name: 'SAL_version',value: "${SAL_Version}" )
+                                string(name: 'XML_version',value: "${params.XML_Version}" ),
+                                string(name: 'SAL_version',value: "${params.SAL_Version}" )
                             ], wait: false
                     }
                 }
