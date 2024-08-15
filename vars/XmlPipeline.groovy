@@ -157,13 +157,13 @@ def call(Object... varargs){
                             xml_conda_version = "${RESULT}"
                             echo "Starting the SalObj_Conda_package/develop job; sal_version: ${params.SAL_Version}, xml_version: ${params.XML_Version}, xml_conda_version: ${xml_conda_version}, idl_version: ${params.idl_version}, develop: ${params.develop}, build_type:, ${params.build_type}, buildCSCConda: ${params.buildCSCConda}"
                             build propagate: false, job: 'SalObj_Conda_package/develop', parameters: [
-                                booleanParam(name: 'develop', value: "$params.develop" ),
-                                booleanParam(name: 'buildCSCConda', value: "$params.buildCSCConda" ),
-                                string(name: 'build_type', value: "$params.build_type"),
-                                string(name: 'idl_version',value: "$params.idl_version" ),
-                                string(name: 'xml_version',value: "$params.XML_Version" ),
-                                string(name: 'xml_conda_version',value: "$xml_conda_version" ),
-                                string(name: 'sal_version',value: "$params.SAL_Version" )
+                                booleanParam(name: 'develop', value: $params.develop" ),
+                                booleanParam(name: 'buildCSCConda', value: $params.buildCSCConda ),
+                                string(name: 'build_type', value: $params.build_type),
+                                string(name: 'idl_version',value: $params.idl_version ),
+                                string(name: 'xml_version',value: $params.XML_Version ),
+                                string(name: 'xml_conda_version',value: $xml_conda_version ),
+                                string(name: 'sal_version',value: $params.SAL_Version )
                             ], wait: false
                     }
                 }
