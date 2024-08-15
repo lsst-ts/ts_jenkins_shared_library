@@ -20,7 +20,7 @@ def call(){
                 image 'ts-dockerhub.lsst.org/conda_package_builder:latest'
                 alwaysPull true
                 label 'CSC_Conda_Node'
-                args "--env LSST_DDS_DOMAIN=citest --env TS_XML_VERSION=${params.XML_Version} --env TS_SAL_VERSION=${params.SAL_Version} --entrypoint=''"
+                args "--env LSST_DDS_DOMAIN=citest --env TS_XML_VERSION=${params.XML_Version} --env TS_SAL_VERSION=${params.SAL_Version} -u root --entrypoint=''"
                 registryUrl 'https://ts-dockerhub.lsst.org'
                 registryCredentialsId 'nexus3-lsst_jenkins'
             }
