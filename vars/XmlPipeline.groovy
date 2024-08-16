@@ -42,12 +42,11 @@ def call(Object... varargs){
         parameters {
             choice choices: ['CSC_Conda_Node', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
             string(name: 'idl_version', defaultValue: '\'\'', description: 'The version of the IDL Conda package.')
-            string(name: 'XML_Version', defaultValue: '20.0.0', description: 'The XML Version, exclude any preceeding "v" characters: X.Y.Z')
-            string(name: 'SAL_Version', defaultValue: '7.4.1', description: 'The SAL version, exclude any preceeding "v" characters: X.Y.Z')
-            choice name: 'build_type', choices: ['Release', 'Daily', 'Bleed'], description: 'The upstream build type (Bleed, Daily or Release). This determines from where to pull the RPM.'
-            booleanParam(defaultValue: false, description: "Is this a development build?", name: 'develop')
-            booleanParam(defaultValue: false, description: "Are we building the salobj conda package after this?", name: 'buildSalObjConda')
-            booleanParam(defaultValue: false, description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
+            string(name: 'XML_Version', description: 'The XML Version, exclude any preceeding "v" characters: X.Y.Z')
+            string(name: 'SAL_Version', description: 'The SAL version, exclude any preceeding "v" characters: X.Y.Z')
+            booleanParam(description: "Is this a development build?", name: 'develop')
+            booleanParam(description: "Are we building the salobj conda package after this?", name: 'buildSalObjConda')
+            booleanParam(description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
         }
         environment {
             package_name = "${name}"
@@ -155,11 +154,10 @@ def call(Object... varargs){
                             """).trim()
 
                             xml_conda_version = "${RESULT}"
-                            echo "Starting the SalObj_Conda_package/develop job; sal_version: ${params.SAL_Version}, xml_version: ${params.XML_Version}, xml_conda_version: ${xml_conda_version}, idl_version: ${params.idl_version}, develop: ${params.develop}, build_type:, ${params.build_type}, buildCSCConda: ${params.buildCSCConda}"
+                            echo "Starting the SalObj_Conda_package/develop job; sal_version: ${params.SAL_Version}, xml_version: ${params.XML_Version}, xml_conda_version: ${xml_conda_version}, idl_version: ${params.idl_version}, build_agent: ${params.build_agent}, buildCSCConda: ${params.buildCSCConda}"
                             build propagate: false, job: 'SalObj_Conda_package/develop', parameters: [
-                                booleanParam(name: 'develop', value: "${params.develop}" ),
+                                booleanParam(name: 'build_agent', value: "${params.build_agent}" ),
                                 booleanParam(name: 'buildCSCConda', value: "${params.buildCSCConda}" ),
-                                string(name: 'build_type', value: "${params.build_type}"),
                                 string(name: 'idl_version',value: "${params.idl_version}" ),
                                 string(name: 'xml_version',value: "${params.XML_Version}" ),
                                 string(name: 'xml_conda_version',value: "${xml_conda_version}" ),
