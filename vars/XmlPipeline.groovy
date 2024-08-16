@@ -154,9 +154,8 @@ def call(Object... varargs){
                             """).trim()
 
                             xml_conda_version = "${RESULT}"
-                            echo "Starting the SalObj_Conda_package/develop job; sal_version: ${params.SAL_Version}, xml_version: ${params.XML_Version}, xml_conda_version: ${xml_conda_version}, idl_version: ${params.idl_version}, build_agent: ${params.build_agent}, buildCSCConda: ${params.buildCSCConda}"
+                            echo "Starting the SalObj_Conda_package/develop job; sal_version: ${params.SAL_Version}, xml_version: ${params.XML_Version}, xml_conda_version: ${xml_conda_version}, idl_version: ${params.idl_version}, buildCSCConda: ${params.buildCSCConda}"
                             build propagate: false, job: 'SalObj_Conda_package/develop', parameters: [
-                                booleanParam(name: 'build_agent', value: "${params.build_agent}" ),
                                 booleanParam(name: 'buildCSCConda', value: "${params.buildCSCConda}" ),
                                 string(name: 'idl_version',value: "${params.idl_version}" ),
                                 string(name: 'xml_version',value: "${params.XML_Version}" ),
