@@ -3,6 +3,8 @@ import org.lsst.ts.jenkins.components.Csc
 
 def call(Object... varargs){
     // Create a conda build pipeline
+    // Define default variables
+    upload_dev=false
     // Check if map is first for named parameters
     if (varargs[0] instanceof Map) {
         pipeline_args = varargs[0]
@@ -21,6 +23,9 @@ def call(Object... varargs){
         else {
     	    arch="linux-64"
         }
+        if(pipeline_args["upload_dev"]){
+            upload_dev=pipeline_args.upload_dev.toBoolean()
+        }
     }
     // If not map then assume ordered parameters
     // Mixing these are not supported nor handled
@@ -28,12 +33,15 @@ def call(Object... varargs){
         config_repo = varargs[0]
         name = varargs[1]
         module_name = varargs[2]
-	if (varargs.length == 4){
-	    arch = varargs[3]
-	}
-	else {
-	   arch = "linux-64"
-	}
+        if (varargs.length >= 4){
+            arch = varargs[3]
+        }
+        else {
+           arch = "linux-64"
+        }
+        if (varargs.length == 5){
+            upload_dev = varargs[4]
+        }
     }
     Csc csc = new Csc()
     registry_url = "https://ts-dockerhub.lsst.org"
@@ -136,6 +144,29 @@ def call(Object... varargs){
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             csc.build_csc_conda("dev")
+                        }
+                    }
+                }
+            }
+            stage("Push Conda Develop package") {
+                when {
+                    not {
+                        buildingTag()
+                    }
+                    expression {
+                        return upload_dev
+                    }
+                }
+                steps {
+                    withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
+                        withEnv(["WHOME=${env.WORKSPACE}"]) {
+                            sh """
+                            source /home/saluser/miniconda3/bin/activate
+                            anaconda login --user ${anaconda_user} --password ${anaconda_pass}
+                            """
+                            script {
+                                csc.upload_conda(package_name,"dev", arch)
+                            }
                         }
                     }
                 }
