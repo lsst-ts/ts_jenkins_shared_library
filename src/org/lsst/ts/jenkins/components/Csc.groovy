@@ -6,6 +6,8 @@ def email() {
                 "love-producer": "saranda@lsst.org",
                 "ts-astrosky-model": "tribeiro@lsst.org",
                 "ts-ataos": "tribeiro@lsst.org",
+                "ts-atbuilding-csc": "bbrondel@lsst.org",
+                "ts-atbuilding-vents": "bbrondel@lsst.org",
                 "ts-atdome": "wvreeven@lsst.org",
                 "ts-atdometrajectory": "wvreeven@lsst.org",
                 "ts-athexapod": "ecoughlin@lsst.org",
@@ -28,7 +30,7 @@ def email() {
                 "ts-develop": "wvreeven@lsst.org",
                 "ts-develop-aarch64": "wvreeven@lsst.org",
                 "ts-dimm": "dmills@lsst.org",
-                "ts-dream": "pkubanek@lsst.org",
+                "ts-dream": "bbrondel@lsst.org",
                 "ts-dsm": "mreuter@lsst.org",
                 "ts-eas": "wvreeven@lsst.org",
                 "ts-electrometer": "ecoughlin@lsst.org",
@@ -87,11 +89,14 @@ def slack_id() {
     String tiago = "U72CH91L2"
     String tewei = "U3F32NNJ2"
     String wouter = "URY8ACN4S"
+    String brianb = "U07PB4HGR3P"
     slack_ids = ["default": rob,
                 "love-commander": sebastian,
                 "love-producer": sebastian,
                 "ts-astrosky-model": tiago,
                 "ts-ataos": tiago,
+                "ts-atbuilding-csc": brianb,
+                "ts-atbuilding-vents": brianb,
                 "ts-atdome": wouter,
                 "ts-atdometrajectory": wouter,
                 "ts-athexapod": eric,
@@ -114,7 +119,7 @@ def slack_id() {
                 "ts-develop": wouter,
                 "ts-develop-aarch64": wouter,
                 "ts-dimm": dave,
-                "ts-dream": petr,
+                "ts-dream": brianb,
                 "ts-dsm": michael,
                 "ts-eas": wouter,
                 "ts-electrometer": eric,
