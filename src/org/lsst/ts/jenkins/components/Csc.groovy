@@ -80,16 +80,16 @@ def email() {
 }
 
 def slack_id() {
-    String dave = "U2N3R1J5R"
-    String eric = "UAS4QHFSB"
-    String michael = "U2JPDUE86"
-    String petr = "UURCFJJVB"
-    String rob = "U2NF4GWV8"
-    String sebastian = "U02CCN5J8UX"
-    String tiago = "U72CH91L2"
-    String tewei = "U3F32NNJ2"
-    String wouter = "URY8ACN4S"
     String brianb = "U07PB4HGR3P"
+    String dave = "U07Q7P9QA06"
+    String eric = "U07Q1MF9TKJ"
+    String michael = "U07N613SX19"
+    String petr = "U07PA4Y8H4K"
+    String rob = "U07PA6ALBDY"
+    String sebastian = "U07QPRAJHHQ"
+    String tiago = "U07N2QKCTJP"
+    String tewei = "U07PBTMJ4BC"
+    String wouter = "U07PMHC954K"
     slack_ids = ["default": rob,
                 "love-commander": sebastian,
                 "love-producer": sebastian,

@@ -45,11 +45,13 @@ pipeline {
                         sh "echo This is a test"
                         jobs = ['IntegrationTests']
                     } else {
-                        jobs = ['EssCommon', 'AstroskyModel', 'ATAOS', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 'ATPneumaticssimulator', 'ATSpectrograph', 'attcpip', 
-                            'ATWhiteLight', 'AudioBroadcaster', 'CBP', 'CRIOPy', 'Cycle', 'DateLoc', 'ddsconfig', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 
-                            'FiberSpectrograph', 'GIS', 'GenericCamera', 'hexrotcomm', 'HVAC', 'IntegrationTests', 'LaserTracker', 'LinearStage', 'LOVE_commander', 'LOVE_producer',
-                            'M2Com', 'M2Gui', 'M2simulator', 'MTAirCompressor', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'ObservatoryModel', 'PMD', 'PreCommitConfig',
-                            'salkafka', 'SimActuators', 'StandardScripts', 'TcpIP', 'TunableLaser', 'Utils', 'Vanward', 'Watcher', 'WeatherForecast',
+                        jobs = ['EssCommon', 'AstroskyModel', 'ATAOS', 'ATBuildingController', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 
+                            'ATPneumaticssimulator', 'ATSpectrograph', 'attcpip', 'ATWhiteLight', 'AudioBroadcaster', 'CBP', 'CRIOPy', 'Cycle', 
+                            'DateLoc', 'ddsconfig', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 'FiberSpectrograph', 'GIS', 'GenericCamera', 
+                            'hexrotcomm', 'HVAC', 'IntegrationTests', 'LaserTracker', 'LinearStage', 'LOVE_commander', 'LOVE_producer',
+                            'M2Com', 'M2Gui', 'M2simulator', 'MTAirCompressor', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 
+                            'ObservatoryModel', 'PMD', 'PreCommitConfig', 'salkafka', 'SimActuators', 'StandardScripts', 'TcpIP', 'TunableLaser', 
+                            'Utils', 'Vanward', 'Watcher', 'WeatherForecast',
                             'EssController', 'EssCsc', 'EssLabjack', 'ObservatoryControl', 'MTRotator', 'Scheduler']
                     }
                     xml_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${params.XML_Version} |sed 's/~post/.post/g'").trim()
