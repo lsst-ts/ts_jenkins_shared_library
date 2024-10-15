@@ -81,9 +81,17 @@ def call(Map pipeline_args = [:]) {
                                 pipeline_args.extra_packages.each { extra_package ->
                                     split = extra_package.split('/')
                                     org = split[0]
-                                    package_name = split[1]
-                                    dir("${env.WORKSPACE}/ci/${package_name}") {
+                                    split2 = split[1].split('@')
+                                    package_name = split2[0]
+                                    if (split2.size() == 1 ) {
+                                      dir("${env.WORKSPACE}/ci/${package_name}") {
                                         git url: "https://github.com/${org}/${package_name}.git", branch: "develop"
+                                      }
+                                    }
+                                    else {
+                                      dir("${env.WORKSPACE}/ci/${package_name}") {
+                                        git url: "https://github.com/${org}/${package_name}.git", branch: split2[1]
+                                      }
                                     }
                                 }
                             }
