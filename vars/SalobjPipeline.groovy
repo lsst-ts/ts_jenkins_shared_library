@@ -198,16 +198,16 @@ def call(config_repo){
             }
             regression {
                 script {
-                    def userId = "U72CH91L2" //Tiago
-                    def userId2 = "URY8ACN4S" //Wouter
+                    def userId = "U07N2QKCTJP" //Tiago
+                    def userId2 = "U07PMHC954K" //Wouter
                     slackSend(color: "danger", message: "<@$userId> <@$userId2> ${JOB_NAME} has suffered a regression ${BUILD_URL}", channel: "#jenkins-builds, @$userId, @$userId")
                 }
 
             }
             fixed {
                 script {
-                    def userId = "U72CH91L2" //Tiago
-                    def userId2 = "URY8ACN4S" //Wouter
+                    def userId = "U07N2QKCTJP" //Tiago
+                    def userId2 = "U07PMHC954K" //Wouter
                     slackSend(color: "good", message: "<@$userId> <@$userId2> ${JOB_NAME} has been fixed ${BUILD_URL}", channel: "#jenkins-builds, @$userId, @$userId2")
                 }
             }
