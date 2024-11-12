@@ -46,11 +46,11 @@ pipeline {
                         jobs = ['IntegrationTests']
                     } else {
                         jobs = ['EssCommon', 'AstroskyModel', 'ATAOS', 'ATBuildingController', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 
-                            'ATPneumaticssimulator', 'ATSpectrograph', 'attcpip', 'ATWhiteLight', 'AudioBroadcaster', 'CBP', 'CRIOPy', 'Cycle', 
+                            'ATPneumaticssimulator', 'ATSpectrograph', 'attcpip', 'ATWhiteLight', 'AudioBroadcaster', 'audiotrigger', 'CBP', 'CRIOPy', 'Cycle', 
                             'DateLoc', 'ddsconfig', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 'FiberSpectrograph', 'GIS', 'GenericCamera', 
                             'hexrotcomm', 'HVAC', 'IntegrationTests', 'LaserTracker', 'LinearStage', 'LOVE_commander', 'LOVE_producer',
                             'M2Com', 'M2Gui', 'M2simulator', 'MTAirCompressor', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 
-                            'ObservatoryModel', 'PMD', 'PreCommitConfig', 'salkafka', 'SimActuators', 'StandardScripts', 'TcpIP', 'TunableLaser', 
+                            'ObservatoryModel', 'OFC', 'PMD', 'PreCommitConfig', 'salkafka', 'SimActuators', 'StandardScripts', 'TcpIP', 'TunableLaser', 
                             'Utils', 'Vanward', 'Watcher', 'WeatherForecast',
                             'EssController', 'EssCsc', 'EssLabjack', 'ObservatoryControl', 'MTRotator', 'Scheduler']
                     }
