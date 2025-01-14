@@ -46,12 +46,13 @@ pipeline {
                         jobs = ['IntegrationTests']
                     } else {
                         jobs = ['EssCommon', 'AstroskyModel', 'ATAOS', 'ATBuildingController', 'ATDome', 'ATDomeTrajectory', 'ATHexapod', 'ATMCSsimulator', 
-                            'ATPneumaticssimulator', 'ATSpectrograph', 'attcpip', 'ATWhiteLight', 'AudioBroadcaster', 'audiotrigger', 'CBP', 'CRIOPy', 'Cycle', 
-                            'DateLoc', 'ddsconfig', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts', 'FiberSpectrograph', 'GIS', 'GenericCamera', 
+                            'ATPneumaticssimulator', 'ATSpectrograph', 'attcpip', 'ATWhiteLight', 'AudioBroadcaster', 'audiotrigger',
+                            'CBP', 'CRIOPy', 'Cycle', 'DateLoc', 'ddsconfig', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts',
+                            'FiberSpectrograph', 'GIS', 'GenericCamera', 'GuiTool', 
                             'hexrotcomm', 'HVAC', 'IntegrationTests', 'LaserTracker', 'LinearStage', 'LOVE_commander', 'LOVE_producer',
-                            'M2Com', 'M2Gui', 'M2simulator', 'MTAirCompressor', 'MTDome', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 
-                            'ObservatoryModel', 'OFC', 'PMD', 'PreCommitConfig', 'salkafka', 'SimActuators', 'StandardScripts', 'TcpIP', 'TunableLaser', 
-                            'Utils', 'Vanward', 'Watcher', 'WeatherForecast',
+                            'M2Com', 'M2Gui', 'M2simulator', 'MTAirCompressor', 'MTDome', 'MTDomeCom', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 
+                            'ObservatoryModel', 'Observing', 'OFC', 'PMD', 'PreCommitConfig', 'salkafka', 'SimActuators', 'StandardScripts',
+                            'TcpIP', 'TunableLaser', 'Utils', 'Vanward', 'Watcher', 'WeatherForecast',
                             'EssController', 'EssCsc', 'EssLabjack', 'ObservatoryControl', 'MTRotator', 'Scheduler']
                     }
                     xml_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${params.XML_Version} |sed 's/~post/.post/g'").trim()
