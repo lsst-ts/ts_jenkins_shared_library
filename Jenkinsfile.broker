@@ -50,7 +50,7 @@ pipeline {
                             'CBP', 'CRIOPy', 'Cycle', 'DateLoc', 'ddsconfig', 'DIMM', 'DREAM', 'DSM', 'EAS', 'Electrometer', 'ExternalScripts',
                             'FiberSpectrograph', 'GIS', 'GenericCamera', 'GuiTool', 
                             'hexrotcomm', 'HVAC', 'IntegrationTests', 'LaserTracker', 'LinearStage', 'LOVE_commander', 'LOVE_producer',
-                            'M2Com', 'M2Gui', 'M2simulator', 'MTAirCompressor', 'MTDome', 'MTDomeCom', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 
+                            'M2Com', 'M2Gui', 'M2simulator', 'MTAirCompressor', 'MTDome', 'MTDomeCom', 'MTDomeTrajectory', 'MTEEC', 'MTHexapod', 'MTMount', 'MTReflector', 
                             'ObservatoryModel', 'Observing', 'OFC', 'PMD', 'PreCommitConfig', 'salkafka', 'SimActuators', 'StandardScripts',
                             'TcpIP', 'TunableLaser', 'Utils', 'Vanward', 'Watcher', 'WeatherForecast',
                             'EssController', 'EssCsc', 'EssLabjack', 'ObservatoryControl', 'MTRotator', 'Scheduler']
