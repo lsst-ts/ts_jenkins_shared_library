@@ -156,7 +156,7 @@ def slack_id() {
                 "ts-mteec": wouter,
                 "ts-mthexapod": tewei,
                 "ts-mtmount": dave,
-                "ts-mtreflector": eric",
+                "ts-mtreflector": eric,
                 "ts-mtrotator": tewei,
                 "ts-observatory-control": tiago,
                 "ts-observatory-model": tiago,
