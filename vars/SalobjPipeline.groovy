@@ -44,7 +44,6 @@ def call(config_repo){
         parameters {
             choice name: 'build_agent', choices: ['CSC_Conda_Node', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent'
             string(name: 'sal_version', defaultValue: '\'\'', description: 'The SAL Version')
-            string(name: 'idl_version', defaultValue: '\'\'', description: 'The IDL Version')
             string(name: 'xml_version', defaultValue: '\'\'', description: 'The XML Version')
             string(name: 'xml_conda_version', defaultValue: '\'\'', description: 'The XML Conda Version')
             booleanParam(defaultValue: false, description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
@@ -59,15 +58,15 @@ def call(config_repo){
                 }
                 steps {
                     script{
-                        if ((params.idl_version == '\'\'') && (params.xml_version == '\'\'') && (params.sal_version == '\'\'')) {
+                        if ((params.xml_version == '\'\'') && (params.sal_version == '\'\'')) {
                             concatVersion = ''
                         }
                         else {
-                            concatVersion = params.idl_version  + '=' + params.xml_version.replaceAll('~', '.') + '_' + params.sal_version
+                            concatVersion = params.xml_version.replaceAll('~', '.') + '_' + params.sal_version
                         }
                     }
                     sh """
-                        echo "The concatenated IDL_XML_SAL version: ${concatVersion}"
+                        echo "The concatenated XML_SAL version: ${concatVersion}"
                         cd /home/saluser
                         ${clone_str}
                     """
@@ -174,9 +173,8 @@ def call(config_repo){
                             """).trim()
 
 
-                            echo "Starting the CSC_Conda_broker/develop job; idl_version: ${idl_version}, salobj_version: ${SALOBJVERSION}, XML_Conda_Version: ${xml_conda_version}, XML_Version: ${xml_version}, SAL_Version: ${sal_version}"
+                            echo "Starting the CSC_Conda_broker/develop job; salobj_version: ${SALOBJVERSION}, XML_Conda_Version: ${xml_conda_version}, XML_Version: ${xml_version}, SAL_Version: ${sal_version}"
                             build job: 'CSC_Conda_Broker', parameters: [\
-                                string(name: 'idl_version', value: idl_version ), \
                                 string(name: 'salobj_version', value: SALOBJVERSION ), \
                                 string(name: 'XML_Version', value: xml_version ), \
                                 string(name: 'xml_conda_version', value: xml_conda_version ), \
