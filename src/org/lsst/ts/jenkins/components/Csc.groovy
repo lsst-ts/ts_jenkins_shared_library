@@ -47,7 +47,6 @@ def email() {
                 "ts_guitool": "ttsai@lsst.org",
                 "ts-hexrotcomm": "ecoughlin@lsst.org",
                 "ts-hvac": "wvreeven@lsst.org",
-                "ts-idl": "tribeiro@lsst.org",
                 "ts-integrationtests": "rbovill@lsst.org",
                 "ts-linearstage": "ecoughlin@lsst.org",
                 "ts-m2": "tribeiro@lsst.org",
@@ -142,7 +141,6 @@ def slack_id() {
                 "ts-guitool": tewei,
                 "ts-hexrotcomm": eric,
                 "ts-hvac": wouter,
-                "ts-idl": tiago,
                 "ts-integrationtests": rob,
                 "ts-lasertracker": petr,
                 "ts-linearstage": eric,
@@ -283,50 +281,7 @@ def build_csc_conda(label) {
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python 3.11 -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, idl_version: ${params.idl_version}}" --prefix-length 100 .
-    """
-}
-
-def build_idl_conda(label) {
-    sh """
-        echo 'The XML version: ${params.XML_Version}'
-        echo 'The SAL version: ${params.SAL_Version}'
-        echo 'The BuildType: ${params.build_type}'
-    """
-    echo "The TS_SAL_VERSION EnvVar: ${env.TS_SAL_VERSION}"
-    echo "The TS_XML_VERSION EnvVar: ${env.TS_XML_VERSION}"
-    if ( params.build_type == "Bleed" ) {
-        rpm_repo = "lsst-ts-bleed"
-    } else if ( params.build_type == "Daily" ) {
-        rpm_repo = "lsst-ts-daily"
-    } else if ( params.build_type == "Release" ) {
-        rpm_repo = "lsst-ts"
-    } else {
-        currentBuild.result = 'ABORTED'
-        error('Please properly define the build_type parameter.')
-    }
-    timeout(5) {
-        waitUntil(initialRecurrencePeriod: 15000, quiet: true) {
-            // The RPMs can take a few minutes to appear in the repo. This will wait 5 minutes then fail the build if the RPM is not found.
-            def r = sh (
-                script: "yum clean all ; yum list -y --enablerepo=${rpm_repo} ts_sal_runtime_dds-${params.XML_Version}-${params.SAL_Version}.el8.x86_64 ",
-                returnStatus: true
-            )
-            return r == 0
-        }
-    }
-    sh """
-        # yum clean all ; yum makecache fast; yum update ;
-        yum install -y --enablerepo=${rpm_repo} ts_sal_runtime_dds-${params.XML_Version}-${params.SAL_Version}.el8.x86_64
-        cd ${WHOME}/conda
-        source /home/saluser/.setup.sh
-        conda config --set solver libmamba
-        conda config --add channels conda-forge
-        conda config --add channels lsstts
-        # Redefine XML_Version before building the Conda package.
-        dot_xml_version=\$(echo \$TS_XML_VERSION |sed 's/~/./g')
-        export TS_XML_VERSION=\$dot_xml_version
-        conda build --python 3.11 -c lsstts/label/${label} --prefix-length 100 .
+        conda build --python 3.11 -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
     """
 }
 
@@ -337,7 +292,7 @@ def build_salobj_conda(label, concatVersion) {
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python 3.11 -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}, idl_version: ${concatVersion}}" --prefix-length 100 .
+        conda build --python 3.11 -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
     """
 }
 
@@ -411,23 +366,6 @@ def update_container_branches() {
             eups declare -r . -t current || python -m pip install -e . --no-deps --ignore-installed
         done
     """
-    }
-}
-
-def make_idl_files(components, all=false) {
-    if (all) {
-        sh """
-            set +x
-            source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
-            make_idl_files.py --all
-        """
-    }
-    else {
-        sh """
-            set +x
-            source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
-            make_idl_files.py ${components}
-        """
     }
 }
 

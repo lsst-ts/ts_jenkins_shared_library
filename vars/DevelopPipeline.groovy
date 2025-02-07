@@ -3,8 +3,6 @@ import org.lsst.ts.jenkins.components.Csc
 def call(Map pipeline_args = [:]) {
     // create a developer build pipeline
     defaultArgs = [
-        idl_names: [],
-        build_all_idl: false,
         extra_packages: [],
         kickoff_jobs: [],
         slack_build_channel: "",
@@ -27,12 +25,6 @@ def call(Map pipeline_args = [:]) {
         label_str = 'Node1_4CPU || Node2_8CPU || Node3_4CPU'
     }
     Csc csc = new Csc()
-    idl_string = ""
-    if (!pipeline_args.idl_names.isEmpty()) {
-        pipeline_args.idl_names.each { idl ->
-            idl_string = idl_string.concat("${idl} ")
-        }
-    }
     // TODO: Remove this in DM-44795
     pipeline_args.use_pyside6 = Boolean.toString(pipeline_args.use_pyside6)
     properties(
@@ -66,7 +58,6 @@ def call(Map pipeline_args = [:]) {
         environment {
             user_ci = credentials('lsst-io')
             WORK_BRANCHES = "${env.BRANCH_NAME} ${env.CHANGE_BRANCH} develop"
-            IDL_NAME = "${pipeline_args.idl_name}"
             XML_REPORT= "jenkinsReport/report.xml"
             MODULE_NAME = "${pipeline_args.module_name}"
             USE_PYSIDE6 = "${pipeline_args.use_pyside6}"
@@ -121,9 +112,6 @@ def call(Map pipeline_args = [:]) {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             csc.update_container_branches()
-                            if(idl_string) {
-                                csc.make_idl_files(idl_string, pipeline_args.build_all_idl)
-                            }
                         }
                     }
                 }
