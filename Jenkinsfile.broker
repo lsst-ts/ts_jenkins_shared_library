@@ -72,7 +72,7 @@ pipeline {
                         }
                         echo "Starting the ${jobs[i]} job using the ${build_branch} branch and xml_conda_version: ${xml_conda_version}, salobj_version: ${salobj_version}"
                         build quietPeriod: "${wait}", wait: false, job: "${jobs[i]}" + "_conda_package/" + build_branch, parameters:
-                            [string(name: 'string(name: 'xml_conda_version', value: xml_conda_version), string(name: 'salobj_version', value: salobj_version)]
+                            [string(name: string(name: 'xml_conda_version', value: xml_conda_version), string(name: 'salobj_version', value: salobj_version))]
                     }//ForLoop
                 }//script
             }//steps
