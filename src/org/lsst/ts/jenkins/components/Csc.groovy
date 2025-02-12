@@ -318,7 +318,7 @@ def upload_conda(name, label, arch) {
         }
         sh """
             source /home/saluser/.setup.sh
-            anaconda upload -u lsstts ${label_option} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.tar.bz2
+            anaconda upload -u lsstts ${label_option} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.conda
         """
     }
     else {
