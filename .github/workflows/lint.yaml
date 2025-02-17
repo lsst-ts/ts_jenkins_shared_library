@@ -1,0 +1,38 @@
+name: lint
+
+on: 
+    push:
+      paths:
+      - 'Jenkinsfile*'
+    pull_request:
+      branches:
+        - develop
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    env: 
+      service_user: ${{ secrets.SERVICE_USER }}
+      service_pass: ${{ secrets.SERVICE_PASS }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Jenkinsfile linting
+        run: |
+          output=`curl -s -X POST --user "$service_user:$service_pass" -F 'jenkinsfile=<Jenkinsfile' 'https://tssw-ci.lsst.org/pipeline-model-converter/validate'` >> "$GITHUB_OUTPUT"
+          echo "$output"
+          if [[ "$output" == "Jenkinsfile successfully validated." ]]; then
+            exit 0
+          else
+            echo "Jenkinsfile.broker: Invalid Syntax"
+            exit 1
+          fi
+      - name: Run Jenkinsfile.broker linting
+        run: |
+          output=`curl -s -X POST --user "$service_user:$service_pass" -F 'jenkinsfile=<Jenkinsfile.broker' 'https://tssw-ci.lsst.org/pipeline-model-converter/validate'` >> "$GITHUB_OUTPUT"
+          echo "$output"
+          if [[ "$output" == "Jenkinsfile successfully validated." ]]; then
+            exit 0
+          else
+            echo "Jenkinsfile.broker: Invalid Syntax"
+            exit 1
+          fi
