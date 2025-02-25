@@ -44,7 +44,7 @@ def email() {
                 "ts-fiberspectrograph": "ecoughlin@lsst.org",
                 "ts-genericcamera": "pkubanek@lsst.org",
                 "ts-gis": "ecoughlin@lsst.org",
-                "ts_guitool": "ttsai@lsst.org",
+                "ts-guitool": "ttsai@lsst.org",
                 "ts-hexrotcomm": "ecoughlin@lsst.org",
                 "ts-hvac": "wvreeven@lsst.org",
                 "ts-integrationtests": "rbovill@lsst.org",
