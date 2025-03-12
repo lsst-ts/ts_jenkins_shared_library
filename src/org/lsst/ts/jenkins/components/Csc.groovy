@@ -269,6 +269,7 @@ def build_standalone_conda(label) {
         conda config --add channels conda-forge
         conda config --add channels lsstts
         conda build --python 3.11 -c lsstts/label/${label} --prefix-length 100 .
+        conda build --python 3.12 -c lsstts/label/${label} --prefix-length 100 .
     """
 }
 
@@ -282,6 +283,7 @@ def build_csc_conda(label) {
         conda config --add channels conda-forge
         conda config --add channels lsstts
         conda build --python 3.11 -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
+        conda build --python 3.12 -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
     """
 }
 
@@ -293,6 +295,7 @@ def build_salobj_conda(label, concatVersion) {
         conda config --add channels conda-forge
         conda config --add channels lsstts
         conda build --python 3.11 -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
+        conda build --python 3.12 -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
     """
 }
 
