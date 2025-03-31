@@ -23,7 +23,7 @@ def call(){
                 image 'ts-dockerhub.lsst.org/conda_package_builder:latest'
                 alwaysPull true
                 label 'CSC_Conda_Node'
-                args "--env LSST_DDS_DOMAIN=citest --network=kafka --entrypoint=''"
+                args "--network=kafka --entrypoint=''"
                 registryUrl 'https://ts-dockerhub.lsst.org'
                 registryCredentialsId 'nexus3-lsst_jenkins'
             }

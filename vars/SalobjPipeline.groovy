@@ -30,7 +30,7 @@ def call(config_repo){
                 image 'ts-dockerhub.lsst.org/conda_package_builder:latest'
                 alwaysPull true
                 label "${params.build_agent}"
-                args arg_str.concat("--env LSST_DDS_DOMAIN=citest --entrypoint='' --network=kafka")
+                args arg_str.concat("--entrypoint='' --network=kafka")
                 registryUrl 'https://ts-dockerhub.lsst.org'
                 registryCredentialsId 'nexus3-lsst_jenkins'
             }
