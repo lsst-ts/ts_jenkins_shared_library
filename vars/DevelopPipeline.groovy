@@ -84,6 +84,10 @@ def call(Map pipeline_args = [:]) {
                                         git url: "https://github.com/${org}/${package_name}.git", branch: split2[1]
                                       }
                                     }
+                                    // Run Git LFS commands here for the extra package
+                                    if (pipeline_args.require_git_lfs) {
+                                        csc.download_git_lfs_files(workDir="${env.WORKSPACE}/ci/${package_name}")
+                                    }
                                 }
                             }
                             dir("${env.WORKSPACE}/repo/${pipeline_args.name}") {

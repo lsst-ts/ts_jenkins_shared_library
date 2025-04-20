@@ -310,10 +310,13 @@ def build_salobj_conda(label, concatVersion) {
     """
 }
 
-def download_git_lfs_files(){
+def download_git_lfs_files(workDir=null) {
+    if (workDir == null) {  // Use == for comparison, not = which is assignment
+        workDir = "${WHOME}"
+    }
     sh """
-        cd ${WHOME}/
         # Since Jenkins sets the hooks path to /dev/null, set it to a real location.
+        cd ${workDir}
         git config --local core.hooksPath .git/hooks
         git lfs install
         git lfs fetch --all
