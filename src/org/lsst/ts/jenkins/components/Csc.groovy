@@ -319,7 +319,7 @@ def download_git_lfs_files(workDir=null) {
         cd ${workDir}
         git config --local core.hooksPath .git/hooks
         git lfs install
-        git lfs fetch --all
+        git lfs fetch
         git lfs checkout
     """
 }
