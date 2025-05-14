@@ -58,6 +58,7 @@ def email() {
                 "ts-m2gui": "ttsai@lsst.org",
                 "ts-lasertracker": "dmills@lsst.org, pkubanek@lsst.org",
                 "ts-ledprojector": "ecoughlin@lsst.org",
+                "ts-logging-and-reporting": "vbecker@lsst.org",
                 "ts-mtaircompressor": "pkubanek@lsst.org",
                 "ts-mtdome": "wvreeven@lsst.org",
                 "ts-mtdomecom": "wvreeven@lsst.org",
@@ -101,6 +102,7 @@ def slack_id() {
     String sebastian = "U07QPRAJHHQ"
     String tiago = "U07N2QKCTJP"
     String tewei = "U07PBTMJ4BC"
+    String valerie = "U07PA21TF5H"
     String wouter = "U07PMHC954K"
     slack_ids = ["default": rob,
                 "love-commander": sebastian,
@@ -156,6 +158,7 @@ def slack_id() {
                 "ts-lasertracker": petr,
                 "ts-linearstage": eric,
                 "ts-ledprojector": eric,
+                "ts-logging-and-reporting": valerie,
                 "ts-m2": tiago,
                 "ts-m2com": tewei,
                 "ts-m2gui": tewei,
