@@ -36,6 +36,8 @@ def call(){
         }
         parameters {
             booleanParam(defaultValue: false, description: "Is this a development build?", name: 'develop')
+            string(name: 'salobj_version', defaultValue: '\'\'', description: 'The version of the salobj Conda package.')
+            string(name: 'xml_conda_version', defaultValue: '\'\'', description: 'The XML Conda Version')
         }
         stages {
             stage("Create Conda Package") {
@@ -45,7 +47,7 @@ def call(){
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_standalone_conda("main")
+                            csc.build_csc_conda("main")
                         }
                     }
                 }
@@ -59,7 +61,7 @@ def call(){
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_standalone_conda("dev")
+                            csc.build_csc_conda("dev")
                         }
                     }
                 }
