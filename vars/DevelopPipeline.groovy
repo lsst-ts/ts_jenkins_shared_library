@@ -9,7 +9,8 @@ def call(Map pipeline_args = [:]) {
         has_doc_site: true,
         use_pyside6: false,
         require_git_lfs: false,
-        require_scons: false
+        require_scons: false,
+        full_history: true
     ]
     pipeline_args = defaultArgs << pipeline_args
     if((!pipeline_args["name"]) || (!pipeline_args["module_name"] == null)) {
@@ -92,6 +93,18 @@ def call(Map pipeline_args = [:]) {
                             }
                             dir("${env.WORKSPACE}/repo/${pipeline_args.name}") {
                                 checkout scm
+                                if (pipeline_args.full_history) {
+                                    sh """
+                                        is_shallow=\$(git rev-parse --is-shallow-repository)
+
+                                        if [[ "\$is_shallow" == "true" ]]; then
+                                        echo "Fetching full history..."
+                                        git fetch --unshallow
+                                        else
+                                        echo "Already full history."
+                                        fi
+                                    """
+                                }
                             }
                         }
                     }
