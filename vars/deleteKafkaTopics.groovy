@@ -5,7 +5,7 @@ def call(String XML_VERSION, String SUBNAME, Boolean FORCE) {
             echo ${FORCE}
             if [ '${FORCE}' = true ]; then
                 flag = '--force'
-            else;
+            else
                 flag = ''
             fi
             echo I am deleting the '${SUBNAME}' subname for topics defined using XML v${XML_VERSION}
