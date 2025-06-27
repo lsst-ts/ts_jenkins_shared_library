@@ -2,6 +2,7 @@
 def call(String XML_VERSION, String SUBNAME, Boolean FORCE) {
     script {
         sh """
+            echo ${FORCE}
             if [ '${FORCE}' = true ]; then
                 flag = '--force'
             else;
