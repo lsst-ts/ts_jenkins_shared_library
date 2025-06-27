@@ -4,9 +4,9 @@ def call(String XML_VERSION, String SUBNAME, Boolean FORCE) {
         sh """
             echo ${FORCE}
             if [ '${FORCE}' = true ]; then
-                flag = '--force'
+                flag='--force'
             else
-                flag = ''
+                flag=''
             fi
             echo I am deleting the '${SUBNAME}' subname for topics defined using XML v${XML_VERSION}
             source ~/miniconda3/bin/activate
