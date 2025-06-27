@@ -12,7 +12,7 @@ def call(String XML_VERSION, String SUBNAME, Boolean FORCE) {
             source ~/miniconda3/bin/activate
             conda install -y -c lsstts/label/dev "ts-xml>=${XML_VERSION}"
             conda install -y -c lsstts "ts-salobj>=8"
-            delete_topics --subname=${SUBNAME} --all ${flag}
+            delete_topics --subname=${SUBNAME} --all \$flag
         """
     }
 }
