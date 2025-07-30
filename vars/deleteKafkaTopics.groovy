@@ -27,8 +27,8 @@ def call(String XML_VERSION, String SUBNAME, Boolean FORCE, String COMPONENTS) {
             fi
             echo I am deleting topics for "$COMPONENTS" components with the "$SUBNAME" subname using XML v${XML_VERSION}
             source ~/miniconda3/bin/activate
-            conda install -y -c lsstts/label/dev "ts-xml>=${XML_VERSION}"
-            conda install -y -c lsstts "ts-salobj>=8"
+            conda install -qy -c lsstts/label/dev "ts-xml>=${XML_VERSION}"
+            conda install -qy -c lsstts "ts-salobj>=8"
             csc_list="$COMPONENTS"
             echo CSCs: \$csc_list
             if [ "\${csc_list,,}" == "all" ]; then
