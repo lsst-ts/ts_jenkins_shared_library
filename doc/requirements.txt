@@ -1,1 +1,1 @@
-documenteer[pipelines]
+documenteer[pipelines,guide]>=1.4,<2
