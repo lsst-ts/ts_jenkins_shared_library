@@ -1,12 +1,27 @@
 // vars/registerKafkaTopics.groovy
-def call(String XML_VERSION) {
+def call(String XML_VERSION, String COMPONENTS) {
+    // Attributes
+    // ----------
+    //
+    // XML_VERSION : `string`
+    //     Defines the version of XML that SalObj uses to register the topics.
+    // COMPONENTS : `string`
+    //     Space-separated, case-sensitive list of CSCs, e.g Test Script ScriptQueue,
+    //     or ALL if creating topics for all components.
+    //
     script {
         sh """
-            echo I am registering the $LSST_TOPIC_SUBNAME subname for topics defined using XML v${XML_VERSION}
+            echo I am registering topics for "$COMPONENTS" components with the "$LSST_TOPIC_SUBNAME" subname using XML v$XML_VERSION
             source ~/miniconda3/bin/activate
-            conda install -y -c lsstts/label/dev "ts-xml>=${XML_VERSION}"
-            conda install -y -c lsstts "ts-salobj>=8"
-            create_topics --all
+            conda install -qy -c lsstts/label/dev "ts-xml>=$XML_VERSION"
+            conda install -qy -c lsstts "ts-salobj>=8"
+            csc_list="$COMPONENTS"
+            if [ "\${csc_list,,}" == "all" ]; then
+                cscs="--all"
+            else
+                cscs="$COMPONENTS"
+            fi
+            create_topics \$cscs
         """
     }
 }

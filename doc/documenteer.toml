@@ -1,0 +1,5 @@
+[project]
+title = "ts_jenkins_shared_library"
+copyright = "2015-2022 Association of Universities for Research in Astronomy, Inc. (AURA)"
+base_url = "https://ts-jenkins-shared-library.lsst.io"
+github_url = "https://github.com/lsst/ts_jenkins_shared_library"
