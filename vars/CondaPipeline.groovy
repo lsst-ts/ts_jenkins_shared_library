@@ -78,7 +78,7 @@ def call(Object... varargs){
                 image image_value
                 alwaysPull true
                 label "${params.build_agent}"
-                args arg_str.concat("--entrypoint='' -e LSST_KAFKA_BROKER_ADDR='35.85.18.232:9092' -e LSST_SCHEMA_REGISTRY_URL='http://35.85.18.232:8081'")
+                args arg_str.concat("--entrypoint='' -e LSST_KAFKA_BROKER_ADDR='35.85.18.232:9092' -e LSST_SCHEMA_REGISTRY_URL='http://35.85.18.232:8081' -v /home/jenkins/workspace/rubin_sim_data:/home/saluser/rubin_sim_data")
                 registryUrl registry_url
                 registryCredentialsId registry_credentials_id
             }
