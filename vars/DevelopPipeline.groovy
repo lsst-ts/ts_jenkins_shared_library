@@ -23,7 +23,7 @@ def call(Map pipeline_args = [:]) {
         label_str = 'Node3_4CPU'
     }
     else {
-        label_str = 'Node1_4CPU || Node2_8CPU || Node3_4CPU'
+        label_str = 'Node2_8CPU || Node3_4CPU'
     }
     Csc csc = new Csc()
     // TODO: Remove this in DM-44795
