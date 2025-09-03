@@ -268,7 +268,7 @@ def test(scons=false) {
         # We compare to null for bash as the way groovy passes the value
         # is not the same as comparing for an empty string.
         if [ "${env.MODULE_NAME}" = "null" ]; then
-            pytest -ra
+            pytest -ra -v --log-cli-level DEBUG
         else
             pytest -ra --cov-report html --cov=${env.MODULE_NAME} --junitxml=${env.XML_REPORT}
         fi
