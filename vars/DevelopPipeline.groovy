@@ -49,7 +49,7 @@ def call(Map pipeline_args = [:]) {
             docker {
                 alwaysPull true
                 image 'lsstts/develop-env:develop'
-                args "--entrypoint='' --network kafka"
+                args "--entrypoint='' -e LSST_KAFKA_BROKER_ADDR='35.85.18.232:9092' -e LSST_SCHEMA_REGISTRY_URL='http://35.85.18.232:8081'"
                 label "${label_str}"
             }
         }
