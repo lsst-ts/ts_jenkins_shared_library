@@ -79,7 +79,10 @@ def call(config_repo){
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_salobj_conda("main", "${concatVersion}")
+                            csc.build_salobj_conda("main", "${concatVersion}", "3.12")
+                            warnError(message: "python 3.13 failed to build.") {
+                                csc.build_salobj_conda("main", "${concatVersion}", "3.13")
+                            }
                         }
                     }
                 }
@@ -93,7 +96,10 @@ def call(config_repo){
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_salobj_conda("dev", "${concatVersion}")
+                            csc.build_salobj_conda("dev", "${concatVersion}", "3.12")
+                            warnError(message: "python 3.13 failed to build.") {
+                                csc.build_salobj_conda("dev", "${concatVersion}", "3.13")
+                            }
                         }
                     }
                 }
