@@ -276,7 +276,7 @@ def test(scons=false) {
     sh test_shell_script
 }
 
-def build_standalone_conda(label) {
+def build_standalone_conda(label, pyver) {
     // Build the XML Conda package
     sh """
         #!/bin/bash
@@ -285,11 +285,11 @@ def build_standalone_conda(label) {
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python 3.12 -c lsstts/label/${label} --prefix-length 100 .
+        conda build --python ${pyver} -c lsstts/label/${label} --prefix-length 100 .
     """
 }
 
-def build_csc_conda(label) {
+def build_csc_conda(label, pyver) {
     // Build the conda package
     sh """
         #!/bin/bash
@@ -298,18 +298,18 @@ def build_csc_conda(label) {
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python 3.12 -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
+        conda build --python ${pyver} -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
     """
 }
 
-def build_salobj_conda(label, concatVersion) {
+def build_salobj_conda(label, concatVersion, pyver) {
     sh """
         cd ${WHOME}/conda
         source /home/saluser/.setup.sh
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python 3.12 -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
+        conda build --python ${pyver} -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
     """
 }
 

@@ -61,7 +61,10 @@ def call(Object... varargs){
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_standalone_conda("main")
+                            csc.build_standalone_conda("main", "3.12")
+                            warnError(message: "Python 3.13 failed to build") {
+                                csc.build_standalone_conda("main", "3.13")
+                            }
                         }
                     }
                 }
@@ -76,6 +79,9 @@ def call(Object... varargs){
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
                             csc.build_standalone_conda("dev")
+                            warnError(message: "Python 3.13 failed to build") {
+                                csc.build_standalone_conda("dev", "3.13")
+                            }
                         }
                     }
                 }
