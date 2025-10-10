@@ -47,7 +47,9 @@ def call(){
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_csc_conda("main")
+                            csc.build_csc_conda("main", "3.12")
+                            warnError(message: "Python 3.13 failed to build.") {
+                                csc.build_csc_conda("main", "3.13")
                         }
                     }
                 }
@@ -61,7 +63,9 @@ def call(){
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
                         script {
-                            csc.build_csc_conda("dev")
+                            csc.build_csc_conda("dev", "3.12")
+                            warnError(message: "Python 3.13 failed to build") {
+                                csc.build_csc_conda("dev", "3.13")
                         }
                     }
                 }
