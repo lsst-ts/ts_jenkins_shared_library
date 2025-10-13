@@ -50,6 +50,7 @@ def call(){
                             csc.build_csc_conda("main", "3.12")
                             warnError(message: "Python 3.13 failed to build.") {
                                 csc.build_csc_conda("main", "3.13")
+                            }
                         }
                     }
                 }
@@ -66,6 +67,7 @@ def call(){
                             csc.build_csc_conda("dev", "3.12")
                             warnError(message: "Python 3.13 failed to build") {
                                 csc.build_csc_conda("dev", "3.13")
+                            }
                         }
                     }
                 }
