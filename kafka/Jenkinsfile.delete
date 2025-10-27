@@ -1,0 +1,40 @@
+@Library('JenkinsShared') _
+pipeline {
+    parameters {
+        string defaultValue: '', description: 'The version of ts_xml.', name: 'XML_VERSION', trim: true
+        string defaultValue: '', description: 'The Kafka subname to delete.', name: 'SUBNAME', trim: true
+        string defaultValue: 'Test', description: '''A space-separated, case-sensitive list of CSCs, e.g Test Script ScriptQueue
+or ALL if creating topics for all components.''', name: 'CSC_List', trim: true
+        booleanParam defaultValue: '', description: 'Must be TRUE if deleting the \'sal\' topic subname.', name: 'FORCE'
+    }
+    options {
+        disableConcurrentBuilds()
+    }
+    environment {
+        LSST_TOPIC_SUBNAME = "${SUBNAME}"
+    }
+    agent {
+        docker { 
+            image 'lsstts/robotint:latest'
+            args '--entrypoint="" --network=kafka -e LSST_TOPIC_SUBNAME=${SUBNAME}'
+            label "Kafka_Broker"
+         }
+    }
+    stages {
+        stage('Delete SAL Kafka Topics') {
+            steps {
+                script {
+                    echo "XML_VERSION: ${XML_VERSION}"
+                    echo "SUBNAME: ${SUBNAME}"
+                    echo "CSCs: ${CSC_List}"
+                    deleteKafkaTopics params.XML_VERSION, params.SUBNAME, params.FORCE, params.CSC_List
+                }
+            }
+        }//Register
+    }//stages
+    post { 
+        success {
+            cleanWs cleanWhenAborted: false, cleanWhenFailure: false, cleanWhenUnstable: false, deleteDirs: true, disableDeferredWipeout: true, notFailBuild: true
+        }
+    }//post
+}//pipeline

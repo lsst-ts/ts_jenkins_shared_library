@@ -1,0 +1,39 @@
+@Library('JenkinsShared') _
+pipeline {
+    parameters {
+        string defaultValue: '', description: 'The version of ts_xml.', name: 'XML_VERSION', trim: true
+        string defaultValue: '', description: 'The Kafka subname to register.', name: 'SUBNAME', trim: true
+        string defaultValue: 'Test', description: '''A space-separated, case-sensitive list of CSCs, e.g Test Script ScriptQueue
+or ALL if creating topics for all components.''', name: 'CSC_List', trim: true
+    }
+    environment { 
+        LSST_TOPIC_SUBNAME = "${SUBNAME}"
+    }
+    options {
+        disableConcurrentBuilds()
+    }
+    agent {
+        docker { 
+            image 'lsstts/robotint:latest'
+            args '--entrypoint="" --network=kafka -e LSST_TOPIC_SUBNAME=${SUBNAME}'
+            label "Kafka_Broker"
+         }
+    }
+    stages {
+        stage('Register SAL Kafka Topics') {
+            steps {
+                script {
+                    echo "XML_VERSION: ${XML_VERSION}"
+                    echo "SUBNAME: $LSST_TOPIC_SUBNAME"
+                    echo "CSCs: ${CSC_List}"
+                    registerKafkaTopics params.XML_VERSION, params.CSC_List
+                }
+            }
+        }//Register
+    }//stages
+    post { 
+        success {
+            cleanWs cleanWhenAborted: false, cleanWhenFailure: false, cleanWhenUnstable: false, deleteDirs: true, disableDeferredWipeout: true, notFailBuild: true
+        }
+    }//post
+}//pipeline
