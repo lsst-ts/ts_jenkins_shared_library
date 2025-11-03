@@ -50,7 +50,7 @@ def call(Map pipeline_args = [:]) {
                 alwaysPull true
                 image 'lsstts/develop-env:develop'
                 args "--entrypoint='' -e LSST_KAFKA_BROKER_ADDR='35.85.18.232:9092' -e LSST_SCHEMA_REGISTRY_URL='http://35.85.18.232:8081'"
-                label "${label_str}"
+                label "${params.build_agent}"
             }
         }
         options {
@@ -62,6 +62,9 @@ def call(Map pipeline_args = [:]) {
             XML_REPORT= "jenkinsReport/report.xml"
             MODULE_NAME = "${pipeline_args.module_name}"
             USE_PYSIDE6 = "${pipeline_args.use_pyside6}"
+        }
+        parameters {
+            choice choices: ['Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
         }
 
         stages {
