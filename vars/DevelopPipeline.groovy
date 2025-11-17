@@ -7,7 +7,7 @@ def call(Map pipeline_args = [:]) {
         kickoff_jobs: [],
         slack_build_channel: "",
         has_doc_site: true,
-        use_pyside6: false,
+        use_pyside6: true,
         require_git_lfs: false,
         require_scons: false,
         full_history: true
@@ -19,15 +19,7 @@ def call(Map pipeline_args = [:]) {
     if(pipeline_args["module_name"] == "") {
 	    pipeline_args["has_doc_site"] = false
     }
-    if(pipeline_args["require_git_lfs"]) {
-        label_str = 'Node3_4CPU'
-    }
-    else {
-        label_str = 'Node1_4CPU || Node2_8CPU || Node3_4CPU'
-    }
     Csc csc = new Csc()
-    // TODO: Remove this in DM-44795
-    pipeline_args.use_pyside6 = Boolean.toString(pipeline_args.use_pyside6)
     properties(
         [
         buildDiscarder(
@@ -64,7 +56,7 @@ def call(Map pipeline_args = [:]) {
             USE_PYSIDE6 = "${pipeline_args.use_pyside6}"
         }
         parameters {
-            choice choices: ['Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
+            choice choices: ['Node1_4CPU || Node2_8CPU || Node3_4CPU', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
         }
 
         stages {
@@ -114,11 +106,11 @@ def call(Map pipeline_args = [:]) {
                 }
             }
             stage("Download git-lfs files") {
-        when {
-            expression {
-                return pipeline_args.require_git_lfs
-            }
-        }
+                when {
+                    expression {
+                        return pipeline_args.require_git_lfs
+                    }
+                }
                 steps {
                     withEnv(["WHOME=${env.WORKSPACE}/repo/${pipeline_args.name}"]) {
                         script {
