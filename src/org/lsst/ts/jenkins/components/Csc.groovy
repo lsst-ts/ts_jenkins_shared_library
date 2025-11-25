@@ -199,7 +199,7 @@ def build_docs() {
     sh """
         set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
-        setup -kr .
+        pip install --no-deps .
 
         # Update the variables of QT
         # TODO: Remove this in DM-44795
@@ -208,7 +208,7 @@ def build_docs() {
             export PYTEST_QT_API=PySide6
         fi
 
-        package-docs build
+        sphinx-build -b html doc doc/_build/html
     """
 }
 
@@ -221,7 +221,7 @@ def upload_docs(name) {
         set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
         cd $WHOME/repo/${name}
-        setup -kr .
+        pip install --no-deps .
         ltd -u \$user_ci_USR -p \$user_ci_PSW upload --product ${doc_name} --git-ref ${BRANCH_NAME} --dir doc/_build/html
     """
 }
