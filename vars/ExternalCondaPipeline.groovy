@@ -3,7 +3,7 @@ import org.lsst.ts.jenkins.components.Csc
 def call(name, arch="noarch", repo="ts_recipes"){
     // Create a conda build pipeline
     Csc csc = new Csc()
-    label_value = "CSC_Conda_Node"
+    label_value = "CSC_Conda_Node || CSC_Conda_Overflow_Node"
     image_value = "ts-dockerhub.lsst.org/conda_package_builder:latest"
     registry_url = "https://ts-dockerhub.lsst.org"
     registry_credentials_id = "nexus3-lsst_jenkins"
