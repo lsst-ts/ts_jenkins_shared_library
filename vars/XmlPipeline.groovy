@@ -96,6 +96,7 @@ def call(Object... varargs){
                         withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
+                            export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
@@ -117,6 +118,7 @@ def call(Object... varargs){
                         withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
+                            export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
@@ -137,6 +139,7 @@ def call(Object... varargs){
                         withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
+                            export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
                             anaconda login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
