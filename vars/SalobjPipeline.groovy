@@ -114,7 +114,8 @@ def call(config_repo){
                         withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
-                            anaconda login --user ${anaconda_user} --password ${anaconda_pass}
+                            export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
+                            anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
                                 csc.upload_conda("ts-salobj","rc","noarch")
@@ -135,7 +136,8 @@ def call(config_repo){
                         withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
-                            anaconda login --user ${anaconda_user} --password ${anaconda_pass}
+                            export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
+                            anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
                                 csc.upload_conda("ts-salobj","main","noarch")
@@ -155,7 +157,8 @@ def call(config_repo){
                         withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
-                            anaconda login --user ${anaconda_user} --password ${anaconda_pass}
+                            export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
+                            anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
                                 csc.upload_conda("ts-salobj","dev","noarch")
