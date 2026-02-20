@@ -10,7 +10,8 @@ def call(Map pipeline_args = [:]) {
         use_pyside6: true,
         require_git_lfs: false,
         require_scons: false,
-        full_history: true
+        full_history: true,
+        mount_rubin_sim_data: false
     ]
     pipeline_args = defaultArgs << pipeline_args
     if((!pipeline_args["name"]) || (!pipeline_args["module_name"] == null)) {
@@ -41,7 +42,7 @@ def call(Map pipeline_args = [:]) {
             docker {
                 alwaysPull true
                 image 'lsstts/develop-env:develop'
-                args "--entrypoint='' -e LSST_KAFKA_BROKER_ADDR='35.85.18.232:9092' -e LSST_SCHEMA_REGISTRY_URL='http://35.85.18.232:8081'"
+                args "--entrypoint='' -e LSST_KAFKA_BROKER_ADDR='35.85.18.232:9092' -e LSST_SCHEMA_REGISTRY_URL='http://35.85.18.232:8081' ${pipeline_args.mount_rubin_sim_data ? '-v /home/jenkins/workspace/rubin_sim_data:/home/saluser/rubin_sim_data' : ''}"
                 label "${params.build_agent}"
             }
         }

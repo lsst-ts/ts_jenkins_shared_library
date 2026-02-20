@@ -5,6 +5,7 @@ def call(Object... varargs){
     // Create a conda build pipeline
     // Define default variables
     upload_dev=false
+    mount_rubin_sim_data=false
     // Check if map is first for named parameters
     if (varargs[0] instanceof Map) {
         pipeline_args = varargs[0]
@@ -26,6 +27,9 @@ def call(Object... varargs){
         if(pipeline_args["upload_dev"]){
             upload_dev=pipeline_args.upload_dev.toBoolean()
         }
+        if(pipeline_args["mount_rubin_sim_data"]){
+            mount_rubin_sim_data=pipeline_args.mount_rubin_sim_data.toBoolean()
+        }
     }
     // If not map then assume ordered parameters
     // Mixing these are not supported nor handled
@@ -41,6 +45,9 @@ def call(Object... varargs){
         }
         if (varargs.length == 5){
             upload_dev = varargs[4]
+        }
+        if (varargs.length == 6){
+            mount_rubin_sim_data = varargs[5]
         }
     }
     Csc csc = new Csc()
@@ -78,7 +85,7 @@ def call(Object... varargs){
                 image image_value
                 alwaysPull true
                 label "${params.build_agent}"
-                args arg_str.concat("--entrypoint='' -e LSST_KAFKA_BROKER_ADDR='35.85.18.232:9092' -e LSST_SCHEMA_REGISTRY_URL='http://35.85.18.232:8081'")
+                args arg_str.concat("--entrypoint='' -e LSST_KAFKA_BROKER_ADDR='35.85.18.232:9092' -e LSST_SCHEMA_REGISTRY_URL='http://35.85.18.232:8081' ${mount_rubin_sim_data ? '-v /home/jenkins/workspace/rubin_sim_data:/home/saluser/rubin_sim_data' : ''}")
                 registryUrl registry_url
                 registryCredentialsId registry_credentials_id
             }
