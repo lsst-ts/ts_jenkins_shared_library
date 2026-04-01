@@ -112,12 +112,8 @@ def call(Object... varargs){
                         withEnv(["WHOME=${env.WORKSPACE}"]) {
                             sh """
                             source /home/saluser/miniconda3/bin/activate
-<<<<<<< HEAD
-                            anaconda login --user ${anaconda_user} --password ${anaconda_pass}
-=======
                             export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
                             anaconda org login --pass ${anaconda_pass} --user ${anaconda_user}
->>>>>>> 1c8489a (Use ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN EnvVar to fix anaconda login commands in groovy pipelines.)
                             """
                             script {
                                 csc.upload_conda(package_name,"main",arch)
