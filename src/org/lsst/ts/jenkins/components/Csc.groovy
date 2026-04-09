@@ -84,7 +84,7 @@ def email() {
                 "ts-tcpip": "wouter.vanreeven@noirlab.edu",
                 "ts-tunablelaser": "eric.coughlin@noirlab.edu",
                 "ts-utils": "tiago.ribeiro@noirlab.edu",
-                "ts-watcher": "petr.kubanek@noirlab.edu",
+                "ts-watcher": "wouter.vanreeven@noirlab.edu",
                 "ts-weatherforecast": "eric.coughlin@noirlab.edu",
                 "ts-xml": "rob.bovill@noirlab.edu",
                 "vanward": "michael.reuter@noirlab.edu"]
@@ -186,7 +186,7 @@ def slack_id() {
                 "ts-utils": tiago,
                 "ts-tcpip": wouter,
                 "ts-tunablelaser": eric,
-                "ts-watcher": petr,
+                "ts-watcher": wouter,
                 "ts-weatherforecast": eric,
                 "ts-xml": rob,
                 "vanward": michael,
