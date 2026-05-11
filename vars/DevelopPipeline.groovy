@@ -138,7 +138,7 @@ def call(Map pipeline_args = [:]) {
                                 if(!pipeline_args.name.equals("ts_pre_commit_conf")) {
                                     csc.setup_and_run_pre_commit()
                                 }
-                                csc.install()
+                                csc.install(eups=pipeline_args.require_scons)
                                 csc.test(scons=pipeline_args.require_scons)
                             }
                         }
