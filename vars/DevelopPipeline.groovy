@@ -9,6 +9,7 @@ def call(Map pipeline_args = [:]) {
         has_doc_site: true,
         use_pyside6: true,
         require_git_lfs: false,
+        // TODO (OSW-2287): Rename require_scons to use_eups.
         require_scons: false,
         full_history: true,
         mount_rubin_sim_data: false
