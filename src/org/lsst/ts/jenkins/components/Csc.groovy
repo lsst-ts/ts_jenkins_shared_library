@@ -248,7 +248,6 @@ def test(scons=false) {
     test_shell_script = """
         set +x
         source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
-        setup -kr .
 
         # Update the variables of QT
         # TODO: Remove this in DM-44795
@@ -259,7 +258,8 @@ def test(scons=false) {
     """
     if (scons) {
         test_shell_script += """
-            scons shebang
+            setup -kr .
+            scons shebang || echo Failed to generate scons shebang
         """
     }
     test_shell_script += """
