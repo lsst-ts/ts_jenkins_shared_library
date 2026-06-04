@@ -208,6 +208,11 @@ def build_docs() {
             export PYTEST_QT_API=PySide6
         fi
 
+        # Install doc requirements if present
+        if [ -f doc/requirements.txt ]; then
+            pip install -r doc/requirements.txt
+        fi
+
         sphinx-build -b html doc doc/_build/html
     """
 }
