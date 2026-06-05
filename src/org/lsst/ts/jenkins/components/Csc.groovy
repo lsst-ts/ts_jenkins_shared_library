@@ -210,7 +210,7 @@ def build_docs() {
 
         # Install doc requirements if present
         if [ -f doc/requirements.txt ]; then
-            pip install -r doc/requirements.txt
+            conda install --yes --file doc/requirements.txt
         fi
 
         sphinx-build -b html doc doc/_build/html
