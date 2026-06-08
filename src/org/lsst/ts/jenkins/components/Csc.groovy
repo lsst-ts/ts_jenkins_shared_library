@@ -232,7 +232,7 @@ def install(eups=true) {
         sh """
             set +x
             source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
-            pip install -e .
+            pip install -e . --no-deps
         """
     } else {
             sh """
