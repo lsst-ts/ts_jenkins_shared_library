@@ -151,7 +151,7 @@ def call(Object... varargs){
                             """
                             source /home/saluser/miniconda3/bin/activate > /dev/null &&
                             conda config --set solver libmamba &&
-                            conda install -y setuptools_scm=8 > /dev/null &&
+                            conda install -y setuptools_scm=9 > /dev/null &&
                             python -m setuptools_scm
                             """).trim()
 
