@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        // Get day of week. Used to determine when to build the DeployEnv images.
+        CURRENT_DAY = sh(script: "date +%A", returnStdout: true).trim()
+    }
     options {
         buildDiscarder(
             logRotator(
@@ -35,6 +39,16 @@ pipeline {
                 }
             }
         }//Define Variables
+        stage('Trigger DeployEnv jobs') {
+            when { 
+                expression { env.CURRENT_DAY == 'Monday' }
+            }
+            steps {
+                script {
+                    build wait: false, job: 'cycleBuild/main', parameters: [string(name: 'build_agent', value: 'Node3_4CPU'), string(name: 'env_file', value: 'develop.env'), booleanParam(name: 'deploy_conda', value: true), booleanParam(name: 'deploy_lsstsqre', value: true),]
+                }
+            }
+        }
         stage('Trigger CSC Conda jobs') {
             steps {
                 script {
