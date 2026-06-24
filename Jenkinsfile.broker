@@ -41,7 +41,7 @@ pipeline {
         }//Define Variables
         stage('Trigger DeployEnv jobs') {
             when { 
-                expression { env.CURRENT_DAY == 'Monday' }
+                expression { env.CURRENT_DAY == 'Monday' && !params.test }
             }
             steps {
                 script {
