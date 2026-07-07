@@ -66,7 +66,7 @@ pipeline {
                             'M2Com', 'M2Gui', 'M2simulator', 'MTAirCompressor', 'MTDome', 'MTDomeCom', 'MTDomeTrajectory', 'MTHexapod', 'MTMount', 'MTReflector', 
                             'ObservatoryModel', 'Observing', 'OFC', 'PMD', 'PreCommitConfig', 'SimActuators', 'StandardScripts',
                             'TcpIP', 'TunableLaser', 'Utils', 'Vanward', 'Watcher', 'WeatherForecast',
-                            'EssController', 'EssCsc', 'EssLabjack', 'ObservatoryControl', 'MTRotator', 'Scheduler']
+                            'EssController', 'EssCsc', 'EssLabjack', 'ObservatoryControl', 'MTRotator',] //#'Scheduler'
                     }
                     xml_ver = sh(returnStdout: true, script: '#!/bin/bash -x\n' + "echo ${params.XML_Version} |sed 's/~post/.post/g'").trim()
                     salobj_version="${salobj_version}"
