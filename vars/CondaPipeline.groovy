@@ -59,15 +59,12 @@ def call(Object... varargs){
     slack_ids = csc.slack_id()
     arg_str = ""
     clone_str = ""
-    conda_build_roots = python_versions.collect { pyver ->
-        "${env.WORKSPACE}/.conda-build/${env.BUILD_NUMBER}/py${pyver.replace('.', '')}"
-    }
     successful_conda_build_roots = []
     build_conda_packages = { label ->
         def builds = [:]
         python_versions.eachWithIndex { pyver, index ->
             def version = pyver
-            def build_root = conda_build_roots[index]
+            def build_root = "${env.WORKSPACE}/.conda-build/${env.BUILD_NUMBER}/py${version.replace('.', '')}"
             builds["Python ${version}"] = {
                 stage("Python ${version}") {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
