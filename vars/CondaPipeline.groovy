@@ -4,6 +4,7 @@ import org.lsst.ts.jenkins.components.Csc
 def call(Object... varargs){
     // Create a conda build pipeline
     // Define default variables
+    python_versions=["3.13", "3.14"]
     upload_dev=false
     mount_rubin_sim_data=false
     // Check if map is first for named parameters
@@ -58,6 +59,26 @@ def call(Object... varargs){
     slack_ids = csc.slack_id()
     arg_str = ""
     clone_str = ""
+    conda_build_roots = python_versions.collect { pyver ->
+        "${env.WORKSPACE}/.conda-build/${env.BUILD_NUMBER}/py${pyver.replace('.', '')}"
+    }
+    build_conda_packages = { label ->
+        def builds = [:]
+        python_versions.eachWithIndex { pyver, index ->
+            def version = pyver
+            def build_root = conda_build_roots[index]
+            builds["Python ${version}"] = {
+                stage("Python ${version}") {
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
+                        script {
+                            csc.build_csc_conda(label, version, build_root)
+                        }
+                    }
+                }
+            }
+        }
+        parallel builds
+    }
     if (!config_repo.isEmpty()) {
         config_repo.each{ repo ->
             arg_str = arg_str.concat("--env ${repo.toUpperCase()}_DIR=/home/saluser/${repo} ")
@@ -132,10 +153,8 @@ def call(Object... varargs){
                     buildingTag()
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}"]) {
-                        script {
-                            csc.build_csc_conda("main", "3.13")
-                        }
+                    script {
+                        build_conda_packages("main")
                     }
                 }
             }
@@ -146,10 +165,8 @@ def call(Object... varargs){
                     }
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}"]) {
-                        script {
-                            csc.build_csc_conda("dev", "3.13")
-                        }
+                    script {
+                        build_conda_packages("dev")
                     }
                 }
             }
@@ -171,7 +188,7 @@ def call(Object... varargs){
                             anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda(package_name,"dev", arch)
+                                csc.upload_conda(package_name,"dev", arch, conda_build_roots)
                             }
                         }
                     }
@@ -191,7 +208,7 @@ def call(Object... varargs){
                             anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda(package_name,"rc", arch)
+                                csc.upload_conda(package_name,"rc", arch, conda_build_roots)
                             }
                         }
                     }
@@ -213,7 +230,7 @@ def call(Object... varargs){
                             anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda(package_name,"main",arch)
+                                csc.upload_conda(package_name,"main",arch, conda_build_roots)
                             }
                         }
                     }

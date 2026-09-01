@@ -287,7 +287,7 @@ def build_standalone_conda(label, pyver) {
     """
 }
 
-def build_csc_conda(label, pyver) {
+def build_csc_conda(label, pyver, croot=null) {
     // Build the conda package
     sh """
         #!/bin/bash
@@ -296,7 +296,7 @@ def build_csc_conda(label, pyver) {
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python ${pyver} -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
+        conda build --python ${pyver} -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 ${croot ? "--croot '${croot}'" : ''} .
     """
 }
 
@@ -325,7 +325,7 @@ def download_git_lfs_files(workDir=null) {
     """
 }
 
-def upload_conda(name, label, arch) {
+def upload_conda(name, label, arch, build_roots=null) {
     // Upload the conda package
     // Takes the name of the package and a label
     if ((arch=="linux-aarch64") || (arch=="noarch") || (arch=="linux-64")) {
@@ -334,9 +334,12 @@ def upload_conda(name, label, arch) {
         } else {
             label_option = "--label ${label}"
         }
+        def artifact_paths = build_roots ? build_roots.collect {
+            "'${it}/${arch}/${name}'*.conda"
+        }.join(' ') : "/home/saluser/miniconda3/conda-bld/${arch}/${name}*.conda"
         sh """
             source /home/saluser/.setup.sh
-            anaconda upload -u lsstts ${label_option} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.conda
+            anaconda upload -u lsstts ${label_option} --force ${artifact_paths}
         """
     }
     else {
