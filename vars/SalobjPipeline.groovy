@@ -10,7 +10,7 @@ def call(config_repo){
         def builds = [:]
         python_versions.eachWithIndex { pyver, index ->
             def version = pyver
-            def build_root = "${env.WORKSPACE}/.conda-build/${env.BUILD_NUMBER}/py${version.replace('.', '')}"
+            def build_root = "${env.WORKSPACE}@conda-build/${env.BUILD_NUMBER}/py${version.replace('.', '')}"
             builds["Python ${version}"] = {
                 stage("Python ${version}") {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
@@ -213,6 +213,9 @@ def call(config_repo){
         }//stages
         post {
             always {
+                dir("${env.WORKSPACE}@conda-build/${env.BUILD_NUMBER}") {
+                    deleteDir()
+                }
                 step([$class: 'Mailer',
                     notifyEveryUnstableBuild: false,
                     recipients: "tribeiro@lsst.org, wvreeven@lsst.org",

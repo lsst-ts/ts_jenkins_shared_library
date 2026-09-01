@@ -64,7 +64,7 @@ def call(Object... varargs){
         def builds = [:]
         python_versions.eachWithIndex { pyver, index ->
             def version = pyver
-            def build_root = "${env.WORKSPACE}/.conda-build/${env.BUILD_NUMBER}/py${version.replace('.', '')}"
+            def build_root = "${env.WORKSPACE}@conda-build/${env.BUILD_NUMBER}/py${version.replace('.', '')}"
             builds["Python ${version}"] = {
                 stage("Python ${version}") {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
@@ -243,6 +243,9 @@ def call(Object... varargs){
         }
         post {
             always {
+                dir("${env.WORKSPACE}@conda-build/${env.BUILD_NUMBER}") {
+                    deleteDir()
+                }
                 step([$class: 'Mailer', recipients: emails[name] ?: emails['default'], notifyEveryUnstableBuild: false, sendToIndividuals: true])
             }
             regression {
