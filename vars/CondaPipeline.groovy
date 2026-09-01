@@ -62,6 +62,7 @@ def call(Object... varargs){
     conda_build_roots = python_versions.collect { pyver ->
         "${env.WORKSPACE}/.conda-build/${env.BUILD_NUMBER}/py${pyver.replace('.', '')}"
     }
+    successful_conda_build_roots = []
     build_conda_packages = { label ->
         def builds = [:]
         python_versions.eachWithIndex { pyver, index ->
@@ -70,8 +71,11 @@ def call(Object... varargs){
             builds["Python ${version}"] = {
                 stage("Python ${version}") {
                     withEnv(["WHOME=${env.WORKSPACE}"]) {
-                        script {
-                            csc.build_csc_conda(label, version, build_root)
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+                            script {
+                                csc.build_csc_conda(label, version, build_root)
+                                successful_conda_build_roots << build_root
+                            }
                         }
                     }
                 }
@@ -175,6 +179,7 @@ def call(Object... varargs){
                     not {
                         buildingTag()
                     }
+                    expression { !successful_conda_build_roots.isEmpty() }
                     expression {
                         return upload_dev
                     }
@@ -188,7 +193,7 @@ def call(Object... varargs){
                             anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda(package_name,"dev", arch, conda_build_roots)
+                                csc.upload_conda(package_name,"dev", arch, successful_conda_build_roots)
                             }
                         }
                     }
@@ -198,6 +203,7 @@ def call(Object... varargs){
                 when {
                     buildingTag()
                     tag pattern: "^v\\d\\.\\d\\.\\d\\.rc\\.\\d\$", comparator: "REGEXP"
+                    expression { !successful_conda_build_roots.isEmpty() }
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
@@ -208,7 +214,7 @@ def call(Object... varargs){
                             anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda(package_name,"rc", arch, conda_build_roots)
+                                csc.upload_conda(package_name,"rc", arch, successful_conda_build_roots)
                             }
                         }
                     }
@@ -220,6 +226,7 @@ def call(Object... varargs){
                     not {
                         tag pattern: "^v\\d\\.\\d\\.\\d\\.rc\\.\\d\$", comparator: "REGEXP"
                     }
+                    expression { !successful_conda_build_roots.isEmpty() }
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
@@ -230,7 +237,7 @@ def call(Object... varargs){
                             anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda(package_name,"main",arch, conda_build_roots)
+                                csc.upload_conda(package_name,"main",arch, successful_conda_build_roots)
                             }
                         }
                     }

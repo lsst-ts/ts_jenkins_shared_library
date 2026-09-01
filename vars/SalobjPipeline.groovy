@@ -1,9 +1,34 @@
 import org.lsst.ts.jenkins.components.Csc
 
 def call(config_repo){
+    python_versions=["3.13", "3.14"]
     Csc csc = new Csc()
     arg_str = ""
     clone_str = ""
+    conda_build_roots = python_versions.collect { pyver ->
+        "${env.WORKSPACE}/.conda-build/${env.BUILD_NUMBER}/py${pyver.replace('.', '')}"
+    }
+    successful_conda_build_roots = []
+    build_conda_packages = { label ->
+        def builds = [:]
+        python_versions.eachWithIndex { pyver, index ->
+            def version = pyver
+            def build_root = conda_build_roots[index]
+            builds["Python ${version}"] = {
+                stage("Python ${version}") {
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+                            script {
+                                csc.build_salobj_conda(label, "${concatVersion}", version, build_root)
+                                successful_conda_build_roots << build_root
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        parallel builds
+    }
     if (!config_repo.isEmpty()) {
         config_repo.each{ repo ->
             arg_str = arg_str.concat("--env ${repo.toUpperCase()}_DIR=/home/saluser/${repo} ")
@@ -77,10 +102,8 @@ def call(config_repo){
                     buildingTag()
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}"]) {
-                        script {
-                            csc.build_salobj_conda("main", "${concatVersion}", "3.13")
-                        }
+                    script {
+                        build_conda_packages("main")
                     }
                 }
             }//Create Release
@@ -91,10 +114,8 @@ def call(config_repo){
                     }
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}"]) {
-                        script {
-                            csc.build_salobj_conda("dev", "${concatVersion}", "3.13")
-                        }
+                    script {
+                        build_conda_packages("dev")
                     }
                 }
             }//Create Dev
@@ -102,6 +123,7 @@ def call(config_repo){
                 when {
                     buildingTag()
                     tag pattern: "^v\\d\\.\\d\\.\\d\\.rc\\.\\d\$", comparator: "REGEXP"
+                    expression { !successful_conda_build_roots.isEmpty() }
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
@@ -112,7 +134,7 @@ def call(config_repo){
                             anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda("ts-salobj","rc","noarch")
+                                csc.upload_conda("ts-salobj","rc","noarch", successful_conda_build_roots)
                             }
                         }
                     }
@@ -124,6 +146,7 @@ def call(config_repo){
                     not {
                         tag pattern: "^v\\d\\.\\d\\.\\d\\.rc\\.\\d\$", comparator: "REGEXP"
                     }
+                    expression { !successful_conda_build_roots.isEmpty() }
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
@@ -134,7 +157,7 @@ def call(config_repo){
                             anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda("ts-salobj","main","noarch")
+                                csc.upload_conda("ts-salobj","main","noarch", successful_conda_build_roots)
                             }
                         }
                     }
@@ -145,6 +168,7 @@ def call(config_repo){
                     not {
                         buildingTag()
                     }
+                    expression { !successful_conda_build_roots.isEmpty() }
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
@@ -155,7 +179,7 @@ def call(config_repo){
                             anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
                             """
                             script {
-                                csc.upload_conda("ts-salobj","dev","noarch")
+                                csc.upload_conda("ts-salobj","dev","noarch", successful_conda_build_roots)
                             }
                         }
                     }

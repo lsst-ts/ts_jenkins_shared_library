@@ -5,6 +5,7 @@ def call(Object... varargs){
     // Create a conda build pipeline
     // and assume ordered parameters.
     // Mixing these are not supported nor handled
+    python_versions=["3.13", "3.14"]
     name = varargs[0]
     module_name = varargs[1]
     arch = varargs[2]
@@ -16,6 +17,30 @@ def call(Object... varargs){
     slack_ids = csc.slack_id()
     arg_str = ""
     clone_str = ""
+    conda_build_roots = python_versions.collect { pyver ->
+        "${env.WORKSPACE}/.conda-build/${env.BUILD_NUMBER}/py${pyver.replace('.', '')}"
+    }
+    successful_conda_build_roots = []
+    build_conda_packages = { label ->
+        def builds = [:]
+        python_versions.eachWithIndex { pyver, index ->
+            def version = pyver
+            def build_root = conda_build_roots[index]
+            builds["Python ${version}"] = {
+                stage("Python ${version}") {
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+                            script {
+                                csc.build_standalone_conda(label, version, build_root)
+                                successful_conda_build_roots << build_root
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        parallel builds
+    }
     properties(
         [
         buildDiscarder
@@ -59,10 +84,8 @@ def call(Object... varargs){
                     buildingTag()
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}"]) {
-                        script {
-                            csc.build_standalone_conda("main", "3.13")
-                        }
+                    script {
+                        build_conda_packages("main")
                     }
                 }
             }//Create Release
@@ -73,10 +96,8 @@ def call(Object... varargs){
                     }
                 }
                 steps {
-                    withEnv(["WHOME=${env.WORKSPACE}"]) {
-                        script {
-                            csc.build_standalone_conda("dev", "3.13")
-                        }
+                    script {
+                        build_conda_packages("dev")
                     }
                 }
             }//Create Dev
@@ -84,6 +105,7 @@ def call(Object... varargs){
                 when {
                     buildingTag()
                     tag pattern: "^v\\d\\.\\d\\.\\d\\.rc\\.\\d\$", comparator: "REGEXP"
+                    expression { !successful_conda_build_roots.isEmpty() }
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
@@ -94,7 +116,7 @@ def call(Object... varargs){
                             anaconda org login --pass ${anaconda_pass} --user ${anaconda_user}
                             """
                             script {
-                                csc.upload_conda(package_name,"rc", arch)
+                                csc.upload_conda(package_name,"rc", arch, successful_conda_build_roots)
                             }
                         }
                     }
@@ -106,6 +128,7 @@ def call(Object... varargs){
                     not {
                         tag pattern: "^v\\d\\.\\d\\.\\d\\.rc\\.\\d\$", comparator: "REGEXP"
                     }
+                    expression { !successful_conda_build_roots.isEmpty() }
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
@@ -116,7 +139,7 @@ def call(Object... varargs){
                             anaconda org login --pass ${anaconda_pass} --user ${anaconda_user}
                             """
                             script {
-                                csc.upload_conda(package_name,"main",arch)
+                                csc.upload_conda(package_name,"main",arch, successful_conda_build_roots)
                             }
                         }
                     }
@@ -127,6 +150,7 @@ def call(Object... varargs){
                     not {
                         buildingTag()
                     }
+                    expression { !successful_conda_build_roots.isEmpty() }
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
@@ -137,7 +161,7 @@ def call(Object... varargs){
                             anaconda org login --pass ${anaconda_pass} --user ${anaconda_user}
                             """
                             script {
-                                csc.upload_conda(package_name,"dev","noarch")
+                                csc.upload_conda(package_name,"dev","noarch", successful_conda_build_roots)
                             }
                         }
                     }
@@ -187,4 +211,3 @@ def call(Object... varargs){
         }
     }
 }
-

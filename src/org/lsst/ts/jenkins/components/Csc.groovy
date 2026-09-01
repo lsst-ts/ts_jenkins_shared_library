@@ -274,7 +274,7 @@ def test(scons=false) {
     sh test_shell_script
 }
 
-def build_standalone_conda(label, pyver) {
+def build_standalone_conda(label, pyver, croot=null) {
     // Build the XML Conda package
     sh """
         #!/bin/bash
@@ -283,7 +283,7 @@ def build_standalone_conda(label, pyver) {
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python ${pyver} -c lsstts/label/${label} --prefix-length 100 .
+        conda build --python ${pyver} -c lsstts/label/${label} --prefix-length 100 ${croot ? "--croot '${croot}'" : ''} .
     """
 }
 
@@ -300,14 +300,14 @@ def build_csc_conda(label, pyver, croot=null) {
     """
 }
 
-def build_salobj_conda(label, concatVersion, pyver) {
+def build_salobj_conda(label, concatVersion, pyver, croot=null) {
     sh """
         cd ${WHOME}/conda
         source /home/saluser/.setup.sh
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
-        conda build --python ${pyver} -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
+        conda build --python ${pyver} -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 ${croot ? "--croot '${croot}'" : ''} .
     """
 }
 
