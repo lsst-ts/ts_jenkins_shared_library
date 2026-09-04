@@ -15,6 +15,8 @@ pipeline {
         disableConcurrentBuilds()
     }
     parameters {
+        booleanParam defaultValue: params.Conda ?:true, description: 'Build the CSC Conda packages?', name: 'Conda'
+        booleanParam defaultValue: params.Cycle ?:true, description: 'Build the CycleBuild packages?', name: 'Cycle'
         booleanParam defaultValue: params.Bleed ?:false, description: 'Is this a "bleeding edge" build?', name: 'Bleed'
         booleanParam defaultValue: params.Daily ?:false, description: 'Is this a Daily build?', name: 'Daily'
         booleanParam defaultValue: params.Release ?:false, description: 'Is this a Release build?', name: 'Release'
@@ -39,17 +41,12 @@ pipeline {
                 }
             }
         }//Define Variables
-        stage('Trigger DeployEnv jobs') {
-            when { 
-                expression { env.CURRENT_DAY == 'Monday' && !params.test }
-            }
-            steps {
-                script {
-                    build wait: false, job: 'cycleBuild/main', parameters: [string(name: 'build_agent', value: 'Node3_4CPU'), string(name: 'env_file', value: 'develop.env'), booleanParam(name: 'deploy_conda', value: true), booleanParam(name: 'deploy_lsstsqre', value: true),]
+        stage('Trigger CSC Conda jobs') {
+            when {
+                expression {
+                    return params.Conda
                 }
             }
-        }
-        stage('Trigger CSC Conda jobs') {
             steps {
                 script {
                     def jobs = []
@@ -90,6 +87,19 @@ pipeline {
                     }//ForLoop
                 }//script
             }//steps
-        }//Trigger
+        }//CSC_Conda_Jobs
+        stage('Trigger CycleBuild jobs') {
+            when { 
+                expression { env.CURRENT_DAY == 'Monday' && !params.test && params.Cycle }
+            }
+            steps {
+                script {
+                    // Trigger the DeployEnv jobs and WAIT for them to complete.
+                    build wait: true, job: 'cycleBuild/main', parameters: [string(name: 'build_agent', value: 'Node3_4CPU'), string(name: 'env_file', value: 'develop.env'), booleanParam(name: 'deploy_conda', value: true), booleanParam(name: 'deploy_lsstsqre', value: true),]
+                    // Trigger the ALL Base Components build, after the DeployEnv jobs are complete.
+                    build wait: false, job: 'cycleBuild/main', parameters: [string(name: 'build_agent', value: 'Node3_4CPU'), string(name: 'env_file', value: 'develop.env'), booleanParam(name: 'base_components', value: true), string(name: 'component', value: 'ALL'),]
+                }
+            }
+        }//Cycle_Build_Jobs
     }//stages
 }//pipeline
