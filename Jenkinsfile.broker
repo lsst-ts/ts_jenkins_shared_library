@@ -90,7 +90,7 @@ pipeline {
         }//CSC_Conda_Jobs
         stage('Trigger CycleBuild jobs') {
             when { 
-                expression { env.CURRENT_DAY == 'Monday' && !params.test && params.Cycle }
+                expression { env.CURRENT_DAY == 'Monday' && params.Cycle && params.Bleed && !params.test}
             }
             steps {
                 script {
