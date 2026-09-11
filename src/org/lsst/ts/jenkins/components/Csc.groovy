@@ -326,7 +326,7 @@ def download_git_lfs_files(workDir=null) {
 }
 
 def upload_conda(name, label, arch) {
-    withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')], [usernamePassword(credentialsId: 'nexus3-lsst_jenkins', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
+    withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user'), usernamePassword(credentialsId: 'nexus3-lsst_jenkins', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
         // Upload the conda package
         // Takes the name of the package and a label
         if ((arch=="linux-aarch64") || (arch=="noarch") || (arch=="linux-64")) {
@@ -348,8 +348,7 @@ def upload_conda(name, label, arch) {
                     curl -u ${nexus_user}:${nexus_pass} -w "%{http_code}" -sS --upload-file /home/saluser/miniconda3/conda-bld/noarch/${package_name}*.conda https://repo-nexus.lsst.org/nexus/repository/ssw-conda/dev/${arch}/
                 """
             }
-        }
-        else {
+        } else {
             currentBuild.result = 'ABORTED'
             error('Please properly define the arch parameter.')
         }
