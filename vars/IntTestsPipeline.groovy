@@ -74,16 +74,9 @@ def call(){
                     }
                 }
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
-                        withEnv(["WHOME=${env.WORKSPACE}"]) {
-                            sh """
-                            source /home/saluser/miniconda3/bin/activate
-                            export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
-                            anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
-                            """
-                            script {
-                                csc.upload_conda(conda_name,"main","noarch")
-                            }
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
+                        script {
+                            csc.upload_conda(conda_name,"main","noarch")
                         }
                     }
                 }

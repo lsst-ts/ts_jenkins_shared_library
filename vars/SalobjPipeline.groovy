@@ -104,16 +104,9 @@ def call(config_repo){
                     tag pattern: "^v\\d\\.\\d\\.\\d\\.rc\\.\\d\$", comparator: "REGEXP"
                 }
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
-                        withEnv(["WHOME=${env.WORKSPACE}"]) {
-                            sh """
-                            source /home/saluser/miniconda3/bin/activate
-                            export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
-                            anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
-                            """
-                            script {
-                                csc.upload_conda("ts-salobj","rc","noarch")
-                            }
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
+                        script {
+                            csc.upload_conda("ts-salobj","rc","noarch")
                         }
                     }
                 }
@@ -126,16 +119,9 @@ def call(config_repo){
                     }
                 }
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
-                        withEnv(["WHOME=${env.WORKSPACE}"]) {
-                            sh """
-                            source /home/saluser/miniconda3/bin/activate
-                            export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
-                            anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
-                            """
-                            script {
-                                csc.upload_conda("ts-salobj","main","noarch")
-                            }
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
+                        script {
+                            csc.upload_conda("ts-salobj","main","noarch")
                         }
                     }
                 }
@@ -147,16 +133,9 @@ def call(config_repo){
                     }
                 }
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
-                        withEnv(["WHOME=${env.WORKSPACE}"]) {
-                            sh """
-                            source /home/saluser/miniconda3/bin/activate
-                            export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
-                            anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
-                            """
-                            script {
-                                csc.upload_conda("ts-salobj","dev","noarch")
-                            }
+                    withEnv(["WHOME=${env.WORKSPACE}"]) {
+                        script {
+                            csc.upload_conda("ts-salobj","dev","noarch")
                         }
                     }
                 }
