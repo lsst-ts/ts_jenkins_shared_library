@@ -158,9 +158,6 @@ def call(Object... varargs){
                     not {
                         buildingTag()
                     }
-                    expression {
-                        return upload_dev
-                    }
                 }
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')]) {
