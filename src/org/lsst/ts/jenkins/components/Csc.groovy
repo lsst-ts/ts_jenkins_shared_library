@@ -326,22 +326,33 @@ def download_git_lfs_files(workDir=null) {
 }
 
 def upload_conda(name, label, arch) {
-    // Upload the conda package
-    // Takes the name of the package and a label
-    if ((arch=="linux-aarch64") || (arch=="noarch") || (arch=="linux-64")) {
-        if (label == "rc") {
-            label_option = "--label ${label} --label main"
-        } else {
-            label_option = "--label ${label}"
+    withCredentials([usernamePassword(credentialsId: 'CondaForge', passwordVariable: 'anaconda_pass', usernameVariable: 'anaconda_user')], [usernamePassword(credentialsId: 'nexus3-lsst_jenkins', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
+        // Upload the conda package
+        // Takes the name of the package and a label
+        if ((arch=="linux-aarch64") || (arch=="noarch") || (arch=="linux-64")) {
+            if (label == "rc") {
+                label_option = "--label ${label} --label main"
+            } else {
+                label_option = "--label ${label}"
+            }
+            if (label != "dev") {
+                sh """
+                    source /home/saluser/miniconda3/bin/activate
+                    export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
+                    anaconda org login --user ${anaconda_user} --password ${anaconda_pass}
+                    source /home/saluser/.setup.sh
+                    anaconda upload -u lsstts ${label_option} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.conda
+                """
+            } else {
+                sh """
+                    curl -u ${nexus_user}:${nexus_pass} -w "%{http_code}" -sS --upload-file /home/saluser/miniconda3/conda-bld/noarch/${package_name}*.conda https://repo-nexus.lsst.org/nexus/repository/ssw-conda/dev/${arch}/
+                """
+            }
         }
-        sh """
-            source /home/saluser/.setup.sh
-            anaconda upload -u lsstts ${label_option} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.conda
-        """
-    }
-    else {
-        currentBuild.result = 'ABORTED'
-        error('Please properly define the arch parameter.')
+        else {
+            currentBuild.result = 'ABORTED'
+            error('Please properly define the arch parameter.')
+        }
     }
 }
 
