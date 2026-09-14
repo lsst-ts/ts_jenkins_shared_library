@@ -382,18 +382,19 @@ def update_container_branches() {
            # Deal with some extraneous files
            rm Jenkinsfile || true
            rm -rf *@tmp*
-	fi
-        # Update branches for extra packages if used
-        for repo in \$(ls ${env.WORKSPACE}/ci/)
-        do
-            echo \$repo
-            cd ${env.WORKSPACE}/ci/\$repo
-            git_branch=\$(git rev-parse --abbrev-ref HEAD)
-            git branch --set-upstream-to=origin/\$git_branch \$git_branch
-            /home/saluser/.checkout_repo.sh ${WORK_BRANCHES} || echo FAILED to update branches.
-            eups declare -r . -t current
-            python -m pip install -e . --no-deps --ignore-installed || echo "Not able to be installed via pip"
-        done
+	  
+           # Update branches for extra packages if used
+           for repo in \$(ls ${env.WORKSPACE}/ci/)
+           do
+              echo \$repo
+              cd ${env.WORKSPACE}/ci/\$repo
+              git_branch=\$(git rev-parse --abbrev-ref HEAD)
+              git branch --set-upstream-to=origin/\$git_branch \$git_branch
+              /home/saluser/.checkout_repo.sh ${WORK_BRANCHES} || echo FAILED to update branches.
+              eups declare -r . -t current
+              python -m pip install -e . --no-deps --ignore-installed || echo "Not able to be installed via pip"
+           done
+        fi
     """
     }
 }
