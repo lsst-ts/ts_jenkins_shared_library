@@ -138,6 +138,7 @@ def call(Object... varargs){
                             echo "Starting the SalObj_Conda_package/develop job; sal_version: ${params.SAL_Version}, xml_version: ${params.XML_Version}, xml_conda_version: ${xml_conda_version}, buildCSCConda: ${params.buildCSCConda}"
                             build propagate: false, job: 'SalObj_Conda_package/develop', parameters: [
                                 booleanParam(name: 'buildCSCConda', value: "${params.buildCSCConda}" ),
+                                booleanParam(name: 'Bleed', value: "${params.Bleed}" ),
                                 string(name: 'xml_version',value: "${params.XML_Version}" ),
                                 string(name: 'xml_conda_version',value: "${xml_conda_version}" ),
                                 string(name: 'sal_version',value: "${params.SAL_Version}" )
