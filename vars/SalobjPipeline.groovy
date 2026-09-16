@@ -147,12 +147,12 @@ def call(config_repo){
                     }
                     steps {
                         script {
-                            def SALOBJVERSION = sh (returnStdout: true, script:
                             if ( params.Bleed ) {
                                 Daily = false
                             } else {
                                 Daily = true
                             }
+                            def SALOBJVERSION = sh (returnStdout: true, script:
                             """
                             source /home/saluser/miniconda3/bin/activate > /dev/null &&
                             conda config --set solver libmamba &&
