@@ -307,6 +307,7 @@ def build_salobj_conda(label, concatVersion, pyver) {
         conda config --set solver libmamba
         conda config --add channels conda-forge
         conda config --add channels lsstts
+        conda config --add channels https://repo-nexus.lsst.org/nexus/repository/ssw-conda/
         conda build --python ${pyver} -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
     """
 }
