@@ -298,7 +298,7 @@ def build_csc_conda(label, pyver) {
             conda config --add channels conda-forge
             conda config --add channels lsstts
             conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda/
-            conda build --python ${pyver} -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
+            conda build --python ${pyver} -c https://repo-nexus.lsst.org/nexus/repository/ssw-conda/ -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
         """
     }
 }
