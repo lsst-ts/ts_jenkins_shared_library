@@ -342,7 +342,7 @@ def upload_conda(name, label, arch) {
             } else {
                 label_option = "--label ${label}"
             }
-            // if (label != "dev") {
+             if (label != "dev") {
                 sh """
                     source /home/saluser/miniconda3/bin/activate
                     export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
@@ -350,11 +350,11 @@ def upload_conda(name, label, arch) {
                     source /home/saluser/.setup.sh
                     anaconda upload -u lsstts ${label_option} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.conda
                 """
-            // } else {
-            //     sh """
-            //         curl -u ${nexus_user}:${nexus_pass} -w "%{http_code}" -sS --upload-file /home/saluser/miniconda3/conda-bld/noarch/${package_name}*.conda https://repo-nexus.lsst.org/nexus/repository/ssw-conda/dev/${arch}/
-            //     """
-            // }
+             } else {
+                 sh """
+                     curl -u ${nexus_user}:${nexus_pass} -w "%{http_code}" -sS --upload-file /home/saluser/miniconda3/conda-bld/noarch/${package_name}*.conda https://repo-nexus.lsst.org/nexus/repository/ssw-conda/dev/${arch}/
+                 """
+             }
         } else {
             currentBuild.result = 'ABORTED'
             error('Please properly define the arch parameter.')
