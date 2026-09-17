@@ -285,7 +285,7 @@ def build_standalone_conda(label, pyver) {
             conda config --add channels conda-forge
             conda config --add channels lsstts
             conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda/
-            conda build --python ${pyver} -c https://repo-nexus.lsst.org/nexus/repository/ssw-conda/ -c lsstts/label/${label} --prefix-length 100 .
+            conda build --python ${pyver} -c https://repo-nexus.lsst.org/nexus/repository/ssw-conda/${label} -c lsstts/label/${label} --prefix-length 100 .
         """
     }
 }
