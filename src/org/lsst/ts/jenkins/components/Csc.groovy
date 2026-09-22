@@ -354,7 +354,7 @@ def upload_conda(name, label, arch) {
                 """
              } else {
                  sh """
-                     curl -u ${nexus_user}:${nexus_pass} -w "%{http_code}" -sS --upload-file /home/saluser/miniconda3/conda-bld/noarch/${package_name}*.conda https://repo-nexus.lsst.org/nexus/repository/ssw-conda/noarch/
+                     curl -u ${nexus_user}:${nexus_pass} -w "%{http_code}" -sS --upload-file /home/saluser/miniconda3/conda-bld/noarch/${name}*.conda https://repo-nexus.lsst.org/nexus/repository/ssw-conda/noarch/
                  """
              }
         } else {
