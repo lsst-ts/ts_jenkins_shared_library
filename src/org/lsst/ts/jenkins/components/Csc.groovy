@@ -275,40 +275,49 @@ def test(scons=false) {
 }
 
 def build_standalone_conda(label, pyver) {
-    // Build the XML Conda package
-    sh """
-        #!/bin/bash
-        cd ${WHOME}/conda
-        source /home/saluser/.setup.sh
-        conda config --set solver libmamba
-        conda config --add channels conda-forge
-        conda config --add channels lsstts
-        conda build --python ${pyver} -c lsstts/label/${label} --prefix-length 100 .
-    """
+    withCredentials([usernamePassword(credentialsId: 'nexus3-lsst_jenkins', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
+        // Build the XML Conda package
+        sh """
+            #!/bin/bash
+            cd ${WHOME}/conda
+            source /home/saluser/.setup.sh
+            conda config --set solver libmamba
+            conda config --add channels conda-forge
+            conda config --add channels lsstts
+            conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
+            conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda -c lsstts/label/${label} --prefix-length 100 .
+        """
+    }
 }
 
 def build_csc_conda(label, pyver) {
-    // Build the conda package
-    sh """
-        #!/bin/bash
-        cd ${WHOME}/conda
-        source /home/saluser/.setup.sh
-        conda config --set solver libmamba
-        conda config --add channels conda-forge
-        conda config --add channels lsstts
-        conda build --python ${pyver} -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
-    """
+    withCredentials([usernamePassword(credentialsId: 'nexus3-lsst_jenkins', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
+        // Build the conda package
+        sh """
+            #!/bin/bash
+            cd ${WHOME}/conda
+            source /home/saluser/.setup.sh
+            conda config --set solver libmamba
+            conda config --add channels conda-forge
+            conda config --add channels lsstts
+            conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
+            conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
+        """
+    }
 }
 
 def build_salobj_conda(label, concatVersion, pyver) {
-    sh """
-        cd ${WHOME}/conda
-        source /home/saluser/.setup.sh
-        conda config --set solver libmamba
-        conda config --add channels conda-forge
-        conda config --add channels lsstts
-        conda build --python ${pyver} -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
-    """
+    withCredentials([usernamePassword(credentialsId: 'nexus3-lsst_jenkins', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
+        sh """
+            cd ${WHOME}/conda
+            source /home/saluser/.setup.sh
+            conda config --set solver libmamba
+            conda config --add channels conda-forge
+            conda config --add channels lsstts
+            conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
+            conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
+        """
+    }
 }
 
 def download_git_lfs_files(workDir=null) {
