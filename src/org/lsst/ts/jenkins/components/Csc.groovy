@@ -285,7 +285,11 @@ def build_standalone_conda(label, pyver) {
             conda config --add channels conda-forge
             conda config --add channels lsstts
             conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
-            conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda -c lsstts/label/${label} --prefix-length 100 .
+            if (label == "dev") {
+                conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda --prefix-length 100 .
+            } else {
+                conda build --python ${pyver} -c lsstts/label/${label} --prefix-length 100 .
+            }
         """
     }
 }
@@ -301,7 +305,11 @@ def build_csc_conda(label, pyver) {
             conda config --add channels conda-forge
             conda config --add channels lsstts
             conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
-            conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
+            if (label == "dev") {
+                conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
+            } else {
+                conda build --python ${pyver} -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
+        }
         """
     }
 }
@@ -315,7 +323,11 @@ def build_salobj_conda(label, concatVersion, pyver) {
             conda config --add channels conda-forge
             conda config --add channels lsstts
             conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
-            conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
+            if (label == "dev") {
+                conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
+            } else {
+                conda build --python ${pyver} -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
+        }
         """
     }
 }
@@ -344,7 +356,7 @@ def upload_conda(name, label, arch) {
             } else {
                 label_option = "--label ${label}"
             }
-             if (label != "dev") {
+            if (label != "dev") {
                 sh """
                     source /home/saluser/miniconda3/bin/activate
                     export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
@@ -352,11 +364,11 @@ def upload_conda(name, label, arch) {
                     source /home/saluser/.setup.sh
                     anaconda upload -u lsstts ${label_option} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.conda
                 """
-             } else {
-                 sh """
-                     curl -u ${nexus_user}:${nexus_pass} -w "%{http_code}" -sS --upload-file /home/saluser/miniconda3/conda-bld/noarch/${name}*.conda https://repo-nexus.lsst.org/nexus/repository/ssw-conda/noarch/
-                 """
-             }
+            } else {
+                sh """
+                    curl -u ${nexus_user}:${nexus_pass} -w "%{http_code}" -sS --upload-file /home/saluser/miniconda3/conda-bld/noarch/${name}*.conda https://repo-nexus.lsst.org/nexus/repository/ssw-conda/noarch/
+                """
+            }
         } else {
             currentBuild.result = 'ABORTED'
             error('Please properly define the arch parameter.')
