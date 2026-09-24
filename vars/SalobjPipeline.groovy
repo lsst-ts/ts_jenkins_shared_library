@@ -46,6 +46,7 @@ def call(config_repo){
             string(name: 'sal_version', defaultValue: '\'\'', description: 'The SAL Version')
             string(name: 'xml_version', defaultValue: '\'\'', description: 'The XML Version')
             string(name: 'xml_conda_version', defaultValue: '\'\'', description: 'The XML Conda Version')
+            booleanParam(description: "Is this a Bleed track build?", name: 'Bleed')
             booleanParam(defaultValue: false, description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
 
         }
@@ -146,6 +147,11 @@ def call(config_repo){
                     }
                     steps {
                         script {
+                            if ( params.Bleed ) {
+                                Daily = false
+                            } else {
+                                Daily = true
+                            }
                             def SALOBJVERSION = sh (returnStdout: true, script:
                             """
                             source /home/saluser/miniconda3/bin/activate > /dev/null &&
@@ -161,9 +167,8 @@ def call(config_repo){
                                 string(name: 'XML_Version', value: xml_version ), \
                                 string(name: 'xml_conda_version', value: xml_conda_version ), \
                                 string(name: 'SAL_Version', value: sal_version ), \
-                                booleanParam(name: 'Bleed', value: false), \
-                                booleanParam(name: 'Daily', value: true), \
-                                booleanParam(name: 'Release', value: false), \
+                                booleanParam(name: 'Bleed', value: params.Bleed), \
+                                booleanParam(name: 'Daily', value: Daily), \
                                 string(name: 'Branch', value: 'develop')]
                     }
                 }

@@ -275,40 +275,61 @@ def test(scons=false) {
 }
 
 def build_standalone_conda(label, pyver) {
-    // Build the XML Conda package
-    sh """
-        #!/bin/bash
-        cd ${WHOME}/conda
-        source /home/saluser/.setup.sh
-        conda config --set solver libmamba
-        conda config --add channels conda-forge
-        conda config --add channels lsstts
-        conda build --python ${pyver} -c lsstts/label/${label} --prefix-length 100 .
-    """
+    withCredentials([usernamePassword(credentialsId: 'nexus3-lsst_jenkins', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
+        // Build the XML Conda package
+        sh """
+            #!/bin/bash
+            cd ${WHOME}/conda
+            source /home/saluser/.setup.sh
+            conda config --set solver libmamba
+            conda config --add channels conda-forge
+            conda config --add channels lsstts
+            conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
+            if (label == "dev") {
+                conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda --prefix-length 100 .
+            } else {
+                conda build --python ${pyver} -c lsstts/label/${label} --prefix-length 100 .
+            }
+        """
+    }
 }
 
 def build_csc_conda(label, pyver) {
-    // Build the conda package
-    sh """
-        #!/bin/bash
-        cd ${WHOME}/conda
-        source /home/saluser/.setup.sh
-        conda config --set solver libmamba
-        conda config --add channels conda-forge
-        conda config --add channels lsstts
-        conda build --python ${pyver} -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
-    """
+    withCredentials([usernamePassword(credentialsId: 'nexus3-lsst_jenkins', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
+        // Build the conda package
+        sh """
+            #!/bin/bash
+            cd ${WHOME}/conda
+            source /home/saluser/.setup.sh
+            conda config --set solver libmamba
+            conda config --add channels conda-forge
+            conda config --add channels lsstts
+            conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
+            if (label == "dev") {
+                conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
+            } else {
+                conda build --python ${pyver} -c lsstts/label/${label} --variants "{salobj_version: ${params.salobj_version}, xml_version: ${params.xml_conda_version}, }" --prefix-length 100 .
+        }
+        """
+    }
 }
 
 def build_salobj_conda(label, concatVersion, pyver) {
-    sh """
-        cd ${WHOME}/conda
-        source /home/saluser/.setup.sh
-        conda config --set solver libmamba
-        conda config --add channels conda-forge
-        conda config --add channels lsstts
-        conda build --python ${pyver} -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
-    """
+    withCredentials([usernamePassword(credentialsId: 'nexus3-lsst_jenkins', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
+        sh """
+            cd ${WHOME}/conda
+            source /home/saluser/.setup.sh
+            conda config --set solver libmamba
+            conda config --add channels conda-forge
+            conda config --add channels lsstts
+            conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
+            if (label == "dev") {
+                conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
+            } else {
+                conda build --python ${pyver} -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
+        }
+        """
+    }
 }
 
 def download_git_lfs_files(workDir=null) {
@@ -335,7 +356,7 @@ def upload_conda(name, label, arch) {
             } else {
                 label_option = "--label ${label}"
             }
-            // if (label != "dev") {
+            if (label != "dev") {
                 sh """
                     source /home/saluser/miniconda3/bin/activate
                     export ANACONDA_CLIENT_LEGACY_INTERACTIVE_LOGIN=1
@@ -343,11 +364,11 @@ def upload_conda(name, label, arch) {
                     source /home/saluser/.setup.sh
                     anaconda upload -u lsstts ${label_option} --force /home/saluser/miniconda3/conda-bld/${arch}/${name}*.conda
                 """
-            // } else {
-            //     sh """
-            //         curl -u ${nexus_user}:${nexus_pass} -w "%{http_code}" -sS --upload-file /home/saluser/miniconda3/conda-bld/noarch/${package_name}*.conda https://repo-nexus.lsst.org/nexus/repository/ssw-conda/dev/${arch}/
-            //     """
-            // }
+            } else {
+                sh """
+                    curl -u ${nexus_user}:${nexus_pass} -w "%{http_code}" -sS --upload-file /home/saluser/miniconda3/conda-bld/noarch/${name}*.conda https://repo-nexus.lsst.org/nexus/repository/ssw-conda/noarch/
+                """
+            }
         } else {
             currentBuild.result = 'ABORTED'
             error('Please properly define the arch parameter.')
@@ -382,18 +403,19 @@ def update_container_branches() {
            # Deal with some extraneous files
            rm Jenkinsfile || true
            rm -rf *@tmp*
-	fi
-        # Update branches for extra packages if used
-        for repo in \$(ls ${env.WORKSPACE}/ci/)
-        do
-            echo \$repo
-            cd ${env.WORKSPACE}/ci/\$repo
-            git_branch=\$(git rev-parse --abbrev-ref HEAD)
-            git branch --set-upstream-to=origin/\$git_branch \$git_branch
-            /home/saluser/.checkout_repo.sh ${WORK_BRANCHES} || echo FAILED to update branches.
-            eups declare -r . -t current
-            python -m pip install -e . --no-deps --ignore-installed || echo "Not able to be installed via pip"
-        done
+	  
+           # Update branches for extra packages if used
+           for repo in \$(ls ${env.WORKSPACE}/ci/)
+           do
+              echo \$repo
+              cd ${env.WORKSPACE}/ci/\$repo
+              git_branch=\$(git rev-parse --abbrev-ref HEAD)
+              git branch --set-upstream-to=origin/\$git_branch \$git_branch
+              /home/saluser/.checkout_repo.sh ${WORK_BRANCHES} || echo FAILED to update branches.
+              eups declare -r . -t current
+              python -m pip install -e . --no-deps --ignore-installed || echo "Not able to be installed via pip"
+           done
+        fi
     """
     }
 }

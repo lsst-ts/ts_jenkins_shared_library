@@ -43,7 +43,7 @@ def call(Object... varargs){
             choice choices: ['CSC_Conda_Node || CSC_Conda_Overflow_Node', 'Node1_4CPU', 'Node2_8CPU', 'Node3_4CPU'], description: 'Select the build agent', name: 'build_agent'
             string(name: 'XML_Version', description: 'The XML Version, exclude any preceeding "v" characters: X.Y.Z')
             string(name: 'SAL_Version', description: 'The SAL version, exclude any preceeding "v" characters: X.Y.Z')
-            booleanParam(description: "Is this a development build?", name: 'develop')
+            booleanParam defaultValue: params.Bleed ?:false, description: 'Is this a "bleeding edge" build?', name: 'Bleed'
             booleanParam(description: "Are we building the salobj conda package after this?", name: 'buildSalObjConda')
             booleanParam(description: "Are we going on to building the CSC package after salobj?", name: 'buildCSCConda')
         }
@@ -138,6 +138,7 @@ def call(Object... varargs){
                             echo "Starting the SalObj_Conda_package/develop job; sal_version: ${params.SAL_Version}, xml_version: ${params.XML_Version}, xml_conda_version: ${xml_conda_version}, buildCSCConda: ${params.buildCSCConda}"
                             build propagate: false, job: 'SalObj_Conda_package/develop', parameters: [
                                 booleanParam(name: 'buildCSCConda', value: "${params.buildCSCConda}" ),
+                                booleanParam(name: 'Bleed', value: "${params.Bleed}" ),
                                 string(name: 'xml_version',value: "${params.XML_Version}" ),
                                 string(name: 'xml_conda_version',value: "${xml_conda_version}" ),
                                 string(name: 'sal_version',value: "${params.SAL_Version}" )
