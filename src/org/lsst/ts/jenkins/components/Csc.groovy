@@ -285,11 +285,11 @@ def build_standalone_conda(label, pyver) {
             conda config --add channels conda-forge
             conda config --add channels lsstts
             conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
-            if (label == "dev") {
+            if [ "${label}" == "dev" ]; then
                 conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda --prefix-length 100 .
-            } else {
+            else
                 conda build --python ${pyver} -c lsstts/label/${label} --prefix-length 100 .
-            }
+            fi
         """
     }
 }
@@ -323,11 +323,11 @@ def build_salobj_conda(label, concatVersion, pyver) {
             conda config --add channels conda-forge
             conda config --add channels lsstts
             conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
-            if (label == "dev") {
+            if [ "${label}" == "dev" ]; then
                 conda build --python ${pyver} -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
-            } else {
+            else
                 conda build --python ${pyver} -c lsstts/label/${label} --variants "{xml_version: ${params.xml_conda_version}}" --prefix-length 100 .
-        }
+            fi 
         """
     }
 }
