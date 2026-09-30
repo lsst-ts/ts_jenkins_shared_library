@@ -13,30 +13,33 @@ def call(String XML_VERSION, String SUBNAME, Boolean FORCE, String COMPONENTS) {
     //     Space-separated, case-sensitive list of CSCs, e.g Test Script ScriptQueue,
     //     or ALL if creating topics for all components.
     //
-    script {
-        sh """
-            echo I am deleting topics for "$COMPONENTS" components with the "$SUBNAME" subname using XML v${XML_VERSION}
-            source ~/miniconda3/bin/activate
-            conda install -qy -c lsstts/label/dev "ts-xml>=${XML_VERSION}"
-            conda install -qy -c lsstts "ts-salobj>=8"
-            echo Force: ${FORCE}
-            if [ '${FORCE}' == true ]; then
-                flag='--force'
-            else
-                flag=''
-            fi
-            echo I am deleting topics for "$COMPONENTS" components with the "$SUBNAME" subname using XML v${XML_VERSION}
-            source ~/miniconda3/bin/activate
-            conda install -qy -c lsstts/label/dev "ts-xml>=${XML_VERSION}"
-            conda install -qy -c lsstts "ts-salobj>=8"
-            csc_list="$COMPONENTS"
-            echo CSCs: \$csc_list
-            if [ "\${csc_list,,}" == "all" ]; then
-                cscs="--all"
-            else
-                cscs="${COMPONENTS}"
-            fi
-            delete_topics --subname=${SUBNAME} \$cscs \$flag
-        """
+    withCredentials([usernamePassword(credentialsId: 'nexus3-lsst_jenkins', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
+        script {
+            sh """
+                echo I am deleting topics for "$COMPONENTS" components with the "$SUBNAME" subname using XML v${XML_VERSION}
+                source ~/miniconda3/bin/activate
+                conda config --add channels https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda
+                conda install -qy -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda -c lsstts/label/dev "ts-xml>=${XML_VERSION}"
+                conda install -qy -c https://${nexus_user}:${nexus_pass}@repo-nexus.lsst.org/nexus/repository/ssw-conda -c lsstts "ts-salobj>=8"
+                echo Force: ${FORCE}
+                if [ '${FORCE}' == true ]; then
+                    flag='--force'
+                else
+                    flag=''
+                fi
+                echo I am deleting topics for "$COMPONENTS" components with the "$SUBNAME" subname using XML v${XML_VERSION}
+                source ~/miniconda3/bin/activate
+                conda install -qy -c lsstts/label/dev "ts-xml>=${XML_VERSION}"
+                conda install -qy -c lsstts "ts-salobj>=8"
+                csc_list="$COMPONENTS"
+                echo CSCs: \$csc_list
+                if [ "\${csc_list,,}" == "all" ]; then
+                    cscs="--all"
+                else
+                    cscs="${COMPONENTS}"
+                fi
+                delete_topics --subname=${SUBNAME} \$cscs \$flag
+            """
+        }
     }
 }
