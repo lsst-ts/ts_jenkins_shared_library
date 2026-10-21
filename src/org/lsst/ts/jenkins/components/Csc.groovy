@@ -238,6 +238,7 @@ def install(eups=true) {
             sh """
             set +x
             source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
+            setup lsst_apps
             setup -kr .
         """
     }
@@ -258,6 +259,7 @@ def test(scons=false) {
     """
     if (scons) {
         test_shell_script += """
+            setup lsst_apps
             setup -kr .
             scons shebang || echo Failed to generate scons shebang
         """
@@ -394,7 +396,7 @@ def update_container_branches() {
         for repo in \$(ls /home/saluser/repos/)
         do
             cd /home/saluser/repos/\$repo
-            /home/saluser/.checkout_repo.sh ${WORK_BRANCHES}
+            /home/saluser/.checkout-repo.sh ${WORK_BRANCHES}
         done
 	# only sanitize if extra packages are there
 	if [ -d ${env.WORKSPACE}/ci/ ]
@@ -411,7 +413,7 @@ def update_container_branches() {
               cd ${env.WORKSPACE}/ci/\$repo
               git_branch=\$(git rev-parse --abbrev-ref HEAD)
               git branch --set-upstream-to=origin/\$git_branch \$git_branch
-              /home/saluser/.checkout_repo.sh ${WORK_BRANCHES} || echo FAILED to update branches.
+              /home/saluser/.checkout-repo.sh ${WORK_BRANCHES} || echo FAILED to update branches.
               eups declare -r . -t current
               python -m pip install -e . --no-deps --ignore-installed || echo "Not able to be installed via pip"
            done
