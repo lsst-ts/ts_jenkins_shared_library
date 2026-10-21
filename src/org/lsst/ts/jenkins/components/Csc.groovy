@@ -238,6 +238,7 @@ def install(eups=true) {
             sh """
             set +x
             source /home/saluser/.setup_dev.sh || echo loading env failed. Continuing...
+            setup lsst_apps
             setup -kr .
         """
     }
@@ -258,6 +259,7 @@ def test(scons=false) {
     """
     if (scons) {
         test_shell_script += """
+            setup lsst_apps
             setup -kr .
             scons shebang || echo Failed to generate scons shebang
         """
