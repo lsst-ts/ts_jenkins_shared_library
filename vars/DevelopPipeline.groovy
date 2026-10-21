@@ -44,7 +44,8 @@ def call(Map pipeline_args = [:]) {
             docker {
                 alwaysPull true
                 image imageValue
-                args "--entrypoint='' -e LSST_KAFKA_BROKER_ADDR='35.85.18.232:9092' -e LSST_SCHEMA_REGISTRY_URL='http://35.85.18.232:8081' ${pipeline_args.mount_rubin_sim_data ? '-v /home/jenkins/workspace/rubin_sim_data:/home/saluser/rubin_sim_data' : ''}"
+                // Older sqre images enable nounset before EUPS reads DYLD_LIBRARY_PATH.
+                args "--entrypoint='' -e LSST_KAFKA_BROKER_ADDR='35.85.18.232:9092' -e LSST_SCHEMA_REGISTRY_URL='http://35.85.18.232:8081' ${pipeline_args.require_scons ? '-e DYLD_LIBRARY_PATH=' : ''} ${pipeline_args.mount_rubin_sim_data ? '-v /home/jenkins/workspace/rubin_sim_data:/home/saluser/rubin_sim_data' : ''}"
                 label "${params.build_agent}"
             }
         }
