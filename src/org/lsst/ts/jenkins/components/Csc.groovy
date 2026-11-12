@@ -3,8 +3,10 @@ package org.lsst.ts.jenkins.components
 def email() {
     emails = [  "default": "rubinobs-tssw-worker@lsst.org",
                 "love-commander": "sebastian.aranda@noirlab.edu",
+                "love-manager": "sebastian.aranda@noirlab.edu",
                 "love-producer": "sebastian.aranda@noirlab.edu",
                 "lsst-efd-client": "valerie.becker@noirlab.edu",
+                "qasync": "te-wei.tsai@noirlab.edu",
                 "ts-astrosky-model": "tiago.ribeiro@noirlab.edu",
                 "ts-ataos": "tiago.ribeiro@noirlab.edu",
                 "ts-atbuilding-csc": "brian.brondel@noirlab.edu",
@@ -105,8 +107,10 @@ def slack_id() {
     String wouter = "U07PMHC954K"
     slack_ids = ["default": rob,
                 "love-commander": sebastian,
+                "love-manager": sebastian,
                 "love-producer": sebastian,
                 "lsst-efd-client": valerie,
+                "qasync": tewei,
                 "ts-astrosky-model": tiago,
                 "ts-ataos": tiago,
                 "ts-atbuilding-csc": brianb,
